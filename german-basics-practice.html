@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>German Basics Practice: Alphabet, Greetings, Introducing Yourself</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A4A; --parchment:#F6F1E7; --gold:#C9A227; --brick:#A23B2E;
+    --sage:#4F7359; --line:#DDD3BE; --ink-soft:#3F4F6E; --card:#FFFDF8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--parchment); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55;}
+  h1,h2,h3{font-family:'Fraunces',serif; margin:0; color:var(--ink); letter-spacing:-0.01em;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  p{margin:0 0 12px;}
+  main{max-width:820px; margin:0 auto; padding:56px 28px 80px;}
+  @media (max-width:600px){main{padding:36px 18px 60px;}}
+
+  .eyebrow{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--brick); margin-bottom:14px;}
+  h1.title{font-size:clamp(28px,4vw,40px); font-weight:600; max-width:20ch;}
+  .sub{margin-top:14px; color:var(--ink-soft); font-size:16px; max-width:60ch;}
+
+  section{margin-top:48px; padding-top:6px; border-top:1px solid var(--line);}
+  .sec-head{display:flex; align-items:baseline; gap:10px; margin-bottom:16px;}
+  .sec-head h2{font-size:23px; font-weight:600;}
+  .sec-head .n{font-family:'JetBrains Mono',monospace; font-size:12px; color:#fff; background:var(--ink); padding:2px 8px; border-radius:20px;}
+
+  .rule-list{list-style:none; padding:0; margin:0 0 16px; display:flex; flex-direction:column; gap:9px;}
+  .rule-list li{display:flex; gap:10px; align-items:flex-start; font-size:15px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 14px;}
+  .rule-list li::before{content:"§"; color:var(--gold); font-weight:700; font-family:'JetBrains Mono',monospace;}
+
+  .examples{display:flex; flex-direction:column; gap:9px; margin-bottom:20px;}
+  .ex{display:flex; gap:14px; align-items:baseline; padding:10px 16px; background:var(--card); border:1px solid var(--line); border-radius:8px; font-family:'JetBrains Mono',monospace; font-size:14.5px; flex-wrap:wrap;}
+  .ex .de{flex:1; min-width:180px; font-weight:600;}
+  .ex .en{color:var(--ink-soft); font-family:'Inter',sans-serif; font-size:13px; font-style:italic;}
+
+  /* alphabet grid */
+  .alpha-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(70px,1fr)); gap:8px; margin-bottom:20px;}
+  .letter-card{background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 6px; text-align:center;}
+  .letter-card .l{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:18px;}
+  .letter-card .p{font-size:10.5px; color:var(--ink-soft); margin-top:2px;}
+
+  .ex-item{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:12px;}
+  .ex-item .prompt{font-family:'JetBrains Mono',monospace; font-size:15px; margin-bottom:9px;}
+  .ex-item .prompt .hint{color:var(--ink-soft); font-size:12.5px; font-family:'Inter',sans-serif;}
+  .ex-item input[type=text]{font-family:'JetBrains Mono',monospace; font-size:14.5px; padding:7px 10px; width:220px; max-width:100%; border:1.5px solid var(--line); border-radius:6px; background:#fff; color:var(--ink);}
+  .ex-item input[type=text]:focus-visible{outline:3px solid rgba(201,162,39,.4); border-color:var(--gold);}
+  .feedback{margin-top:7px; font-size:13px; min-height:18px; font-weight:600;}
+  .feedback.correct{color:var(--sage);}
+  .feedback.wrong{color:var(--brick);}
+  .check-btn, .submit-btn{font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px; color:#fff; background:var(--ink); border:none; padding:8px 16px; border-radius:7px; cursor:pointer;}
+  .check-btn:hover, .submit-btn:hover{background:var(--ink-soft);}
+
+  .quiz-item{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px; margin-bottom:14px;}
+  .quiz-item .q{font-weight:600; margin-bottom:11px; font-size:15px;}
+  .quiz-item .q .num{color:var(--brick); font-family:'JetBrains Mono',monospace; margin-right:8px;}
+  .opts{display:flex; flex-direction:column; gap:7px;}
+  .opt{display:flex; align-items:center; gap:10px; padding:8px 12px; border:1.5px solid var(--line); border-radius:7px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:14px;}
+  .opt:hover{border-color:var(--gold);}
+  .opt input{accent-color:var(--ink);}
+  .opt.locked.right{border-color:var(--sage); background:rgba(79,115,89,0.08);}
+  .opt.locked.wrong-pick{border-color:var(--brick); background:rgba(162,59,46,0.08);}
+
+  #quiz-result{margin-top:18px; padding:18px 20px; border-radius:10px; background:var(--ink); color:#fff; display:none;}
+  #quiz-result.show{display:block;}
+  #quiz-result h3{color:#fff; font-size:19px; margin-bottom:5px;}
+  #quiz-result p{color:#E7E0D2; margin-bottom:0;}
+
+  footer{margin-top:56px; font-size:13px; color:var(--ink-soft); text-align:center;}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">A1 German · Foundations Review</div>
+  <h1 class="title">Alphabet, greetings & introducing yourself</h1>
+  <p class="sub">A consolidated practice set for everything you've covered so far: the alphabet, greetings and farewells, saying your name, origin, and residence, and asking/telling how someone is doing.</p>
+
+  <!-- 1. ALPHABET -->
+  <section id="s1">
+    <div class="sec-head"><span class="n">1</span><h2>The Alphabet</h2></div>
+    <ul class="rule-list">
+      <li>German has 26 standard letters plus four extra: <span class="mono">ä, ö, ü, ß</span>.</li>
+      <li><span class="mono">ß</span> (Eszett/scharfes S) sounds like a sharp "s" — used after long vowels/diphthongs (e.g. <span class="mono">Straße</span>).</li>
+      <li>Letter names differ from English — <span class="mono">e</span> is "eh", <span class="mono">i</span> is "ee", <span class="mono">j</span> is "yot", <span class="mono">v</span> is "fow", <span class="mono">w</span> is "veh".</li>
+    </ul>
+    <div class="alpha-grid">
+      <div class="letter-card"><div class="l">A</div><div class="p">ah</div></div>
+      <div class="letter-card"><div class="l">B</div><div class="p">beh</div></div>
+      <div class="letter-card"><div class="l">C</div><div class="p">tseh</div></div>
+      <div class="letter-card"><div class="l">D</div><div class="p">deh</div></div>
+      <div class="letter-card"><div class="l">E</div><div class="p">eh</div></div>
+      <div class="letter-card"><div class="l">F</div><div class="p">eff</div></div>
+      <div class="letter-card"><div class="l">G</div><div class="p">geh</div></div>
+      <div class="letter-card"><div class="l">H</div><div class="p">hah</div></div>
+      <div class="letter-card"><div class="l">I</div><div class="p">ee</div></div>
+      <div class="letter-card"><div class="l">J</div><div class="p">yot</div></div>
+      <div class="letter-card"><div class="l">K</div><div class="p">kah</div></div>
+      <div class="letter-card"><div class="l">L</div><div class="p">ell</div></div>
+      <div class="letter-card"><div class="l">M</div><div class="p">emm</div></div>
+      <div class="letter-card"><div class="l">N</div><div class="p">enn</div></div>
+      <div class="letter-card"><div class="l">O</div><div class="p">oh</div></div>
+      <div class="letter-card"><div class="l">P</div><div class="p">peh</div></div>
+      <div class="letter-card"><div class="l">Q</div><div class="p">koo</div></div>
+      <div class="letter-card"><div class="l">R</div><div class="p">air</div></div>
+      <div class="letter-card"><div class="l">S</div><div class="p">ess</div></div>
+      <div class="letter-card"><div class="l">T</div><div class="p">teh</div></div>
+      <div class="letter-card"><div class="l">U</div><div class="p">oo</div></div>
+      <div class="letter-card"><div class="l">V</div><div class="p">fow</div></div>
+      <div class="letter-card"><div class="l">W</div><div class="p">veh</div></div>
+      <div class="letter-card"><div class="l">X</div><div class="p">iks</div></div>
+      <div class="letter-card"><div class="l">Y</div><div class="p">üpsilon</div></div>
+      <div class="letter-card"><div class="l">Z</div><div class="p">tsett</div></div>
+      <div class="letter-card"><div class="l">Ä</div><div class="p">äh</div></div>
+      <div class="letter-card"><div class="l">Ö</div><div class="p">öh</div></div>
+      <div class="letter-card"><div class="l">Ü</div><div class="p">üh</div></div>
+      <div class="letter-card"><div class="l">ß</div><div class="p">Eszett</div></div>
+    </div>
+    <div id="ex-alphabet"></div>
+  </section>
+
+  <!-- 2. GREETINGS -->
+  <section id="s2">
+    <div class="sec-head"><span class="n">2</span><h2>Greetings & Farewells</h2></div>
+    <ul class="rule-list">
+      <li><span class="mono">Hallo</span> and <span class="mono">Guten Tag</span> both work any time of day — Hallo is casual, Guten Tag is neutral/polite.</li>
+      <li>Time-specific greetings: <span class="mono">Guten Morgen</span> (morning), <span class="mono">Guten Abend</span> (evening).</li>
+      <li><span class="mono">Tschüss</span> is the casual goodbye; <span class="mono">Auf Wiedersehen</span> is the formal one.</li>
+    </ul>
+    <div class="examples">
+      <div class="ex"><span class="de">Guten Morgen!</span><span class="en">Good morning!</span></div>
+      <div class="ex"><span class="de">Guten Tag!</span><span class="en">Good day / Hello!</span></div>
+      <div class="ex"><span class="de">Guten Abend!</span><span class="en">Good evening!</span></div>
+      <div class="ex"><span class="de">Tschüss! / Auf Wiedersehen!</span><span class="en">Bye! / Goodbye! (formal)</span></div>
+    </div>
+    <div id="ex-greetings"></div>
+  </section>
+
+  <!-- 3. NAME -->
+  <section id="s3">
+    <div class="sec-head"><span class="n">3</span><h2>Saying Your Name</h2></div>
+    <ul class="rule-list">
+      <li><span class="mono">Wie heißt du?</span> (informal) / <span class="mono">Wie heißen Sie?</span> (formal) — "What's your name?"</li>
+      <li>Answer with <span class="mono">Ich heiße...</span> or the shorter <span class="mono">Ich bin...</span>.</li>
+    </ul>
+    <div class="examples">
+      <div class="ex"><span class="de">Wie heißt du?</span><span class="en">What's your name? (informal)</span></div>
+      <div class="ex"><span class="de">Ich heiße Ali.</span><span class="en">My name is Ali.</span></div>
+      <div class="ex"><span class="de">Wie heißen Sie?</span><span class="en">What's your name? (formal)</span></div>
+      <div class="ex"><span class="de">Ich bin Frau Schmidt.</span><span class="en">I'm Mrs. Schmidt.</span></div>
+    </div>
+    <div id="ex-name"></div>
+  </section>
+
+  <!-- 4. ORIGIN -->
+  <section id="s4">
+    <div class="sec-head"><span class="n">4</span><h2>Saying Where You're From</h2></div>
+    <ul class="rule-list">
+      <li><span class="mono">Woher kommst du?</span> — "Where do you come from?"</li>
+      <li>Answer: <span class="mono">Ich komme aus...</span> + country/city (aus takes dative, but country names don't usually change at A1).</li>
+    </ul>
+    <div class="examples">
+      <div class="ex"><span class="de">Woher kommst du?</span><span class="en">Where are you from?</span></div>
+      <div class="ex"><span class="de">Ich komme aus Pakistan.</span><span class="en">I come from Pakistan.</span></div>
+      <div class="ex"><span class="de">Woher kommt sie?</span><span class="en">Where does she come from?</span></div>
+      <div class="ex"><span class="de">Sie kommt aus Deutschland.</span><span class="en">She comes from Germany.</span></div>
+    </div>
+    <div id="ex-origin"></div>
+  </section>
+
+  <!-- 5. RESIDENCE -->
+  <section id="s5">
+    <div class="sec-head"><span class="n">5</span><h2>Saying Where You Live</h2></div>
+    <ul class="rule-list">
+      <li><span class="mono">Wo wohnst du?</span> — "Where do you live?"</li>
+      <li>Answer: <span class="mono">Ich wohne in...</span> + city.</li>
+      <li>Note the difference: <span class="mono">kommen aus</span> (origin) vs. <span class="mono">wohnen in</span> (current residence) — you can come from one place and live in another.</li>
+    </ul>
+    <div class="examples">
+      <div class="ex"><span class="de">Wo wohnst du?</span><span class="en">Where do you live?</span></div>
+      <div class="ex"><span class="de">Ich wohne in Sargodha.</span><span class="en">I live in Sargodha.</span></div>
+      <div class="ex"><span class="de">Wohnst du in Lahore?</span><span class="en">Do you live in Lahore?</span></div>
+      <div class="ex"><span class="de">Nein, ich wohne in Sargodha.</span><span class="en">No, I live in Sargodha.</span></div>
+    </div>
+    <div id="ex-residence"></div>
+  </section>
+
+  <!-- 6. WELLBEING -->
+  <section id="s6">
+    <div class="sec-head"><span class="n">6</span><h2>Asking & Telling Wellbeing</h2></div>
+    <ul class="rule-list">
+      <li><span class="mono">Wie geht es dir?</span> (informal) / <span class="mono">Wie geht es Ihnen?</span> (formal) — "How are you?"</li>
+      <li>This structure uses dative <span class="mono">dir/Ihnen</span> — literally "how goes it to you".</li>
+      <li>Common answers: <span class="mono">Mir geht es gut/schlecht.</span>, or simply <span class="mono">Gut, danke.</span> / <span class="mono">Und dir?</span> to ask back.</li>
+    </ul>
+    <div class="examples">
+      <div class="ex"><span class="de">Wie geht es dir?</span><span class="en">How are you? (informal)</span></div>
+      <div class="ex"><span class="de">Mir geht es gut, danke.</span><span class="en">I'm doing well, thanks.</span></div>
+      <div class="ex"><span class="de">Und dir?</span><span class="en">And you?</span></div>
+      <div class="ex"><span class="de">Mir geht es nicht so gut.</span><span class="en">I'm not doing so well.</span></div>
+    </div>
+    <div id="ex-wellbeing"></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz-section">
+    <div class="sec-head"><span class="n">Q</span><h2>Short Quiz</h2></div>
+    <p class="sub" style="margin-bottom:20px;">Eight questions covering everything above.</p>
+    <div id="day-quiz"></div>
+    <button class="submit-btn" id="submit-quiz">Submit quiz</button>
+    <div id="quiz-result"><h3 id="quiz-score"></h3><p id="quiz-msg"></p></div>
+  </section>
+
+  <footer>German Basics Practice · Alphabet, greetings, name, origin, residence, wellbeing</footer>
+</main>
+
+<script>
+function renderExerciseList(containerId, list, prefix){
+  const html = list.map((ex,i)=>`
+    <div class="ex-item">
+      <div class="prompt">${i+1}. ${ex.prompt}${ex.note ? ` <span class="hint">(${ex.note})</span>` : ''}</div>
+      <input type="text" id="${prefix}-ans-${i}" autocomplete="off" spellcheck="false" placeholder="type here" aria-label="Answer ${i+1}">
+      <button class="check-btn" data-prefix="${prefix}" data-i="${i}">Check</button>
+      <div class="feedback" id="${prefix}-fb-${i}" role="status"></div>
+    </div>
+  `).join('');
+  const el = document.getElementById(containerId);
+  el.innerHTML = html;
+  el.querySelectorAll('.check-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const i = btn.dataset.i;
+      const p = btn.dataset.prefix;
+      const input = document.getElementById(`${p}-ans-${i}`);
+      const fb = document.getElementById(`${p}-fb-${i}`);
+      const given = input.value.trim().toLowerCase().replace(/[.!?]/g,'');
+      const correct = list[i].answer.toLowerCase().replace(/[.!?]/g,'');
+      if(given === correct){ fb.textContent = '✓ Correct.'; fb.className = 'feedback correct'; }
+      else{ fb.textContent = given === '' ? `No answer — correct: "${list[i].answer}"` : `Not quite — correct: "${list[i].answer}"`; fb.className = 'feedback wrong'; }
+    });
+  });
+}
+
+renderExerciseList('ex-alphabet', [
+  {prompt:"How do you say the letter 'W' in German?", answer:"veh"},
+  {prompt:"Which special letter sounds like a sharp 's' and looks like 'ß'?", answer:"Eszett"},
+  {prompt:"Spell 'Ali' out loud style — write it as: A-L-I → in German you'd say 'ah-ell-...'. What's the third letter's name?", answer:"ee", note:"I = ee"},
+  {prompt:"Name one of the three umlaut letters (ä, ö, or ü).", answer:"ä", note:"ä, ö, or ü all accepted — check manually if you typed a different one"}
+], 'alpha');
+
+renderExerciseList('ex-greetings', [
+  {prompt:"Greet someone in the morning: ___!", answer:"Guten Morgen"},
+  {prompt:"Greet someone in the evening: ___!", answer:"Guten Abend"},
+  {prompt:"Casual goodbye: ___!", answer:"Tschüss"},
+  {prompt:"Formal goodbye: ___!", answer:"Auf Wiedersehen"}
+], 'greet');
+
+renderExerciseList('ex-name', [
+  {prompt:"Ask a friend their name (informal): ___?", answer:"Wie heißt du"},
+  {prompt:"Answer: My name is Sara. ___.", answer:"Ich heiße Sara"},
+  {prompt:"Ask formally: ___?", answer:"Wie heißen Sie"},
+  {prompt:"Say: I am Mr. Ahmed. ___.", answer:"Ich bin Herr Ahmed"}
+], 'name');
+
+renderExerciseList('ex-origin', [
+  {prompt:"Ask where someone is from: ___?", answer:"Woher kommst du"},
+  {prompt:"Answer: I come from Pakistan. ___.", answer:"Ich komme aus Pakistan"},
+  {prompt:"Say: She comes from Germany. ___.", answer:"Sie kommt aus Deutschland"},
+  {prompt:"Say: We come from Sargodha. ___.", answer:"Wir kommen aus Sargodha"}
+], 'origin');
+
+renderExerciseList('ex-residence', [
+  {prompt:"Ask where someone lives: ___?", answer:"Wo wohnst du"},
+  {prompt:"Answer: I live in Sargodha. ___.", answer:"Ich wohne in Sargodha"},
+  {prompt:"Say: He lives in Lahore. ___.", answer:"Er wohnt in Lahore"},
+  {prompt:"Say: We live in Berlin. ___.", answer:"Wir wohnen in Berlin"}
+], 'resid');
+
+renderExerciseList('ex-wellbeing', [
+  {prompt:"Ask a friend how they're doing: ___?", answer:"Wie geht es dir"},
+  {prompt:"Answer: I'm doing well, thanks. ___.", answer:"Mir geht es gut, danke"},
+  {prompt:"Ask formally: ___?", answer:"Wie geht es Ihnen"},
+  {prompt:"Say: I'm not doing so well. ___.", answer:"Mir geht es nicht so gut"}
+], 'well');
+
+const quiz = [
+  {q:"Which letter is 'yot' in German?", opts:["Y","J","G","I"], correct:1},
+  {q:"'Guten Tag' can be used...", opts:["only in the morning","only in the evening","any time of day","only when saying goodbye"], correct:2},
+  {q:"Formal way to say goodbye:", opts:["Tschüss","Hallo","Auf Wiedersehen","Guten Tag"], correct:2},
+  {q:"'Wie heißt du?' means:", opts:["How are you?","What's your name?","Where are you from?","Where do you live?"], correct:1},
+  {q:"Correct answer to 'Woher kommst du?':", opts:["Ich wohne in Lahore.","Ich heiße Ali.","Ich komme aus Pakistan.","Mir geht es gut."], correct:2},
+  {q:"'Ich wohne in...' is used to say:", opts:["your name","your origin","your current residence","how you feel"], correct:2},
+  {q:"'Wie geht es dir?' uses which pronoun case?", opts:["nominative","accusative","dative","genitive"], correct:2},
+  {q:"A natural reply to 'Wie geht es dir?':", opts:["Ich komme aus Pakistan.","Mir geht es gut, danke.","Ich heiße Sara.","Auf Wiedersehen."], correct:1}
+];
+
+const quizList = document.getElementById('day-quiz');
+quiz.forEach((item, qi)=>{
+  const div = document.createElement('div');
+  div.className = 'quiz-item';
+  const opts = item.opts.map((o,oi)=>`
+    <label class="opt" data-qi="${qi}" data-oi="${oi}">
+      <input type="radio" name="q${qi}" value="${oi}">${o}
+    </label>`).join('');
+  div.innerHTML = `<div class="q"><span class="num">${qi+1}</span>${item.q}</div><div class="opts">${opts}</div>`;
+  quizList.appendChild(div);
+});
+
+document.getElementById('submit-quiz').addEventListener('click', ()=>{
+  let score = 0;
+  quiz.forEach((item, qi)=>{
+    const selected = document.querySelector(`input[name="q${qi}"]:checked`);
+    const selIndex = selected ? parseInt(selected.value) : -1;
+    if(selIndex === item.correct) score++;
+    document.querySelectorAll(`label[data-qi="${qi}"]`).forEach(lbl=>{
+      const oi = parseInt(lbl.dataset.oi);
+      lbl.classList.add('locked');
+      if(oi === item.correct) lbl.classList.add('right');
+      else if(oi === selIndex) lbl.classList.add('wrong-pick');
+      lbl.querySelector('input').disabled = true;
+    });
+  });
+  const result = document.getElementById('quiz-result');
+  document.getElementById('quiz-score').textContent = `${score} / ${quiz.length}`;
+  document.getElementById('quiz-msg').textContent = score === quiz.length
+    ? 'Perfect — this foundation is solid. Ready to move to Präsens verb conjugation next.'
+    : score >= 6
+    ? 'Solid grasp. Review the missed item(s) above, then move on.'
+    : 'Worth another pass through the sections above before continuing.';
+  result.classList.add('show');
+  document.getElementById('submit-quiz').disabled = true;
+  result.scrollIntoView({behavior:'smooth', block:'center'});
+});
+</script>
+</body>
+</html>
