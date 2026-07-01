@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full A1 German Course — 2 Hours/Day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A4A; --parchment:#F6F1E7; --gold:#C9A227; --brick:#A23B2E;
+    --sage:#4F7359; --line:#DDD3BE; --ink-soft:#3F4F6E; --card:#FFFDF8; --teal:#2F6B6B;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--parchment); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55;}
+  h1,h2,h3{font-family:'Fraunces',serif; margin:0; color:var(--ink); letter-spacing:-0.01em;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  p{margin:0 0 12px;}
+
+  .shell{display:grid; grid-template-columns:260px minmax(0,1fr); max-width:1180px; margin:0 auto; min-height:100vh;}
+  @media (max-width:900px){.shell{grid-template-columns:1fr;} .rail{position:static !important; height:auto !important; border-right:none !important; border-bottom:1px solid var(--line);}}
+
+  .rail{position:sticky; top:0; height:100vh; overflow-y:auto; padding:28px 0; border-right:1px solid var(--line); background:var(--card);}
+  .rail-head{padding:0 24px 18px; border-bottom:1px solid var(--line); margin-bottom:8px;}
+  .rail-head .eyebrow{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--brick);}
+  .rail-head h1{font-size:20px; margin-top:6px;}
+  .progress-note{font-size:12px; color:var(--ink-soft); margin-top:6px;}
+  .day-btn{display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:none; border:none; padding:10px 24px; cursor:pointer; font-family:'Inter',sans-serif; font-size:13.5px; color:var(--ink-soft); border-left:3px solid transparent;}
+  .day-btn:hover{background:rgba(27,42,74,0.04);}
+  .day-btn.active{background:rgba(201,162,39,0.1); border-left-color:var(--gold); color:var(--ink); font-weight:600;}
+  .day-btn .num{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--brick); min-width:34px;}
+  .day-btn .check{margin-left:auto; color:var(--sage); font-size:13px; opacity:0;}
+  .day-btn.done .check{opacity:1;}
+
+  main{padding:48px 56px;}
+  @media (max-width:600px){main{padding:32px 20px;}}
+  .top{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:10px; margin-bottom:6px;}
+  .eyebrow{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--brick);}
+  .nav-arrows{display:flex; gap:8px;}
+  .nav-arrows button{font-family:'Inter',sans-serif; font-size:13px; font-weight:600; background:var(--ink); color:#fff; border:none; padding:7px 14px; border-radius:6px; cursor:pointer;}
+  .nav-arrows button:disabled{opacity:.35; cursor:default;}
+  .nav-arrows button:hover:not(:disabled){background:var(--ink-soft);}
+
+  h2.title{font-size:clamp(24px,3vw,32px); font-weight:600; margin:8px 0 6px;}
+  .focus{color:var(--ink-soft); font-size:15px; max-width:62ch; margin-bottom:18px;}
+
+  .schedule-strip{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:34px;}
+  .schedule-strip span{font-family:'JetBrains Mono',monospace; font-size:11.5px; background:var(--card); border:1px solid var(--line); padding:5px 10px; border-radius:20px; color:var(--ink-soft);}
+  .schedule-strip span b{color:var(--ink);}
+
+  .block{margin-bottom:36px; padding-top:6px;}
+  .block-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  .block-head h3{font-size:16px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); font-family:'Inter',sans-serif; font-weight:700;}
+  .block-head .mins{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--brick); background:rgba(162,59,46,.08); padding:2px 8px; border-radius:4px;}
+
+  .rule-list{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px;}
+  .rule-list li{display:flex; gap:10px; align-items:flex-start; font-size:15px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 14px;}
+  .rule-list li::before{content:"§"; color:var(--gold); font-weight:700; font-family:'JetBrains Mono',monospace;}
+
+  .examples{display:flex; flex-direction:column; gap:9px;}
+  .ex{display:flex; gap:14px; align-items:baseline; padding:10px 16px; background:var(--card); border:1px solid var(--line); border-radius:8px; font-family:'JetBrains Mono',monospace; font-size:14.5px; flex-wrap:wrap;}
+  .ex .de{flex:1; min-width:200px;}
+  .ex .en{color:var(--ink-soft); font-family:'Inter',sans-serif; font-size:13px; font-style:italic;}
+
+  .vocab-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; margin-bottom:18px;}
+  .vocab-card{background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 14px;}
+  .vocab-card .de{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:14.5px;}
+  .vocab-card .en{color:var(--ink-soft); font-size:12.5px; margin-top:2px;}
+
+  .passage{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; font-size:15.5px; margin-bottom:16px;}
+  .passage .ptitle{font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--brick); margin-bottom:8px;}
+
+  .script-line{display:flex; gap:10px; padding:7px 0; border-bottom:1px dashed var(--line); font-family:'JetBrains Mono',monospace; font-size:14.5px;}
+  .script-line:last-child{border-bottom:none;}
+  .script-line .speaker{color:var(--teal); font-weight:700; min-width:18px;}
+
+  .note-box{font-size:12.5px; color:var(--ink-soft); background:rgba(47,107,107,0.08); border:1px solid rgba(47,107,107,0.25); border-radius:8px; padding:10px 14px; margin-bottom:14px;}
+
+  .speaking-list{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px;}
+  .speaking-list li{display:flex; gap:10px; align-items:flex-start; font-size:15px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 14px;}
+  .speaking-list li::before{content:"🗣"; flex-shrink:0;}
+
+  .ex-item{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:12px;}
+  .ex-item .prompt{font-family:'JetBrains Mono',monospace; font-size:15px; margin-bottom:9px;}
+  .ex-item .prompt .hint{color:var(--ink-soft); font-size:12.5px; font-family:'Inter',sans-serif;}
+  .ex-item input[type=text]{font-family:'JetBrains Mono',monospace; font-size:14.5px; padding:7px 10px; width:180px; border:1.5px solid var(--line); border-radius:6px; background:#fff; color:var(--ink);}
+  .ex-item input[type=text]:focus-visible{outline:3px solid rgba(201,162,39,.4); border-color:var(--gold);}
+  .feedback{margin-top:7px; font-size:13px; min-height:18px; font-weight:600;}
+  .feedback.correct{color:var(--sage);}
+  .feedback.wrong{color:var(--brick);}
+  .check-btn, .submit-btn{font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px; color:#fff; background:var(--ink); border:none; padding:8px 16px; border-radius:7px; cursor:pointer;}
+  .check-btn:hover, .submit-btn:hover{background:var(--ink-soft);}
+
+  .quiz-item{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px; margin-bottom:14px;}
+  .quiz-item .q{font-weight:600; margin-bottom:11px; font-size:15px;}
+  .quiz-item .q .num{color:var(--brick); font-family:'JetBrains Mono',monospace; margin-right:8px;}
+  .opts{display:flex; flex-direction:column; gap:7px;}
+  .opt{display:flex; align-items:center; gap:10px; padding:8px 12px; border:1.5px solid var(--line); border-radius:7px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:14px;}
+  .opt:hover{border-color:var(--gold);}
+  .opt input{accent-color:var(--ink);}
+  .opt.locked.right{border-color:var(--sage); background:rgba(79,115,89,0.08);}
+  .opt.locked.wrong-pick{border-color:var(--brick); background:rgba(162,59,46,0.08);}
+
+  #quiz-result{margin-top:18px; padding:18px 20px; border-radius:10px; background:var(--ink); color:#fff; display:none;}
+  #quiz-result.show{display:block;}
+  #quiz-result h3{color:#fff; font-size:19px; margin-bottom:5px;}
+  #quiz-result p{color:#E7E0D2; margin-bottom:0;}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="rail" id="rail" aria-label="20-day course outline">
+    <div class="rail-head">
+      <div class="eyebrow">Full A1 German</div>
+      <h1>35-Day Course</h1>
+      <p class="progress-note">2 hrs/day · grammar + vocab + reading + listening + speaking</p>
+    </div>
+    <div id="day-list"></div>
+  </nav>
+
+  <main>
+    <div class="top">
+      <span class="eyebrow" id="day-eyebrow"></span>
+      <div class="nav-arrows">
+        <button id="prev-btn">&larr; Prev</button>
+        <button id="next-btn">Next &rarr;</button>
+      </div>
+    </div>
+    <h2 class="title" id="day-title"></h2>
+    <p class="focus" id="day-focus"></p>
+    <div class="schedule-strip">
+      <span><b>0:00</b> Vocab preview</span>
+      <span><b>0:10</b> Grammar</span>
+      <span><b>0:40</b> Vocabulary</span>
+      <span><b>1:00</b> Reading</span>
+      <span><b>1:25</b> Listening</span>
+      <span><b>1:45</b> Speaking</span>
+      <span><b>1:55</b> Quiz</span>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>Grammar</h3><span class="mins">30 min</span></div>
+      <div id="day-rule"></div>
+      <div class="examples" id="day-examples" style="margin-top:14px;"></div>
+      <div id="day-grammar-ex" style="margin-top:16px;"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>Vocabulary</h3><span class="mins">20 min</span></div>
+      <div class="vocab-grid" id="day-vocab"></div>
+      <div id="day-vocab-ex"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>Reading</h3><span class="mins">25 min</span></div>
+      <div class="passage" id="day-reading"></div>
+      <div id="day-reading-ex"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>Listening</h3><span class="mins">20 min</span></div>
+      <div class="note-box">Text-based listening script — no audio yet. Read it aloud, have a partner read it, or paste it into a text-to-speech app for real listening practice.</div>
+      <div class="passage" id="day-listening"></div>
+      <div id="day-listening-ex"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>Speaking</h3><span class="mins">10 min</span></div>
+      <ul class="speaking-list" id="day-speaking"></ul>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>Quiz</h3><span class="mins">5 min</span></div>
+      <div id="day-quiz"></div>
+      <button class="submit-btn" id="submit-quiz">Submit quiz</button>
+      <div id="quiz-result"><h3 id="quiz-score"></h3><p id="quiz-msg"></p></div>
+    </div>
+  </main>
+</div>
+
+<script>
+const days = [
+{day:1, title:"Präsens: regular verbs, sein, haben", focus:"Stem + ending is the base pattern of every German verb.",
+ rule:["Drop <span class='mono'>-en</span> from the infinitive to get the stem: <span class='mono'>lernen</span> → <span class='mono'>lern-</span>.",
+   "Endings: ich <span class='mono'>-e</span>, du <span class='mono'>-st</span>, er/sie/es <span class='mono'>-t</span>, wir <span class='mono'>-en</span>, ihr <span class='mono'>-t</span>, sie/Sie <span class='mono'>-en</span>.",
+   "<span class='mono'>sein</span> and <span class='mono'>haben</span> are irregular — memorize as whole words."],
+ examples:[{de:"Ich lerne Deutsch.",en:"I'm learning German."},{de:"Du kommst aus Pakistan.",en:"You come from Pakistan."},{de:"Er ist Student.",en:"He is a student."},{de:"Wir haben Zeit.",en:"We have time."}],
+ grammarEx:[{prompt:"Ich ___ (wohnen) in Lahore.",answer:"wohne",note:"ich: -e"},{prompt:"Du ___ (arbeiten) viel.",answer:"arbeitest",note:"du: -est after t/d"},{prompt:"Sie (she) ___ (sein) Lehrerin.",answer:"ist",note:"irregular"},{prompt:"Wir ___ (haben) ein Auto.",answer:"haben",note:"wir: -en"}],
+ vocab:[{de:"lernen",en:"to learn"},{de:"arbeiten",en:"to work"},{de:"wohnen",en:"to live/reside"},{de:"kommen",en:"to come"},{de:"spielen",en:"to play"},{de:"machen",en:"to do/make"}],
+ vocabEx:[{prompt:"Translate: to learn",answer:"lernen"},{prompt:"Translate: to work",answer:"arbeiten"},{prompt:"Translate: to live (reside)",answer:"wohnen"},{prompt:"Translate: to play",answer:"spielen"}],
+ reading:{title:"Ali stellt sich vor", text:"Ich heiße Ali. Ich komme aus Pakistan und wohne jetzt in Sargodha. Ich arbeite bei einer Firma und lerne jeden Tag Deutsch. Am Wochenende spiele ich manchmal Fußball.",
+   questions:[{prompt:"Wo wohnt Ali?",answer:"Sargodha",note:"short answer"},{prompt:"Was macht er jeden Tag?",answer:"Deutsch lernen",note:"short answer"}]},
+ listening:{title:"Kennenlernen", script:[{s:"A",l:"Hallo! Wie heißt du?"},{s:"B",l:"Ich heiße Sara. Und du?"},{s:"A",l:"Ich heiße Tom. Woher kommst du?"},{s:"B",l:"Ich komme aus Berlin."}],
+   blanks:[{prompt:"Wie ___ du?",answer:"heißt"},{prompt:"Woher ___ du?",answer:"kommst"},{prompt:"Ich ___ aus Berlin.",answer:"komme"}]},
+ speaking:["Stell dich vor: Sag deinen Namen, woher du kommst, und was du lernst.","Beschreibe einen Freund: Wie heißt er/sie? Woher kommt er/sie?","Sag drei Sätze über deinen Tag (Ich arbeite..., Ich lerne..., Ich spiele...)."],
+ quiz:[{q:"Ich ___ Ali.",opts:["bin","bist","ist","sind"],correct:0},{q:"Wir ___ aus Pakistan.",opts:["komme","kommst","kommen","kommt"],correct:2},{q:"Du ___ Deutsch.",opts:["lerne","lernst","lernt","lernen"],correct:1},{q:"\"To work\" auf Deutsch?",opts:["lernen","spielen","arbeiten","wohnen"],correct:2},{q:"\"To play\" auf Deutsch?",opts:["machen","spielen","kommen","sein"],correct:1}]},
+
+{day:2, title:"Stem-changing verbs", focus:"A small group of verbs change their vowel — but only in du and er/sie/es.",
+ rule:["e → i: <span class='mono'>sprechen</span> → du <span class='mono'>sprichst</span>, er <span class='mono'>spricht</span>.","e → ie: <span class='mono'>lesen</span> → du <span class='mono'>liest</span>, er <span class='mono'>liest</span>.","a → ä: <span class='mono'>fahren</span> → du <span class='mono'>fährst</span>, er <span class='mono'>fährt</span>.","ich, wir, ihr, sie/Sie keep the regular stem."],
+ examples:[{de:"Du sprichst gut Deutsch.",en:"You speak German well."},{de:"Er liest ein Buch.",en:"He reads a book."},{de:"Sie fährt nach Berlin.",en:"She is driving to Berlin."},{de:"Ich spreche Englisch.",en:"I speak English. (no change)"}],
+ grammarEx:[{prompt:"Du ___ (sprechen) gut Deutsch.",answer:"sprichst",note:"e→i"},{prompt:"Er ___ (lesen) die Zeitung.",answer:"liest",note:"e→ie"},{prompt:"Sie ___ (fahren) Auto.",answer:"fährt",note:"a→ä"},{prompt:"Ich ___ (sprechen) Urdu.",answer:"spreche",note:"no change"}],
+ vocab:[{de:"sprechen",en:"to speak"},{de:"lesen",en:"to read"},{de:"fahren",en:"to drive/go"},{de:"essen",en:"to eat"},{de:"sehen",en:"to see"},{de:"helfen",en:"to help"}],
+ vocabEx:[{prompt:"Translate: to speak",answer:"sprechen"},{prompt:"Translate: to read",answer:"lesen"},{prompt:"Translate: to eat",answer:"essen"},{prompt:"Translate: to help",answer:"helfen"}],
+ reading:{title:"Sein Tag", text:"Er liest jeden Morgen die Zeitung. Dann fährt er mit dem Bus zur Arbeit. Mittags isst er in einem Café. Abends spricht er mit seiner Familie am Telefon.",
+   questions:[{prompt:"Wie fährt er zur Arbeit?",answer:"mit dem Bus"},{prompt:"Wann isst er?",answer:"mittags"}]},
+ listening:{title:"Sprachen", script:[{s:"A",l:"Sprichst du Deutsch?"},{s:"B",l:"Ja, ein bisschen. Liest du auch Bücher auf Deutsch?"},{s:"A",l:"Ja, ich lese gern."}],
+   blanks:[{prompt:"___ du Deutsch?",answer:"Sprichst"},{prompt:"___ du auch Bücher?",answer:"Liest"},{prompt:"Ich ___ gern.",answer:"lese"}]},
+ speaking:["Beschreibe, was du jeden Tag isst.","Sag, wohin du fährst, wenn du zur Arbeit gehst.","Erkläre, welche Sprachen du sprichst."],
+ quiz:[{q:"Du ___ sehr schnell.",opts:["spreche","sprichst","spricht","sprechen"],correct:1},{q:"Er ___ jeden Tag ein Buch.",opts:["lese","liest","lesen","liest du"],correct:1},{q:"Wir ___ nach München.",opts:["fahren","fährst","fährt","fahrt"],correct:0},{q:"\"To see\" auf Deutsch?",opts:["sehen","lesen","essen","fahren"],correct:0},{q:"\"To help\" auf Deutsch?",opts:["sprechen","essen","helfen","sehen"],correct:2}]},
+
+{day:3, title:"Nominative case: der/die/das", focus:"Every noun has a grammatical gender — the article depends on it.",
+ rule:["Masculine: <span class='mono'>der</span>. Feminine: <span class='mono'>die</span>. Neuter: <span class='mono'>das</span>. Plural: <span class='mono'>die</span>.","Nominative marks the subject — the one doing the action.","Learn each noun together with its article."],
+ examples:[{de:"Der Mann lernt Deutsch.",en:"The man is learning German."},{de:"Die Frau kommt aus Pakistan.",en:"The woman comes from Pakistan."},{de:"Das Kind spielt.",en:"The child is playing."},{de:"Die Bücher sind neu.",en:"The books are new."}],
+ grammarEx:[{prompt:"___ Mann ist müde. (the)",answer:"der",note:"masc."},{prompt:"___ Frau arbeitet. (the)",answer:"die",note:"fem."},{prompt:"___ Kind lacht. (the)",answer:"das",note:"neuter"},{prompt:"___ Bücher sind alt. (the)",answer:"die",note:"plural"}],
+ vocab:[{de:"der Vater",en:"father"},{de:"die Mutter",en:"mother"},{de:"das Kind",en:"child"},{de:"der Bruder",en:"brother"},{de:"die Schwester",en:"sister"},{de:"die Familie",en:"family"}],
+ vocabEx:[{prompt:"Translate: father",answer:"der Vater"},{prompt:"Translate: mother",answer:"die Mutter"},{prompt:"Translate: brother",answer:"der Bruder"},{prompt:"Translate: sister",answer:"die Schwester"}],
+ reading:{title:"Meine Familie", text:"Das ist meine Familie. Der Vater heißt Ahmed, die Mutter heißt Fatima. Ich habe einen Bruder und eine Schwester. Die ganze Familie wohnt in Sargodha.",
+   questions:[{prompt:"Wie heißt der Vater?",answer:"Ahmed"},{prompt:"Wo wohnt die Familie?",answer:"in Sargodha"}]},
+ listening:{title:"Geschwister", script:[{s:"A",l:"Hast du Geschwister?"},{s:"B",l:"Ja, ich habe einen Bruder und eine Schwester."},{s:"A",l:"Wie heißt deine Schwester?"},{s:"B",l:"Sie heißt Aisha."}],
+   blanks:[{prompt:"Hast du ___?",answer:"Geschwister"},{prompt:"Wie heißt deine ___?",answer:"Schwester"}]},
+ speaking:["Beschreibe deine Familie: Wie viele Geschwister hast du?","Stelle ein Familienmitglied vor (Name, Beruf).","Sag, wer in deiner Familie Deutsch lernt."],
+ quiz:[{q:"___ Lehrer ist freundlich.",opts:["Der","Die","Das","Den"],correct:0},{q:"___ Schule ist groß.",opts:["Der","Die","Das","Dem"],correct:1},{q:"___ Auto ist neu.",opts:["Der","Die","Das","Dem"],correct:2},{q:"\"Sister\" auf Deutsch?",opts:["der Bruder","die Schwester","die Mutter","das Kind"],correct:1},{q:"\"Family\" auf Deutsch?",opts:["die Familie","der Vater","das Kind","die Mutter"],correct:0}]},
+
+{day:4, title:"Indefinite articles & kein", focus:"\"A/an\" and \"not a/no\" both change shape with gender.",
+ rule:["Indefinite: <span class='mono'>ein</span> (m/n), <span class='mono'>eine</span> (f). No plural form of ein.","Negate a noun with <span class='mono'>kein</span> (m/n), <span class='mono'>keine</span> (f/pl).","kein follows the same endings as ein."],
+ examples:[{de:"Das ist ein Buch.",en:"That's a book."},{de:"Das ist eine Lampe.",en:"That's a lamp."},{de:"Ich habe kein Auto.",en:"I don't have a car."},{de:"Wir haben keine Zeit.",en:"We have no time."}],
+ grammarEx:[{prompt:"Das ist ___ Tisch. (a)",answer:"ein",note:"masc."},{prompt:"Das ist ___ Tasche. (a)",answer:"eine",note:"fem."},{prompt:"Ich habe ___ Geld. (no)",answer:"kein",note:"neuter"},{prompt:"Sie hat ___ Bücher. (no)",answer:"keine",note:"plural"}],
+ vocab:[{de:"der Tisch",en:"table"},{de:"die Tasche",en:"bag"},{de:"das Buch",en:"book"},{de:"der Stift",en:"pen"},{de:"die Lampe",en:"lamp"},{de:"das Telefon",en:"telephone"}],
+ vocabEx:[{prompt:"Translate: table",answer:"der Tisch"},{prompt:"Translate: bag",answer:"die Tasche"},{prompt:"Translate: pen",answer:"der Stift"},{prompt:"Translate: lamp",answer:"die Lampe"}],
+ reading:{title:"Auf dem Tisch", text:"Auf dem Tisch liegt ein Buch und ein Stift. Ich habe keine Tasche hier, aber ich habe mein Telefon. Die Lampe ist kaputt.",
+   questions:[{prompt:"Was liegt auf dem Tisch?",answer:"ein Buch und ein Stift"},{prompt:"Was ist kaputt?",answer:"die Lampe"}]},
+ listening:{title:"Hast du einen Stift?", script:[{s:"A",l:"Hast du einen Stift?"},{s:"B",l:"Nein, ich habe keinen Stift. Hast du ein Buch?"},{s:"A",l:"Ja, hier ist ein Buch."}],
+   blanks:[{prompt:"Hast du einen ___?",answer:"Stift"},{prompt:"Ich habe ___ Stift.",answer:"keinen"},{prompt:"Hast du ein ___?",answer:"Buch"}]},
+ speaking:["Beschreibe deinen Schreibtisch: Was liegt darauf?","Sag, was du heute nicht hast (kein Auto, keine Zeit ...).","Frag einen Partner: Hast du ein...?"],
+ quiz:[{q:"Das ist ___ Apfel.",opts:["ein","eine","kein","keine"],correct:0},{q:"Ich habe ___ Schwester.",opts:["ein","eine","kein","keine"],correct:1},{q:"Wir haben ___ Hund.",opts:["ein","eine","kein","keine"],correct:2},{q:"\"Book\" auf Deutsch?",opts:["der Tisch","das Buch","die Lampe","der Stift"],correct:1},{q:"\"Bag\" auf Deutsch?",opts:["die Tasche","das Telefon","der Tisch","die Lampe"],correct:0}]},
+
+{day:5, title:"Accusative case", focus:"The direct object — only the masculine article changes.",
+ rule:["Masculine shifts: <span class='mono'>der → den</span>, <span class='mono'>ein → einen</span>. Feminine/neuter/plural stay the same as nominative.","Accusative pronouns: mich, dich, ihn, sie, es, uns, euch, sie.","Use accusative for the thing/person directly receiving the action."],
+ examples:[{de:"Ich sehe den Mann.",en:"I see the man."},{de:"Ich liebe die Frau.",en:"I love the woman."},{de:"Ich kaufe einen Apfel.",en:"I'm buying an apple."},{de:"Er sieht mich.",en:"He sees me."}],
+ grammarEx:[{prompt:"Ich sehe ___ Mann. (the)",answer:"den",note:"masc. acc."},{prompt:"Ich kaufe ___ Auto. (a)",answer:"ein",note:"neuter unchanged"},{prompt:"Sie liebt ___. (him)",answer:"ihn",note:"pronoun"},{prompt:"Wir sehen ___. (you, pl.)",answer:"euch",note:"pronoun"}],
+ vocab:[{de:"der Apfel",en:"apple"},{de:"das Brot",en:"bread"},{de:"die Suppe",en:"soup"},{de:"der Kaffee",en:"coffee"},{de:"der Tee",en:"tea"},{de:"das Wasser",en:"water"}],
+ vocabEx:[{prompt:"Translate: apple",answer:"der Apfel"},{prompt:"Translate: bread",answer:"das Brot"},{prompt:"Translate: soup",answer:"die Suppe"},{prompt:"Translate: water",answer:"das Wasser"}],
+ reading:{title:"Mein Essen", text:"Zum Frühstück esse ich Brot und einen Apfel. Ich trinke Kaffee, keinen Tee. Mittags esse ich oft Suppe. Abends trinke ich Wasser.",
+   questions:[{prompt:"Was trinkt er zum Frühstück?",answer:"Kaffee"},{prompt:"Was isst er mittags?",answer:"Suppe"}]},
+ listening:{title:"Im Café", script:[{s:"A",l:"Möchtest du einen Kaffee oder einen Tee?"},{s:"B",l:"Ich nehme einen Kaffee, bitte. Und ein Glas Wasser."},{s:"A",l:"Möchtest du auch einen Apfel?"},{s:"B",l:"Nein danke, ich esse keinen Apfel."}],
+   blanks:[{prompt:"Ich nehme einen ___.",answer:"Kaffee"},{prompt:"Ich esse ___ Apfel.",answer:"keinen"},{prompt:"Ein Glas ___.",answer:"Wasser"}]},
+ speaking:["Beschreibe dein Frühstück.","Bestelle etwas zu essen und zu trinken in einem Café.","Sag, was du nicht magst zu essen."],
+ quiz:[{q:"Ich trinke ___ Kaffee, keinen Tee.",opts:["der","den","einen","ein"],correct:2},{q:"Sie isst ___ Apfel.",opts:["ein","eine","einen","kein"],correct:2},{q:"Wir haben ___ Wasser.",opts:["kein","keine","keinen","keiner"],correct:0},{q:"\"Bread\" auf Deutsch?",opts:["das Brot","der Apfel","die Suppe","der Tee"],correct:0},{q:"\"Soup\" auf Deutsch?",opts:["der Kaffee","die Suppe","das Wasser","der Tee"],correct:1}]},
+
+{day:6, title:"Possessive articles", focus:"\"My, your, his...\" behave exactly like ein.",
+ rule:["mein (my), dein (your, informal), sein (his/its), ihr (her), unser (our), euer (your, pl.), ihr/Ihr (their/formal you).","They take ein-endings: no ending for masc./neuter nominative, <span class='mono'>-e</span> for feminine and plural."],
+ examples:[{de:"Das ist mein Buch.",en:"That's my book."},{de:"Wo ist deine Tasche?",en:"Where is your bag?"},{de:"Sein Auto ist neu.",en:"His car is new."},{de:"Unser Haus ist groß.",en:"Our house is big."}],
+ grammarEx:[{prompt:"Das ist ___ Handy. (my)",answer:"mein",note:"neuter"},{prompt:"___ Schwester ist nett. (your, informal)",answer:"deine",note:"fem."},{prompt:"___ Vater arbeitet viel. (his)",answer:"sein",note:"masc."},{prompt:"___ Kinder spielen. (our)",answer:"unsere",note:"plural"}],
+ vocab:[{de:"der Freund",en:"friend (m)"},{de:"die Freundin",en:"friend (f)"},{de:"der Kollege",en:"colleague (m)"},{de:"die Kollegin",en:"colleague (f)"},{de:"der Nachbar",en:"neighbor (m)"},{de:"die Nachbarin",en:"neighbor (f)"}],
+ vocabEx:[{prompt:"Translate: friend (m)",answer:"der Freund"},{prompt:"Translate: colleague (f)",answer:"die Kollegin"},{prompt:"Translate: neighbor (m)",answer:"der Nachbar"},{prompt:"Translate: friend (f)",answer:"die Freundin"}],
+ reading:{title:"Leute um mich", text:"Mein Freund heißt Hassan. Er ist mein Kollege bei der Arbeit. Meine Nachbarin heißt Frau Schmidt. Sie ist sehr freundlich.",
+   questions:[{prompt:"Wer ist Hassan?",answer:"mein Freund/Kollege"},{prompt:"Wie ist die Nachbarin?",answer:"freundlich"}]},
+ listening:{title:"Wer ist das?", script:[{s:"A",l:"Ist das dein Kollege?"},{s:"B",l:"Ja, das ist mein Kollege Hassan."},{s:"A",l:"Und wer ist deine Nachbarin?"},{s:"B",l:"Meine Nachbarin heißt Frau Schmidt."}],
+   blanks:[{prompt:"Ist das ___ Kollege?",answer:"dein"},{prompt:"Das ist ___ Kollege Hassan.",answer:"mein"},{prompt:"___ Nachbarin heißt Frau Schmidt.",answer:"Meine"}]},
+ speaking:["Stelle einen Freund oder eine Freundin vor.","Beschreibe deinen Kollegen/deine Kollegin bei der Arbeit.","Sag etwas über deinen Nachbarn/deine Nachbarin."],
+ quiz:[{q:"___ Mutter kommt heute. (her)",opts:["ihr","ihre","sein","seine"],correct:1},{q:"Ist das ___ Buch? (your, formal)",opts:["dein","deine","Ihr","Ihre"],correct:2},{q:"___ Auto ist kaputt. (my)",opts:["mein","meine","meinen","meiner"],correct:0},{q:"\"Colleague (m)\" auf Deutsch?",opts:["der Kollege","die Kollegin","der Nachbar","der Freund"],correct:0},{q:"\"Neighbor (f)\" auf Deutsch?",opts:["die Freundin","die Nachbarin","die Kollegin","die Familie"],correct:1}]},
+
+{day:7, title:"W-Questions", focus:"Question word in position 1, conjugated verb in position 2.",
+ rule:["Core words: wer (who), was (what), wo (where), wann (when), warum (why), wie (how), wie viel (how much).","Order: W-word → verb → subject → rest."],
+ examples:[{de:"Wer bist du?",en:"Who are you?"},{de:"Was machst du?",en:"What are you doing?"},{de:"Wo wohnst du?",en:"Where do you live?"},{de:"Wann kommst du?",en:"When are you coming?"}],
+ grammarEx:[{prompt:"___ heißt du? (how)",answer:"Wie",note:"asking name"},{prompt:"___ wohnst du? (where)",answer:"Wo",note:"location"},{prompt:"___ kommst du? (when)",answer:"Wann",note:"time"},{prompt:"___ ist das? (what)",answer:"Was",note:"thing"}],
+ vocab:[{de:"der Name",en:"name"},{de:"die Adresse",en:"address"},{de:"die Telefonnummer",en:"phone number"},{de:"das Alter",en:"age"},{de:"der Beruf",en:"profession"},{de:"die Stadt",en:"city"}],
+ vocabEx:[{prompt:"Translate: name",answer:"der Name"},{prompt:"Translate: address",answer:"die Adresse"},{prompt:"Translate: profession",answer:"der Beruf"},{prompt:"Translate: city",answer:"die Stadt"}],
+ reading:{title:"Persönliche Daten", text:"Mein Name ist Ali. Meine Adresse ist in Sargodha. Mein Beruf ist Entwickler. Ich bin 25 Jahre alt.",
+   questions:[{prompt:"Was ist sein Beruf?",answer:"Entwickler"},{prompt:"Wie alt ist er?",answer:"25 Jahre"}]},
+ listening:{title:"Vorstellung", script:[{s:"A",l:"Wie ist dein Name?"},{s:"B",l:"Mein Name ist Ali."},{s:"A",l:"Was ist dein Beruf?"},{s:"B",l:"Ich bin Entwickler."}],
+   blanks:[{prompt:"Wie ist dein ___?",answer:"Name"},{prompt:"Was ist dein ___?",answer:"Beruf"},{prompt:"Ich bin ___.",answer:"Entwickler"}]},
+ speaking:["Stell dich formell vor: Name, Alter, Beruf, Stadt.","Frag einen Partner nach seinem Namen und Beruf.","Buchstabiere deinen Namen auf Deutsch."],
+ quiz:[{q:"___ ist deine Telefonnummer?",opts:["Wer","Was","Wo","Wie"],correct:1},{q:"___ kommst du aus Pakistan? (why)",opts:["Warum","Wann","Wo","Wer"],correct:0},{q:"___ kostet das? (how much)",opts:["Wie","Wie viel","Was","Wo"],correct:1},{q:"\"Age\" auf Deutsch?",opts:["der Name","das Alter","die Stadt","der Beruf"],correct:1},{q:"\"City\" auf Deutsch?",opts:["die Adresse","die Stadt","der Name","das Alter"],correct:1}]},
+
+{day:8, title:"Yes/No questions & inversion", focus:"Move the conjugated verb to position 1 to flip a statement into a question.",
+ rule:["Statement: subject-verb-rest. Question: verb-subject-rest.","<span class='mono'>Du lernst Deutsch.</span> → <span class='mono'>Lernst du Deutsch?</span>"],
+ examples:[{de:"Lernst du Deutsch?",en:"Are you learning German?"},{de:"Kommt er aus Pakistan?",en:"Does he come from Pakistan?"},{de:"Hast du Zeit?",en:"Do you have time?"},{de:"Ist sie müde?",en:"Is she tired?"}],
+ grammarEx:[{prompt:"Convert to a question: Du bist müde.",answer:"Bist du müde?",note:"verb first"},{prompt:"Convert: Sie hat Zeit.",answer:"Hat sie Zeit?",note:"verb first"},{prompt:"Convert: Wir wohnen hier.",answer:"Wohnen wir hier?",note:"verb first"},{prompt:"Convert: Ihr spielt Fußball.",answer:"Spielt ihr Fußball?",note:"verb first"}],
+ vocab:[{de:"aufstehen",en:"to get up"},{de:"frühstücken",en:"to have breakfast"},{de:"einkaufen",en:"to shop"},{de:"kochen",en:"to cook"},{de:"schlafen",en:"to sleep"},{de:"fernsehen",en:"to watch TV"}],
+ vocabEx:[{prompt:"Translate: to get up",answer:"aufstehen"},{prompt:"Translate: to cook",answer:"kochen"},{prompt:"Translate: to sleep",answer:"schlafen"},{prompt:"Translate: to watch TV",answer:"fernsehen"}],
+ reading:{title:"Mein Tagesablauf", text:"Ich stehe um sieben Uhr auf. Dann frühstücke ich. Nachmittags gehe ich einkaufen. Abends koche ich und sehe fern.",
+   questions:[{prompt:"Wann steht er auf?",answer:"um sieben Uhr"},{prompt:"Was macht er abends?",answer:"kochen und fernsehen"}]},
+ listening:{title:"Tagesfragen", script:[{s:"A",l:"Stehst du früh auf?"},{s:"B",l:"Ja, ich stehe um sechs Uhr auf."},{s:"A",l:"Kochst du gern?"},{s:"B",l:"Ja, ich koche jeden Abend."}],
+   blanks:[{prompt:"___ du früh auf?",answer:"Stehst"},{prompt:"Ich stehe um sechs Uhr ___.",answer:"auf"},{prompt:"___ du gern?",answer:"Kochst"}]},
+ speaking:["Beschreibe deinen typischen Tag.","Frag einen Partner: Stehst du früh auf? Kochst du gern?","Sag drei Dinge, die du jeden Tag machst."],
+ quiz:[{q:"Statement: 'Er arbeitet viel.' Question?",opts:["Er arbeitet viel?","Arbeitet er viel?","Viel arbeitet er?","Arbeitet viel er?"],correct:1},{q:"Statement: 'Sie wohnen in Berlin.' Question?",opts:["Wohnen sie in Berlin?","Sie wohnen in Berlin?","In Berlin wohnen sie?","Wohnt sie in Berlin?"],correct:0},{q:"Statement: 'Du hast ein Auto.' Question?",opts:["Du hast ein Auto?","Hast du ein Auto?","Hast ein Auto du?","Ein Auto hast du?"],correct:1},{q:"\"To shop\" auf Deutsch?",opts:["einkaufen","kochen","schlafen","aufstehen"],correct:0},{q:"\"To sleep\" auf Deutsch?",opts:["fernsehen","schlafen","frühstücken","kochen"],correct:1}]},
+
+{day:9, title:"Modal verbs", focus:"Modal in position 2, main verb as infinitive at the very end.",
+ rule:["können (can), müssen (must), wollen (want to), dürfen (may), möchten (would like to).","können: ich kann, du kannst, er kann, wir können, ihr könnt, sie können.","Structure: modal conjugates, main verb stays infinitive at the end."],
+ examples:[{de:"Ich kann Deutsch sprechen.",en:"I can speak German."},{de:"Du musst arbeiten.",en:"You must work."},{de:"Wir wollen nach Deutschland gehen.",en:"We want to go to Germany."},{de:"Er möchte Kaffee trinken.",en:"He would like to drink coffee."}],
+ grammarEx:[{prompt:"Ich ___ (können) schwimmen.",answer:"kann",note:"irregular ich"},{prompt:"Du ___ (müssen) lernen.",answer:"musst",note:"irregular du"},{prompt:"Wir ___ (wollen) reisen.",answer:"wollen",note:"regular plural"},{prompt:"Sie (she) ___ (möchten) essen.",answer:"möchte",note:"irregular sg."}],
+ vocab:[{de:"können",en:"can / to be able to"},{de:"müssen",en:"must"},{de:"dürfen",en:"may / to be allowed"},{de:"wollen",en:"to want"},{de:"sollen",en:"should"},{de:"möchten",en:"would like"}],
+ vocabEx:[{prompt:"Translate: can/to be able to",answer:"können"},{prompt:"Translate: must",answer:"müssen"},{prompt:"Translate: may/to be allowed",answer:"dürfen"},{prompt:"Translate: to want",answer:"wollen"}],
+ reading:{title:"Pläne", text:"Ich kann Deutsch sprechen, aber ich muss noch viel lernen. Ich möchte nach Deutschland gehen. Dort darf man gut Englisch sprechen, aber ich will Deutsch üben.",
+   questions:[{prompt:"Was möchte er machen?",answer:"nach Deutschland gehen"},{prompt:"Was muss er noch tun?",answer:"viel lernen"}]},
+ listening:{title:"Um Hilfe bitten", script:[{s:"A",l:"Kannst du mir helfen?"},{s:"B",l:"Ja, ich kann dir helfen. Was musst du machen?"},{s:"A",l:"Ich muss eine E-Mail schreiben."}],
+   blanks:[{prompt:"___ du mir helfen?",answer:"Kannst"},{prompt:"Was ___ du machen?",answer:"musst"},{prompt:"Ich ___ eine E-Mail schreiben.",answer:"muss"}]},
+ speaking:["Sag drei Dinge, die du kannst.","Sag drei Dinge, die du diese Woche machen musst.","Sag, was du in Deutschland machen möchtest."],
+ quiz:[{q:"Er ___ heute nicht arbeiten.",opts:["kann","kannst","können","könnt"],correct:0},{q:"___ ich hier rauchen?",opts:["Darf","Darfst","Dürfen","Dürft"],correct:0},{q:"Wir ___ jetzt nach Hause gehen.",opts:["muss","musst","müssen","müsst"],correct:2},{q:"\"Should\" auf Deutsch?",opts:["sollen","wollen","können","müssen"],correct:0},{q:"\"Would like\" auf Deutsch?",opts:["möchten","dürfen","müssen","sollen"],correct:0}]},
+
+{day:10, title:"Imperative (commands)", focus:"Three command forms, one per audience: du, ihr, Sie.",
+ rule:["du-form: stem (+e optional) — <span class='mono'>Lern(e)!</span>","ihr-form: stem + t — <span class='mono'>Lernt!</span>","Sie-form: infinitive + Sie — <span class='mono'>Lernen Sie!</span>","sein is irregular: du → <span class='mono'>Sei!</span>, ihr → <span class='mono'>Seid!</span>"],
+ examples:[{de:"Lern(e) Deutsch!",en:"Learn German! (du)"},{de:"Lernt Deutsch!",en:"Learn German! (ihr)"},{de:"Lernen Sie Deutsch!",en:"Learn German! (Sie)"},{de:"Sei leise!",en:"Be quiet! (du, irregular)"}],
+ grammarEx:[{prompt:"(du, kommen) — command",answer:"Komm!",note:"or Komme!"},{prompt:"(ihr, warten) — command",answer:"Wartet!",note:"stem+t"},{prompt:"(Sie, sprechen langsam) — command",answer:"Sprechen Sie langsam!",note:"infinitive+Sie"},{prompt:"(du, sein leise) — command",answer:"Sei leise!",note:"irregular"}],
+ vocab:[{de:"öffnen",en:"to open"},{de:"schließen",en:"to close"},{de:"hören",en:"to listen"},{de:"schreiben",en:"to write"},{de:"wiederholen",en:"to repeat"},{de:"antworten",en:"to answer"}],
+ vocabEx:[{prompt:"Translate: to open",answer:"öffnen"},{prompt:"Translate: to close",answer:"schließen"},{prompt:"Translate: to listen",answer:"hören"},{prompt:"Translate: to answer",answer:"antworten"}],
+ reading:{title:"Im Deutschkurs", text:"Im Deutschkurs sagt der Lehrer: Öffnet die Bücher! Hört gut zu! Schreibt die Wörter! Wiederholt die Sätze!",
+   questions:[{prompt:"Was sagt der Lehrer zuerst?",answer:"Öffnet die Bücher"},{prompt:"Was sollen die Schüler wiederholen?",answer:"die Sätze"}]},
+ listening:{title:"Unterricht", script:[{s:"L",l:"Öffnet bitte die Bücher!"},{s:"S",l:"(öffnen die Bücher)"},{s:"L",l:"Hört gut zu und antwortet!"}],
+   blanks:[{prompt:"___ bitte die Bücher!",answer:"Öffnet"},{prompt:"Hört gut zu und ___!",answer:"antwortet"}]},
+ speaking:["Gib drei Kommandos auf Deutsch an einen Freund.","Gib drei höfliche Befehle mit 'Sie'.","Übe: Sei leise! Komm her! Warte!"],
+ quiz:[{q:"Befehl an einen Freund zu lesen: ___",opts:["Lesen!","Lies!","Liest!","Lest!"],correct:1},{q:"Befehl an eine Gruppe zu warten: ___",opts:["Wart!","Wartet!","Warten!","Warten Sie!"],correct:1},{q:"Höflicher Befehl, sich zu setzen: ___",opts:["Setz dich!","Setzt euch!","Setzen Sie sich!","Sitzen Sie!"],correct:2},{q:"\"To write\" auf Deutsch?",opts:["schreiben","schließen","hören","öffnen"],correct:0},{q:"\"To repeat\" auf Deutsch?",opts:["antworten","wiederholen","hören","schreiben"],correct:1}]},
+
+{day:11, title:"Dative case", focus:"The indirect object — who receives the thing, or who is helped/thanked.",
+ rule:["Articles: <span class='mono'>der→dem, die→der, das→dem, die(pl)→den</span> (+n on plural noun).","Pronouns: mir, dir, ihm, ihr, ihm, uns, euch, ihnen.","Common dative verbs: helfen, danken, gehören, gefallen."],
+ examples:[{de:"Ich gebe dem Mann das Buch.",en:"I give the man the book."},{de:"Ich helfe der Frau.",en:"I help the woman."},{de:"Er dankt mir.",en:"He thanks me."},{de:"Wir schreiben den Kindern.",en:"We write to the children."}],
+ grammarEx:[{prompt:"Ich gebe ___ Lehrer den Stift. (the, masc.)",answer:"dem",note:"dative masc."},{prompt:"Sie hilft ___ Frau. (the, fem.)",answer:"der",note:"dative fem."},{prompt:"Er schreibt ___ einen Brief. (to me)",answer:"mir",note:"pronoun"},{prompt:"Wir danken ___ Eltern. (the, plural)",answer:"den",note:"dative plural"}],
+ vocab:[{de:"geben",en:"to give"},{de:"zeigen",en:"to show"},{de:"schenken",en:"to gift"},{de:"danken",en:"to thank"},{de:"helfen",en:"to help"},{de:"gehören",en:"to belong"}],
+ vocabEx:[{prompt:"Translate: to give",answer:"geben"},{prompt:"Translate: to show",answer:"zeigen"},{prompt:"Translate: to thank",answer:"danken"},{prompt:"Translate: to belong",answer:"gehören"}],
+ reading:{title:"Geschenke", text:"Ich gebe meinem Bruder ein Geschenk. Er dankt mir. Das Buch gehört meiner Schwester. Ich zeige ihr den Weg zur Schule.",
+   questions:[{prompt:"Wem gibt er ein Geschenk?",answer:"seinem Bruder"},{prompt:"Wem gehört das Buch?",answer:"seiner Schwester"}]},
+ listening:{title:"Hilfe", script:[{s:"A",l:"Kannst du mir helfen?"},{s:"B",l:"Ja, ich helfe dir gern. Was brauchst du?"},{s:"A",l:"Kannst du mir den Weg zeigen?"}],
+   blanks:[{prompt:"Ich ___ dir gern.",answer:"helfe"},{prompt:"Kannst du mir den Weg ___?",answer:"zeigen"}]},
+ speaking:["Sag, wem du gestern geholfen hast.","Beschreibe ein Geschenk, das du jemandem gegeben hast.","Sag, wem etwas in deiner Familie gehört."],
+ quiz:[{q:"Das Buch gehört ___ Kind.",opts:["der","die","dem","das"],correct:2},{q:"Gefällt ___ der Film? (you, informal)",opts:["du","dich","dir","dein"],correct:2},{q:"Ich helfe ___ jeden Tag. (them)",opts:["sie","ihnen","ihr","ihm"],correct:1},{q:"\"To show\" auf Deutsch?",opts:["geben","zeigen","danken","schenken"],correct:1},{q:"\"To thank\" auf Deutsch?",opts:["danken","helfen","geben","gehören"],correct:0}]},
+
+{day:12, title:"Prepositions + accusative", focus:"Five prepositions always take the accusative case.",
+ rule:["durch (through), für (for), gegen (against), ohne (without), um (around/at) — mnemonic: DOGFU.","Whatever follows is automatically accusative — der becomes den, ein becomes einen."],
+ examples:[{de:"Das Geschenk ist für dich.",en:"The gift is for you."},{de:"Wir gehen durch den Park.",en:"We're walking through the park."},{de:"Ich bin gegen den Plan.",en:"I'm against the plan."},{de:"Er kommt ohne sein Auto.",en:"He's coming without his car."}],
+ grammarEx:[{prompt:"Das ist ___ dich. (for)",answer:"für",note:"+acc"},{prompt:"Wir laufen ___ den Wald. (through)",answer:"durch",note:"+acc"},{prompt:"Sie ist ___ den Vorschlag. (against)",answer:"gegen",note:"+acc"},{prompt:"Er kam ___ Geld. (without)",answer:"ohne",note:"+acc"}],
+ vocab:[{de:"für",en:"for"},{de:"durch",en:"through"},{de:"um",en:"around"},{de:"ohne",en:"without"},{de:"gegen",en:"against"},{de:"der Weg",en:"the way/path"}],
+ vocabEx:[{prompt:"Translate: for",answer:"für"},{prompt:"Translate: through",answer:"durch"},{prompt:"Translate: around",answer:"um"},{prompt:"Translate: without",answer:"ohne"}],
+ reading:{title:"Der Weg", text:"Der Weg zur Schule führt durch den Park. Ich gehe ohne meinen Bruder. Das Geschenk ist für meine Mutter.",
+   questions:[{prompt:"Wodurch führt der Weg?",answer:"durch den Park"},{prompt:"Für wen ist das Geschenk?",answer:"für die Mutter"}]},
+ listening:{title:"Wegbeschreibung", script:[{s:"A",l:"Wie komme ich zur Schule?"},{s:"B",l:"Geh durch den Park, dann um die Ecke."}],
+   blanks:[{prompt:"Geh ___ den Park.",answer:"durch"},{prompt:"dann ___ die Ecke.",answer:"um"}]},
+ speaking:["Beschreibe den Weg von deinem Haus zur Arbeit.","Sag, für wen du heute etwas tust.","Beschreibe, wogegen du bist (gegen + Akk.)."],
+ quiz:[{q:"Wir gehen ___ die Stadt. (around)",opts:["für","um","durch","ohne"],correct:1},{q:"Das ist ___ den Hund. (for)",opts:["für","gegen","um","ohne"],correct:0},{q:"Ich bin ___ diese Idee. (against)",opts:["für","gegen","ohne","um"],correct:1},{q:"\"The way/path\" auf Deutsch?",opts:["der Weg","die Stadt","der Park","die Ecke"],correct:0},{q:"\"Without\" auf Deutsch?",opts:["für","durch","ohne","gegen"],correct:2}]},
+
+{day:13, title:"Prepositions + dative", focus:"A set group of prepositions always take the dative case.",
+ rule:["aus (from), bei (at/near), mit (with), nach (after/to), seit (since), von (from/of), zu (to).","Whatever follows takes dative endings — der becomes dem, die becomes der."],
+ examples:[{de:"Ich komme aus Pakistan.",en:"I come from Pakistan."},{de:"Sie wohnt bei ihrer Familie.",en:"She lives with her family."},{de:"Wir fahren mit dem Bus.",en:"We're going by bus."},{de:"Er kommt nach der Arbeit.",en:"He's coming after work."}],
+ grammarEx:[{prompt:"Ich komme ___ Sargodha. (from)",answer:"aus",note:"+dat"},{prompt:"Er arbeitet ___ Zujax. (at)",answer:"bei",note:"+dat"},{prompt:"Wir fahren ___ dem Zug. (with)",answer:"mit",note:"+dat"},{prompt:"Sie wohnt ___ zwei Jahren hier. (since)",answer:"seit",note:"+dat"}],
+ vocab:[{de:"der Bus",en:"bus"},{de:"der Zug",en:"train"},{de:"das Auto",en:"car"},{de:"das Fahrrad",en:"bicycle"},{de:"der Bahnhof",en:"train station"},{de:"das Flugzeug",en:"airplane"}],
+ vocabEx:[{prompt:"Translate: bus",answer:"der Bus"},{prompt:"Translate: train",answer:"der Zug"},{prompt:"Translate: bicycle",answer:"das Fahrrad"},{prompt:"Translate: train station",answer:"der Bahnhof"}],
+ reading:{title:"Verkehrsmittel", text:"Ich fahre mit dem Bus zur Arbeit. Mein Bruder fährt mit dem Fahrrad. Am Wochenende fliegen wir mit dem Flugzeug nach Lahore.",
+   questions:[{prompt:"Womit fährt der Bruder?",answer:"mit dem Fahrrad"},{prompt:"Wohin fliegen sie?",answer:"nach Lahore"}]},
+ listening:{title:"Bus oder Zug", script:[{s:"A",l:"Fährst du mit dem Bus oder mit dem Zug?"},{s:"B",l:"Ich fahre mit dem Zug, er ist schneller."}],
+   blanks:[{prompt:"Fährst du mit dem ___ oder mit dem ___?",answer:"Bus"},{prompt:"Ich fahre mit dem ___.",answer:"Zug"}]},
+ speaking:["Beschreibe, wie du zur Arbeit kommst.","Sag, welches Verkehrsmittel du am liebsten magst.","Plane eine Reise: Womit fährst du?"],
+ quiz:[{q:"Ich gehe ___ der Schule nach Hause. (from)",opts:["aus","von","zu","bei"],correct:1},{q:"Wir fahren ___ Deutschland. (to)",opts:["nach","zu","aus","bei"],correct:0},{q:"Das Geschenk ist ___ meiner Mutter. (from)",opts:["aus","von","zu","seit"],correct:1},{q:"\"Bicycle\" auf Deutsch?",opts:["das Auto","das Fahrrad","der Zug","der Bus"],correct:1},{q:"\"Train station\" auf Deutsch?",opts:["der Bahnhof","das Flugzeug","der Zug","der Bus"],correct:0}]},
+
+{day:14, title:"Two-way prepositions", focus:"Nine prepositions switch case depending on movement vs. location.",
+ rule:["in, an, auf, über, unter, vor, hinter, neben, zwischen.","Movement (wohin?) → accusative: <span class='mono'>Ich gehe in die Schule.</span>","Location (wo?) → dative: <span class='mono'>Ich bin in der Schule.</span>"],
+ examples:[{de:"Ich gehe in die Schule.",en:"I'm going into the school. (movement)"},{de:"Ich bin in der Schule.",en:"I'm at school. (location)"},{de:"Das Buch liegt auf dem Tisch.",en:"The book is lying on the table. (location)"},{de:"Ich lege das Buch auf den Tisch.",en:"I'm putting the book on the table. (movement)"}],
+ grammarEx:[{prompt:"Ich stelle die Tasche ___ Tisch. (movement, the)",answer:"auf den",note:"acc."},{prompt:"Die Tasche steht ___ Tisch. (location, the)",answer:"auf dem",note:"dat."},{prompt:"Wir gehen ___ Park. (movement, the)",answer:"in den",note:"acc."},{prompt:"Wir sind ___ Park. (location, the)",answer:"in dem",note:"dat."}],
+ vocab:[{de:"der Tisch",en:"table"},{de:"der Schrank",en:"cabinet/closet"},{de:"die Wand",en:"wall"},{de:"das Regal",en:"shelf"},{de:"die Tür",en:"door"},{de:"das Fenster",en:"window"}],
+ vocabEx:[{prompt:"Translate: cabinet/closet",answer:"der Schrank"},{prompt:"Translate: wall",answer:"die Wand"},{prompt:"Translate: shelf",answer:"das Regal"},{prompt:"Translate: door",answer:"die Tür"}],
+ reading:{title:"Im Zimmer", text:"Das Buch liegt auf dem Tisch. Die Lampe hängt an der Wand. Im Regal stehen viele Bücher. Ich stelle die Tasche neben die Tür.",
+   questions:[{prompt:"Wo hängt die Lampe?",answer:"an der Wand"},{prompt:"Wo stehen die Bücher?",answer:"im Regal"}]},
+ listening:{title:"Wo ist mein Buch?", script:[{s:"A",l:"Wo ist mein Buch?"},{s:"B",l:"Es liegt auf dem Tisch, neben der Lampe."}],
+   blanks:[{prompt:"Es liegt ___ dem Tisch.",answer:"auf"},{prompt:"neben ___ Lampe.",answer:"der"}]},
+ speaking:["Beschreibe dein Zimmer: Was steht wo?","Sag, wo dein Telefon gerade liegt.","Beschreibe, wie du Möbel in deinem Zimmer stellst."],
+ quiz:[{q:"Die Lampe hängt ___ Tisch. (over, location)",opts:["über den","über dem","unter den","unter dem"],correct:1},{q:"Er hängt das Bild ___ Wand. (movement)",opts:["an die","an der","auf die","auf der"],correct:0},{q:"Die Katze sitzt ___ Stuhl. (location)",opts:["unter den","unter dem","über den","über dem"],correct:1},{q:"\"Shelf\" auf Deutsch?",opts:["der Schrank","das Regal","die Tür","das Fenster"],correct:1},{q:"\"Window\" auf Deutsch?",opts:["die Tür","das Fenster","die Wand","der Schrank"],correct:1}]},
+
+{day:15, title:"Plural nouns", focus:"No single rule — but recognizable patterns. Always learn plurals with the noun.",
+ rule:["Common patterns: <span class='mono'>-e</span> (Tisch→Tische), <span class='mono'>-er</span> +umlaut (Kind→Kinder, Buch→Bücher), <span class='mono'>-(e)n</span> (Frau→Frauen), <span class='mono'>-s</span> for loanwords (Auto→Autos).","All plurals take <span class='mono'>die</span> regardless of singular gender."],
+ examples:[{de:"der Tisch → die Tische",en:"table → tables"},{de:"das Kind → die Kinder",en:"child → children"},{de:"die Frau → die Frauen",en:"woman → women"},{de:"das Auto → die Autos",en:"car → cars"}],
+ grammarEx:[{prompt:"der Mann → ___ (plural)",answer:"die Männer",note:"-er + umlaut"},{prompt:"das Buch → ___ (plural)",answer:"die Bücher",note:"-er + umlaut"},{prompt:"die Lampe → ___ (plural)",answer:"die Lampen",note:"-en"},{prompt:"das Hotel → ___ (plural)",answer:"die Hotels",note:"-s, loanword"}],
+ vocab:[{de:"der Stuhl",en:"chair"},{de:"das Fenster",en:"window"},{de:"die Tür",en:"door"},{de:"der Schrank",en:"cabinet"},{de:"das Bett",en:"bed"},{de:"die Küche",en:"kitchen"}],
+ vocabEx:[{prompt:"Plural: chairs",answer:"die Stühle"},{prompt:"Plural: windows",answer:"die Fenster"},{prompt:"Plural: doors",answer:"die Türen"},{prompt:"Plural: beds",answer:"die Betten"}],
+ reading:{title:"Meine Wohnung", text:"In meiner Wohnung gibt es drei Zimmer. Es gibt vier Stühle, zwei Fenster und ein Bett. Die Küche ist klein.",
+   questions:[{prompt:"Wie viele Stühle gibt es?",answer:"vier"},{prompt:"Wie ist die Küche?",answer:"klein"}]},
+ listening:{title:"Wohnung beschreiben", script:[{s:"A",l:"Wie viele Zimmer hat deine Wohnung?"},{s:"B",l:"Drei Zimmer: ein Schlafzimmer, ein Wohnzimmer und eine Küche."}],
+   blanks:[{prompt:"Wie viele ___ hat deine Wohnung?",answer:"Zimmer"},{prompt:"ein ___, ein Wohnzimmer und eine Küche.",answer:"Schlafzimmer"}]},
+ speaking:["Beschreibe deine Wohnung: Wie viele Zimmer? Welche Möbel?","Vergleiche dein Zimmer jetzt mit deinem Zimmer in der Kindheit.","Sag, was du gern in deiner Küche hast."],
+ quiz:[{q:"Plural von 'die Stadt'?",opts:["die Stadte","die Städte","die Stadten","die Städten"],correct:1},{q:"Plural von 'der Tag'?",opts:["die Tage","die Täger","die Tagen","die Tags"],correct:0},{q:"Plural von 'das Handy'?",opts:["die Handys","die Handies","die Händer","die Handen"],correct:0},{q:"\"Kitchen\" auf Deutsch?",opts:["die Küche","das Bett","der Stuhl","der Schrank"],correct:0},{q:"\"Bed\" auf Deutsch?",opts:["der Stuhl","das Bett","die Tür","das Fenster"],correct:1}]},
+
+{day:16, title:"Adjectives in predicate position", focus:"After sein, adjectives never take an ending — the easiest adjective rule in German.",
+ rule:["When an adjective directly follows <span class='mono'>sein</span> or <span class='mono'>werden</span>, it stays in its base form regardless of gender or number.","<span class='mono'>Das Auto ist schnell. Die Autos sind schnell.</span> — same word every time.","Endings appear only when the adjective sits before the noun (later topic)."],
+ examples:[{de:"Das Auto ist schnell.",en:"The car is fast."},{de:"Die Wohnung ist groß.",en:"The apartment is big."},{de:"Er ist müde.",en:"He is tired."},{de:"Wir sind glücklich.",en:"We are happy."}],
+ grammarEx:[{prompt:"Der Tee ist ___. (hot)",answer:"heiß",note:"no ending"},{prompt:"Die Suppe ist ___. (hot)",answer:"heiß",note:"still no ending"},{prompt:"Der Film ist ___. (interesting)",answer:"interessant",note:"no ending"},{prompt:"Sie ist ___. (small)",answer:"klein",note:"no ending"}],
+ vocab:[{de:"groß",en:"big"},{de:"klein",en:"small"},{de:"schnell",en:"fast"},{de:"langsam",en:"slow"},{de:"schön",en:"beautiful"},{de:"hässlich",en:"ugly"}],
+ vocabEx:[{prompt:"Translate: big",answer:"groß"},{prompt:"Translate: small",answer:"klein"},{prompt:"Translate: fast",answer:"schnell"},{prompt:"Translate: slow",answer:"langsam"}],
+ reading:{title:"Beschreibungen", text:"Mein Auto ist klein, aber schnell. Die Stadt ist groß und schön. Der Bus ist langsam.",
+   questions:[{prompt:"Wie ist die Stadt?",answer:"groß und schön"},{prompt:"Wie ist der Bus?",answer:"langsam"}]},
+ listening:{title:"Mein Auto", script:[{s:"A",l:"Ist dein Auto schnell?"},{s:"B",l:"Ja, es ist sehr schnell, aber klein."}],
+   blanks:[{prompt:"Ist dein Auto ___?",answer:"schnell"},{prompt:"Ja, es ist sehr ___, aber ___.",answer:"schnell"}]},
+ speaking:["Beschreibe deine Stadt mit drei Adjektiven.","Beschreibe dein Auto/Fahrrad.","Vergleiche zwei Dinge (z.B. Bus vs. Zug) mit Adjektiven."],
+ quiz:[{q:"Die Kinder sind ___. (happy, correct predicate form)",opts:["glückliche","glücklich","glücklichen","glücklicher"],correct:1},{q:"Das Buch ist ___. (new, correct predicate form)",opts:["neue","neuen","neu","neuer"],correct:2},{q:"Die Häuser sind ___. (old, correct predicate form)",opts:["alt","alte","alten","alter"],correct:0},{q:"\"Beautiful\" auf Deutsch?",opts:["schön","hässlich","groß","klein"],correct:0},{q:"\"Slow\" auf Deutsch?",opts:["schnell","langsam","klein","groß"],correct:1}]},
+
+{day:17, title:"Negation: nicht vs. kein", focus:"kein negates an indefinite noun; nicht negates almost everything else.",
+ rule:["Use <span class='mono'>kein</span> only for a noun that would otherwise take ein or no article: <span class='mono'>Ich habe kein Buch.</span>","Use <span class='mono'>nicht</span> for definite nouns, verbs, adjectives, and adverbs: <span class='mono'>Ich habe das Buch nicht.</span>","nicht typically goes right before the word it negates, or at the end of a simple sentence."],
+ examples:[{de:"Ich habe kein Buch.",en:"I don't have a book."},{de:"Ich habe das Buch nicht.",en:"I don't have the book."},{de:"Er kommt nicht.",en:"He's not coming."},{de:"Das ist nicht gut.",en:"That's not good."}],
+ grammarEx:[{prompt:"Ich habe ___ Buch. (no — indefinite)",answer:"kein",note:"kein"},{prompt:"Ich besuche die Schule heute ___. (not)",answer:"nicht",note:"definite context"},{prompt:"Er ist ___ müde. (not)",answer:"nicht",note:"adjective"},{prompt:"Wir haben ___ Zeit. (no, fem.)",answer:"keine",note:"keine"}],
+ vocab:[{de:"gut",en:"good"},{de:"schlecht",en:"bad"},{de:"richtig",en:"correct"},{de:"falsch",en:"wrong"},{de:"möglich",en:"possible"},{de:"unmöglich",en:"impossible"}],
+ vocabEx:[{prompt:"Translate: good",answer:"gut"},{prompt:"Translate: bad",answer:"schlecht"},{prompt:"Translate: correct",answer:"richtig"},{prompt:"Translate: wrong",answer:"falsch"}],
+ reading:{title:"Heute", text:"Das Wetter heute ist nicht gut, es ist schlecht. Meine Antwort war nicht richtig, sie war falsch. Aber das ist kein Problem.",
+   questions:[{prompt:"Wie ist das Wetter?",answer:"schlecht"},{prompt:"War die Antwort richtig?",answer:"nein, falsch"}]},
+ listening:{title:"Falsche Antwort", script:[{s:"A",l:"War deine Antwort richtig?"},{s:"B",l:"Nein, sie war leider falsch."}],
+   blanks:[{prompt:"War deine Antwort ___?",answer:"richtig"},{prompt:"sie war leider ___.",answer:"falsch"}]},
+ speaking:["Sag, was heute nicht gut war.","Korrigiere einen falschen Satz.","Sag: Das ist kein Problem / Das ist nicht möglich."],
+ quiz:[{q:"Ich trinke ___ Kaffee. (no, indefinite)",opts:["nicht","kein","keinen","keine"],correct:2},{q:"Das Wetter ist heute ___ schön.",opts:["kein","keine","nicht","keinen"],correct:2},{q:"Wir haben ___ Auto.",opts:["nicht","kein","keine","keinen"],correct:1},{q:"\"Possible\" auf Deutsch?",opts:["möglich","unmöglich","richtig","falsch"],correct:0},{q:"\"Wrong\" auf Deutsch?",opts:["richtig","gut","falsch","schlecht"],correct:2}]},
+
+{day:18, title:"Time expressions & TeKaMoLo", focus:"When a sentence stacks several adverbials, German orders them: Time → Cause → Manner → Place.",
+ rule:["TeKaMoLo = Temporal, Kausal, Modal, Lokal — the standard order for multiple extra details in one sentence.","<span class='mono'>Ich fahre heute mit dem Bus nach Berlin.</span> (Time–Manner–Place)","Common time words: heute, morgen, gestern, die Woche, der Monat, das Jahr."],
+ examples:[{de:"Ich fahre heute mit dem Bus nach Berlin.",en:"I'm going to Berlin by bus today."},{de:"Wir treffen uns morgen um 8 Uhr in der Schule.",en:"We're meeting tomorrow at 8 in the school."},{de:"Er arbeitet am Montag im Büro.",en:"He works at the office on Monday."},{de:"Der Kurs beginnt um neun Uhr.",en:"The course starts at nine o'clock."}],
+ grammarEx:[{prompt:"Ich lerne ___ Deutsch. (today)",answer:"heute",note:"time word"},{prompt:"Wir treffen uns ___. (tomorrow)",answer:"morgen",note:"time word"},{prompt:"Der Kurs beginnt ___ acht Uhr. (at)",answer:"um",note:"time prep"},{prompt:"___ Montag habe ich frei. (on)",answer:"Am",note:"day prep"}],
+ vocab:[{de:"heute",en:"today"},{de:"morgen",en:"tomorrow"},{de:"gestern",en:"yesterday"},{de:"die Woche",en:"week"},{de:"der Monat",en:"month"},{de:"das Jahr",en:"year"}],
+ vocabEx:[{prompt:"Translate: today",answer:"heute"},{prompt:"Translate: tomorrow",answer:"morgen"},{prompt:"Translate: yesterday",answer:"gestern"},{prompt:"Translate: week",answer:"die Woche"}],
+ reading:{title:"Pläne und Zeit", text:"Gestern habe ich gearbeitet. Heute lerne ich Deutsch. Morgen fahre ich nach Lahore. Diese Woche habe ich viel zu tun.",
+   questions:[{prompt:"Was macht er heute?",answer:"Deutsch lernen"},{prompt:"Wohin fährt er morgen?",answer:"nach Lahore"}]},
+ listening:{title:"Heute und morgen", script:[{s:"A",l:"Was machst du heute?"},{s:"B",l:"Heute lerne ich Deutsch, morgen arbeite ich."}],
+   blanks:[{prompt:"Was machst du ___?",answer:"heute"},{prompt:"___ arbeite ich.",answer:"morgen"}]},
+ speaking:["Beschreibe, was du gestern gemacht hast.","Sag deine Pläne für morgen.","Beschreibe deine Woche (Montag bis Sonntag)."],
+ quiz:[{q:"Richtige Reihenfolge: 'Ich fahre ___ ___ ___ Berlin.' (today/by train/to)",opts:["heute mit dem Zug nach","mit dem Zug heute nach","nach heute mit dem Zug","mit dem Zug nach heute"],correct:0},{q:"___ Wochenende arbeite ich nicht.",opts:["Am","Um","In","Im"],correct:0},{q:"Der Film beginnt ___ 20 Uhr.",opts:["am","im","um","in"],correct:2},{q:"\"Year\" auf Deutsch?",opts:["die Woche","der Monat","das Jahr","heute"],correct:2},{q:"\"Yesterday\" auf Deutsch?",opts:["heute","morgen","gestern","das Jahr"],correct:2}]},
+
+{day:19, title:"Perfekt tense (intro)", focus:"German's everyday past tense: haben/sein + Partizip II at the end of the sentence.",
+ rule:["Most verbs use <span class='mono'>haben</span>. Movement/change-of-state verbs use <span class='mono'>sein</span> (gehen, fahren, kommen).","Regular Partizip II: <span class='mono'>ge-</span> + stem + <span class='mono'>-t</span> (lernen → gelernt).","Irregular Partizip II: often <span class='mono'>ge-</span> + changed stem + <span class='mono'>-en</span> (essen → gegessen).","Word order: helper verb in position 2, participle at the very end."],
+ examples:[{de:"Ich habe Deutsch gelernt.",en:"I learned German."},{de:"Du hast ein Buch gelesen.",en:"You read a book."},{de:"Er ist nach Berlin gefahren.",en:"He drove to Berlin. (sein-verb)"},{de:"Wir sind gekommen.",en:"We came. (sein-verb)"}],
+ grammarEx:[{prompt:"Ich habe Deutsch ___ (lernen).",answer:"gelernt",note:"regular"},{prompt:"Du hast das Buch ___ (lesen).",answer:"gelesen",note:"irregular"},{prompt:"Er ist nach Hause ___ (gehen).",answer:"gegangen",note:"sein-verb, irregular"},{prompt:"Wir haben Pizza ___ (essen).",answer:"gegessen",note:"irregular"}],
+ vocab:[{de:"gemacht",en:"made/done"},{de:"gelernt",en:"learned"},{de:"gegessen",en:"eaten"},{de:"gefahren",en:"driven/gone"},{de:"gekommen",en:"come"},{de:"gearbeitet",en:"worked"}],
+ vocabEx:[{prompt:"Translate (participle): learned",answer:"gelernt"},{prompt:"Translate (participle): eaten",answer:"gegessen"},{prompt:"Translate (participle): driven/gone",answer:"gefahren"},{prompt:"Translate (participle): worked",answer:"gearbeitet"}],
+ reading:{title:"Gestern", text:"Gestern habe ich viel gearbeitet. Ich habe Deutsch gelernt und bin nach Hause gefahren. Dort habe ich Abendessen gegessen.",
+   questions:[{prompt:"Was hat er gestern gemacht?",answer:"gearbeitet, Deutsch gelernt"},{prompt:"Wohin ist er gefahren?",answer:"nach Hause"}]},
+ listening:{title:"Was hast du gemacht?", script:[{s:"A",l:"Was hast du gestern gemacht?"},{s:"B",l:"Ich habe gearbeitet und dann bin ich nach Hause gefahren."}],
+   blanks:[{prompt:"Was hast du gestern ___?",answer:"gemacht"},{prompt:"Ich habe ___.",answer:"gearbeitet"}]},
+ speaking:["Erzähle, was du gestern gemacht hast (im Perfekt).","Beschreibe dein letztes Wochenende.","Sag drei Dinge, die du diese Woche schon gemacht hast."],
+ quiz:[{q:"Sie ___ nach Pakistan geflogen.",opts:["hat","ist","haben","sind"],correct:1},{q:"Wir haben das Projekt ___ (machen).",opts:["gemacht","gemachen","macht","gemachte"],correct:0},{q:"Ich ___ gestern gearbeitet.",opts:["bin","habe","hat","ist"],correct:1},{q:"\"Come\" (participle) auf Deutsch?",opts:["gekommen","gegangen","gefahren","gemacht"],correct:0},{q:"\"Eaten\" auf Deutsch?",opts:["gegessen","getrunken","gelesen","gelernt"],correct:0}]},
+
+{day:20, title:"Review & mixed mock test", focus:"All 19 days, mixed together — the closest thing to a real A1 checkpoint.",
+ rule:["Präsens (regular + sein/haben), stem-changing verbs, nominative/accusative/dative cases.","Articles (definite, indefinite, kein, possessive), question formation, modal verbs, imperative.","Prepositions (accusative, dative, two-way), plurals, predicate adjectives, nicht vs. kein, TeKaMoLo, and the Perfekt tense."],
+ examples:[{de:"Ich habe gestern mit dem Bus die Stadt besucht.",en:"I visited the city by bus yesterday. (Perfekt + dative prep)"},{de:"Kannst du mir bitte helfen?",en:"Can you please help me? (modal + dative pronoun)"},{de:"Wir sind ohne unser Auto gefahren.",en:"We drove without our car. (accusative prep + Perfekt)"},{de:"Das ist nicht mein Buch, das ist ihres.",en:"That's not my book, that's hers. (nicht + possessive)"}],
+ grammarEx:[{prompt:"Er ___ (sein) gestern müde gewesen — Perfekt-Hilfsverb. (he was)",answer:"ist",note:"Perfekt of sein uses sein"},{prompt:"Ich ___ (können) dir morgen helfen.",answer:"kann",note:"modal verb"},{prompt:"Wir fahren ___ (in + acc.) die Stadt.",answer:"in die",note:"movement, two-way prep"},{prompt:"Das ist ___ (no, indefinite) Problem.",answer:"kein",note:"negation"},{prompt:"Sie hat das Brot ___ (kaufen).",answer:"gekauft",note:"Perfekt, regular"}],
+ vocab:[{de:"lernen",en:"to learn"},{de:"die Familie",en:"family"},{de:"der Bus",en:"bus"},{de:"gut",en:"good"},{de:"heute",en:"today"},{de:"gearbeitet",en:"worked"}],
+ vocabEx:[{prompt:"Translate: family",answer:"die Familie"},{prompt:"Translate: today",answer:"heute"},{prompt:"Translate (participle): worked",answer:"gearbeitet"},{prompt:"Translate: good",answer:"gut"}],
+ reading:{title:"Alles zusammen", text:"Ich heiße Ali und wohne in Sargodha. Ich habe eine Familie: meinen Vater, meine Mutter und meine Schwester. Jeden Tag lerne ich Deutsch und fahre mit dem Bus zur Arbeit. Gestern habe ich viel gearbeitet, aber heute ist das Wetter gut und ich kann ein bisschen Pause machen.",
+   questions:[{prompt:"Womit fährt Ali zur Arbeit?",answer:"mit dem Bus"},{prompt:"Wie ist das Wetter heute?",answer:"gut"}]},
+ listening:{title:"Zusammenfassung", script:[{s:"A",l:"Was machst du jeden Tag?"},{s:"B",l:"Ich lerne Deutsch und fahre mit dem Bus zur Arbeit."},{s:"A",l:"Und gestern?"},{s:"B",l:"Gestern habe ich viel gearbeitet."}],
+   blanks:[{prompt:"Ich ___ Deutsch.",answer:"lerne"},{prompt:"Gestern ___ ich viel gearbeitet.",answer:"habe"},{prompt:"Ich fahre mit dem ___ zur Arbeit.",answer:"Bus"}]},
+ speaking:["Stell dich komplett vor (Name, Familie, Beruf, Stadt, Hobbys).","Erzähle von deinem Tag gestern und deinen Plänen für morgen.","Was war für dich am schwersten in diesem Kurs? Was übst du als Nächstes?"],
+ quiz:[{q:"Ich ___ heute mit meiner Schwester gesprochen.",opts:["habe","bin","hat","ist"],correct:0},{q:"___ du mir bitte das Salz geben?",opts:["Kann","Kannst","Könnt","Können"],correct:1},{q:"Das Buch liegt ___ Tisch. (location)",opts:["auf den","auf dem","an den","an dem"],correct:1},{q:"Wir haben ___ Zeit für das Meeting.",opts:["nicht","kein","keine","keinen"],correct:2},{q:"___ kommst du morgen? (what time)",opts:["Wer","Was","Wann","Warum"],correct:2}]},
+
+{day:21, title:"Numbers 0–100", focus:"Numbers above 20 are built backwards: ones before tens, joined with 'und'.",
+ rule:["0–12 are unique words: null, eins, zwei, drei, vier, fünf, sechs, sieben, acht, neun, zehn, elf, zwölf.","13–19: stem + zehn (dreizehn, vierzehn...).","Tens: zwanzig, dreißig, vierzig, fünfzig, sechzig, siebzig, achtzig, neunzig.","21+: ones + und + tens, reversed — <span class='mono'>einundzwanzig</span> = 'one-and-twenty' = 21."],
+ examples:[{de:"Ich bin fünfundzwanzig Jahre alt.",en:"I am 25 years old."},{de:"Das kostet zehn Euro.",en:"That costs ten euros."},{de:"Wir haben drei Kinder.",en:"We have three children."},{de:"Die Nummer ist einundvierzig.",en:"The number is 41."}],
+ grammarEx:[{prompt:"Schreibe die Zahl: 14",answer:"vierzehn"},{prompt:"Schreibe die Zahl: 21",answer:"einundzwanzig"},{prompt:"Schreibe die Zahl: 33",answer:"dreiunddreißig"},{prompt:"Schreibe die Zahl: 100",answer:"hundert"}],
+ vocab:[{de:"eins",en:"one"},{de:"zehn",en:"ten"},{de:"zwanzig",en:"twenty"},{de:"hundert",en:"hundred"},{de:"die Zahl",en:"the number"},{de:"zählen",en:"to count"}],
+ vocabEx:[{prompt:"Translate: ten",answer:"zehn"},{prompt:"Translate: twenty",answer:"zwanzig"},{prompt:"Translate: hundred",answer:"hundert"},{prompt:"Translate: number",answer:"die Zahl"}],
+ reading:{title:"Zahlen im Alltag", text:"Ich habe zwei Brüder und eine Schwester. Mein Vater ist fünfzig Jahre alt. Das Auto kostet zwanzigtausend Euro. Ich zähle von eins bis hundert auf Deutsch.",
+   questions:[{prompt:"Wie alt ist der Vater?",answer:"fünfzig"},{prompt:"Was kostet zwanzigtausend Euro?",answer:"das Auto"}]},
+ listening:{title:"Auf dem Markt", script:[{s:"A",l:"Wie viel kostet das?"},{s:"B",l:"Das kostet fünfzehn Euro."},{s:"A",l:"Und das hier?"},{s:"B",l:"Das kostet dreißig Euro."}],
+   blanks:[{prompt:"Wie viel ___ das?",answer:"kostet"},{prompt:"Das kostet ___ Euro.",answer:"fünfzehn"}]},
+ speaking:["Zähle von 1 bis 20 auf Deutsch.","Sag dein Alter und das Alter von zwei Familienmitgliedern.","Sag drei Preise (z.B. Das kostet ... Euro)."],
+ quiz:[{q:"23 auf Deutsch?",opts:["dreiundzwanzig","zwanzigdrei","drei und zwanzig","zwanzigundrei"],correct:0},{q:"'fünfzig' bedeutet?",opts:["15","50","5","500"],correct:1},{q:"100 auf Deutsch?",opts:["zehn","tausend","hundert","zwanzig"],correct:2},{q:"\"Number\" auf Deutsch?",opts:["die Zahl","zählen","zehn","eins"],correct:0},{q:"\"To count\" auf Deutsch?",opts:["die Zahl","zählen","zehn","hundert"],correct:1}]},
+
+{day:22, title:"Telling time (Uhrzeit)", focus:"Two systems: formal 24-hour, and informal everyday clock with halb, Viertel, vor, nach.",
+ rule:["Formal: 'Es ist [hour] Uhr [minutes].' — 14:30 = <span class='mono'>vierzehn Uhr dreißig</span>.","Informal: <span class='mono'>halb drei</span> = 2:30 (halfway TO three, not 'half past two').","<span class='mono'>Viertel nach zwei</span> = 2:15, <span class='mono'>Viertel vor drei</span> = 2:45.","Ask: 'Wie spät ist es?' or 'Wie viel Uhr ist es?'"],
+ examples:[{de:"Es ist drei Uhr.",en:"It's three o'clock."},{de:"Es ist halb vier.",en:"It's 3:30."},{de:"Es ist Viertel nach fünf.",en:"It's 5:15."},{de:"Der Kurs beginnt um neun Uhr.",en:"The course starts at nine."}],
+ grammarEx:[{prompt:"2:15 informell?",answer:"Viertel nach zwei"},{prompt:"2:45 informell?",answer:"Viertel vor drei"},{prompt:"2:30 informell?",answer:"halb drei"},{prompt:"Wie spät ist es? (formal, 14:00)",answer:"Es ist vierzehn Uhr."}],
+ vocab:[{de:"die Uhr",en:"clock / o'clock"},{de:"die Stunde",en:"hour"},{de:"die Minute",en:"minute"},{de:"spät",en:"late"},{de:"früh",en:"early"},{de:"pünktlich",en:"punctual"}],
+ vocabEx:[{prompt:"Translate: clock/o'clock",answer:"die Uhr"},{prompt:"Translate: hour",answer:"die Stunde"},{prompt:"Translate: minute",answer:"die Minute"},{prompt:"Translate: punctual",answer:"pünktlich"}],
+ reading:{title:"Mein Morgen", text:"Ich stehe um sieben Uhr auf. Um halb acht frühstücke ich. Der Bus kommt um Viertel nach acht. Ich bin immer pünktlich.",
+   questions:[{prompt:"Wann frühstückt er?",answer:"um halb acht"},{prompt:"Wann kommt der Bus?",answer:"um Viertel nach acht"}]},
+ listening:{title:"Wie spät ist es?", script:[{s:"A",l:"Wie spät ist es?"},{s:"B",l:"Es ist halb zehn."},{s:"A",l:"Wann beginnt der Kurs?"},{s:"B",l:"Um Viertel nach zehn."}],
+   blanks:[{prompt:"Wie ___ ist es?",answer:"spät"},{prompt:"Es ist ___ zehn.",answer:"halb"}]},
+ speaking:["Sag, wie spät es jetzt ist.","Beschreibe deinen Tagesablauf mit Uhrzeiten.","Frag einen Partner: Wann beginnt dein Arbeitstag?"],
+ quiz:[{q:"3:15 informell?",opts:["Viertel nach drei","Viertel vor drei","halb drei","drei Uhr fünfzehn"],correct:0},{q:"4:45 informell?",opts:["Viertel nach vier","Viertel vor fünf","halb fünf","vier Uhr fünfundvierzig"],correct:1},{q:"6:30 informell?",opts:["halb sechs","halb sieben","sechs Uhr dreißig","Viertel nach sechs"],correct:1},{q:"\"Hour\" auf Deutsch?",opts:["die Uhr","die Stunde","die Minute","spät"],correct:1},{q:"\"Early\" auf Deutsch?",opts:["früh","spät","pünktlich","die Uhr"],correct:0}]},
+
+{day:23, title:"Days, months & dates", focus:"Days take 'am', months take 'im' — and dates use ordinal numbers with 'der'.",
+ rule:["Days: Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag, Sonntag.","Months: Januar through Dezember.","Dates: 'Heute ist der erste Mai.' (ordinal + der).","Use <span class='mono'>am</span> + day: 'am Montag'; <span class='mono'>im</span> + month: 'im Mai'."],
+ examples:[{de:"Heute ist Montag, der erste Mai.",en:"Today is Monday, the first of May."},{de:"Mein Geburtstag ist im Juli.",en:"My birthday is in July."},{de:"Wir treffen uns am Freitag.",en:"We're meeting on Friday."},{de:"Welcher Tag ist heute?",en:"What day is today?"}],
+ grammarEx:[{prompt:"___ Montag habe ich Deutschkurs. (on)",answer:"Am"},{prompt:"___ Dezember ist Weihnachten. (in)",answer:"Im"},{prompt:"Heute ist der ___ (3rd) Mai.",answer:"dritte"},{prompt:"Welcher Tag ist heute? Es ist ___.",answer:"Montag",note:"any weekday accepted"}],
+ vocab:[{de:"der Montag",en:"Monday"},{de:"der Freitag",en:"Friday"},{de:"der Januar",en:"January"},{de:"der Dezember",en:"December"},{de:"der Geburtstag",en:"birthday"},{de:"der Feiertag",en:"holiday"}],
+ vocabEx:[{prompt:"Translate: Monday",answer:"der Montag"},{prompt:"Translate: Friday",answer:"der Freitag"},{prompt:"Translate: birthday",answer:"der Geburtstag"},{prompt:"Translate: holiday",answer:"der Feiertag"}],
+ reading:{title:"Wichtige Tage", text:"Mein Geburtstag ist am 14. März. Im März ist es noch kalt. Am Freitag habe ich frei, aber am Montag arbeite ich wieder.",
+   questions:[{prompt:"Wann hat er Geburtstag?",answer:"am 14. März"},{prompt:"Wann hat er frei?",answer:"am Freitag"}]},
+ listening:{title:"Datum und Tag", script:[{s:"A",l:"Wann hast du Geburtstag?"},{s:"B",l:"Mein Geburtstag ist im März."},{s:"A",l:"Welcher Tag ist heute?"},{s:"B",l:"Heute ist Montag."}],
+   blanks:[{prompt:"Wann hast du ___?",answer:"Geburtstag"},{prompt:"Mein Geburtstag ist ___ März.",answer:"im"}]},
+ speaking:["Sag dein Geburtstagsdatum auf Deutsch.","Nenne die sieben Wochentage.","Sag, was du an deinem Lieblingswochentag machst."],
+ quiz:[{q:"'On Monday' auf Deutsch?",opts:["Am Montag","Im Montag","Der Montag","Im Montags"],correct:0},{q:"'In December' auf Deutsch?",opts:["Am Dezember","Im Dezember","In Dezember","Der Dezember"],correct:1},{q:"Welcher Tag kommt nach Mittwoch?",opts:["Dienstag","Donnerstag","Freitag","Montag"],correct:1},{q:"\"Birthday\" auf Deutsch?",opts:["der Feiertag","der Geburtstag","der Montag","der Januar"],correct:1},{q:"\"Friday\" auf Deutsch?",opts:["der Montag","der Freitag","der Januar","der Dezember"],correct:1}]},
+
+{day:24, title:"Weather & seasons", focus:"Weather sentences use the impersonal 'es' as subject.",
+ rule:["'Es' + weather verb/adjective: <span class='mono'>Es regnet</span> (raining), <span class='mono'>Es schneit</span> (snowing), <span class='mono'>Es ist sonnig/kalt/warm/heiß/windig</span>.","Seasons: der Frühling, der Sommer, der Herbst, der Winter — used with 'im': 'Im Winter ist es kalt.'"],
+ examples:[{de:"Es regnet heute.",en:"It's raining today."},{de:"Im Sommer ist es heiß.",en:"In summer it's hot."},{de:"Im Winter schneit es oft.",en:"In winter it often snows."},{de:"Wie ist das Wetter heute?",en:"What's the weather like today?"}],
+ grammarEx:[{prompt:"___ regnet heute. (it)",answer:"Es"},{prompt:"Im ___ ist es kalt. (winter)",answer:"Winter"},{prompt:"Es ist sehr ___ heute. (hot)",answer:"heiß"},{prompt:"___ schneit im Winter.",answer:"Es"}],
+ vocab:[{de:"der Regen",en:"rain"},{de:"der Schnee",en:"snow"},{de:"die Sonne",en:"sun"},{de:"der Wind",en:"wind"},{de:"der Frühling",en:"spring"},{de:"der Winter",en:"winter"}],
+ vocabEx:[{prompt:"Translate: rain",answer:"der Regen"},{prompt:"Translate: snow",answer:"der Schnee"},{prompt:"Translate: sun",answer:"die Sonne"},{prompt:"Translate: spring",answer:"der Frühling"}],
+ reading:{title:"Die Jahreszeiten", text:"Im Frühling ist das Wetter mild. Im Sommer scheint die Sonne. Im Herbst regnet es oft. Im Winter schneit es und es ist kalt.",
+   questions:[{prompt:"Wie ist das Wetter im Sommer?",answer:"die Sonne scheint"},{prompt:"Was passiert oft im Herbst?",answer:"es regnet"}]},
+ listening:{title:"Wettervorhersage", script:[{s:"A",l:"Wie ist das Wetter heute?"},{s:"B",l:"Es ist sonnig, aber kalt."},{s:"A",l:"Regnet es morgen?"},{s:"B",l:"Nein, morgen schneit es vielleicht."}],
+   blanks:[{prompt:"Wie ist das ___ heute?",answer:"Wetter"},{prompt:"___ es morgen?",answer:"Regnet"}]},
+ speaking:["Beschreibe das Wetter heute.","Sag, welche Jahreszeit du am liebsten magst.","Beschreibe das Wetter in deiner Heimatstadt im Sommer und im Winter."],
+ quiz:[{q:"'Snow' auf Deutsch (Verb)?",opts:["regnen","schneien","scheinen","wehen"],correct:1},{q:"'It's raining' auf Deutsch?",opts:["Es schneit","Es regnet","Es ist sonnig","Es ist windig"],correct:1},{q:"Welche Jahreszeit kommt nach dem Winter?",opts:["Sommer","Herbst","Frühling","Winter"],correct:2},{q:"\"Sun\" auf Deutsch?",opts:["die Sonne","der Regen","der Wind","der Schnee"],correct:0},{q:"\"Spring\" auf Deutsch?",opts:["der Sommer","der Herbst","der Frühling","der Winter"],correct:2}]},
+
+{day:25, title:"Clothing & shopping", focus:"Clothing items, colors as predicate adjectives, and shopping for size.",
+ rule:["Clothing nouns have genders like any noun: das Hemd, die Hose, der Schuh, die Jacke.","Colors after sein stay unchanged (same no-ending rule as Day 16): 'Das Hemd ist blau.'","Sizes: 'Ich brauche Größe vierzig.' / 'Das ist mir zu klein/groß.'"],
+ examples:[{de:"Das Hemd ist blau.",en:"The shirt is blue."},{de:"Die Hose ist zu klein.",en:"The pants are too small."},{de:"Ich brauche Größe vierzig.",en:"I need size 40."},{de:"Welche Farbe gefällt dir?",en:"Which color do you like?"}],
+ grammarEx:[{prompt:"Das Hemd ist ___. (blue)",answer:"blau"},{prompt:"Die Hose ist ___. (black)",answer:"schwarz"},{prompt:"Die Schuhe sind ___. (too small)",answer:"zu klein"},{prompt:"Ich brauche Größe ___. (40)",answer:"vierzig"}],
+ vocab:[{de:"das Hemd",en:"shirt"},{de:"die Hose",en:"pants"},{de:"der Schuh",en:"shoe"},{de:"die Jacke",en:"jacket"},{de:"die Farbe",en:"color"},{de:"die Größe",en:"size"}],
+ vocabEx:[{prompt:"Translate: shirt",answer:"das Hemd"},{prompt:"Translate: pants",answer:"die Hose"},{prompt:"Translate: shoe",answer:"der Schuh"},{prompt:"Translate: size",answer:"die Größe"}],
+ reading:{title:"Im Geschäft", text:"Ich brauche eine neue Jacke. Die blaue Jacke gefällt mir, aber sie ist zu klein. Ich brauche Größe vierzig. Die Schuhe hier sind schwarz und schön.",
+   questions:[{prompt:"Welche Farbe hat die Jacke?",answer:"blau"},{prompt:"Welche Größe braucht er?",answer:"vierzig"}]},
+ listening:{title:"Einkaufen", script:[{s:"A",l:"Welche Farbe gefällt dir?"},{s:"B",l:"Ich mag blau."},{s:"A",l:"Welche Größe brauchst du?"},{s:"B",l:"Größe vierzig, bitte."}],
+   blanks:[{prompt:"Welche ___ gefällt dir?",answer:"Farbe"},{prompt:"Welche ___ brauchst du?",answer:"Größe"}]},
+ speaking:["Beschreibe, was du heute trägst (Farben, Kleidungsstücke).","Sag, welche Farbe dir am besten gefällt.","Spiele ein Einkaufsgespräch: Frag nach Größe und Preis."],
+ quiz:[{q:"\"Shirt\" auf Deutsch?",opts:["die Hose","das Hemd","der Schuh","die Jacke"],correct:1},{q:"\"Black\" auf Deutsch?",opts:["blau","rot","schwarz","grün"],correct:2},{q:"\"Pants\" auf Deutsch?",opts:["die Hose","das Hemd","der Schuh","die Größe"],correct:0},{q:"\"Color\" auf Deutsch?",opts:["die Farbe","die Größe","das Hemd","der Schuh"],correct:0},{q:"\"Size\" auf Deutsch?",opts:["die Farbe","die Größe","die Jacke","der Schuh"],correct:1}]},
+
+{day:26, title:"Body & health", focus:"Saying what hurts uses a dative pronoun: 'Mir tut der Kopf weh.'",
+ rule:["'Mir tut [body part] weh' = 'my X hurts' — body part stays nominative, the person takes dative.","Common phrases: 'Ich habe Kopfschmerzen/Halsschmerzen.' (I have a headache/sore throat.)","'Ich bin krank' (I'm sick) vs. 'Ich bin gesund' (I'm healthy)."],
+ examples:[{de:"Mir tut der Kopf weh.",en:"My head hurts."},{de:"Ich habe Halsschmerzen.",en:"I have a sore throat."},{de:"Ich bin krank.",en:"I am sick."},{de:"Ich brauche einen Arzt.",en:"I need a doctor."}],
+ grammarEx:[{prompt:"___ tut der Bauch weh. (my, dative)",answer:"Mir"},{prompt:"Ich habe ___. (headache)",answer:"Kopfschmerzen"},{prompt:"Ich bin ___. (sick)",answer:"krank"},{prompt:"Ich brauche einen ___. (doctor)",answer:"Arzt"}],
+ vocab:[{de:"der Kopf",en:"head"},{de:"der Bauch",en:"stomach"},{de:"der Arzt",en:"doctor"},{de:"krank",en:"sick"},{de:"gesund",en:"healthy"},{de:"die Schmerzen",en:"pain"}],
+ vocabEx:[{prompt:"Translate: head",answer:"der Kopf"},{prompt:"Translate: stomach",answer:"der Bauch"},{prompt:"Translate: doctor",answer:"der Arzt"},{prompt:"Translate: sick",answer:"krank"}],
+ reading:{title:"Beim Arzt", text:"Mir tut der Kopf weh und ich habe Halsschmerzen. Ich bin krank und gehe zum Arzt. Der Arzt sagt: Du brauchst Ruhe.",
+   questions:[{prompt:"Was tut ihm weh?",answer:"der Kopf"},{prompt:"Wohin geht er?",answer:"zum Arzt"}]},
+ listening:{title:"Was ist los?", script:[{s:"A",l:"Was ist los?"},{s:"B",l:"Mir tut der Kopf weh. Ich bin krank."},{s:"A",l:"Geh zum Arzt!"}],
+   blanks:[{prompt:"Mir tut der ___ weh.",answer:"Kopf"},{prompt:"Ich bin ___.",answer:"krank"}]},
+ speaking:["Beschreibe, wie du dich heute fühlst.","Sag, was du machst, wenn du krank bist.","Übe ein Gespräch beim Arzt: Was tut dir weh?"],
+ quiz:[{q:"\"Headache\" auf Deutsch?",opts:["Bauchschmerzen","Kopfschmerzen","Halsschmerzen","Rückenschmerzen"],correct:1},{q:"\"Sick\" auf Deutsch?",opts:["gesund","krank","müde","glücklich"],correct:1},{q:"\"Doctor\" auf Deutsch?",opts:["der Arzt","der Kopf","der Bauch","die Schmerzen"],correct:0},{q:"\"Healthy\" auf Deutsch?",opts:["krank","gesund","müde","schön"],correct:1},{q:"\"Stomach\" auf Deutsch?",opts:["der Kopf","der Bauch","der Arzt","der Hals"],correct:1}]},
+
+{day:27, title:"Hobbies & free time", focus:"'gern' after a verb expresses liking that activity.",
+ rule:["'gern' goes right after the conjugated verb: <span class='mono'>Ich spiele gern Fußball.</span> (I like playing football.)","'Mein Hobby ist...' + noun, e.g. 'Mein Hobby ist Kochen.'"],
+ examples:[{de:"Ich lese gern Bücher.",en:"I like reading books."},{de:"Sie spielt gern Tennis.",en:"She likes playing tennis."},{de:"Mein Hobby ist Kochen.",en:"My hobby is cooking."},{de:"Wir schwimmen gern im Sommer.",en:"We like swimming in summer."}],
+ grammarEx:[{prompt:"Ich spiele ___ Fußball. (gladly/like to)",answer:"gern"},{prompt:"Er liest ___ Bücher.",answer:"gern"},{prompt:"Mein Hobby ist ___. (cooking)",answer:"Kochen"},{prompt:"Wir ___ (schwimmen) gern.",answer:"schwimmen"}],
+ vocab:[{de:"das Hobby",en:"hobby"},{de:"schwimmen",en:"to swim"},{de:"tanzen",en:"to dance"},{de:"malen",en:"to paint"},{de:"die Musik",en:"music"},{de:"der Sport",en:"sport"}],
+ vocabEx:[{prompt:"Translate: hobby",answer:"das Hobby"},{prompt:"Translate: to swim",answer:"schwimmen"},{prompt:"Translate: to dance",answer:"tanzen"},{prompt:"Translate: music",answer:"die Musik"}],
+ reading:{title:"Meine Freizeit", text:"Mein Hobby ist Musik. Ich höre gern Musik und tanze gern. Am Wochenende schwimme ich oder treibe Sport. Malen mag ich auch.",
+   questions:[{prompt:"Was ist sein Hobby?",answer:"Musik"},{prompt:"Was macht er am Wochenende?",answer:"schwimmen/Sport treiben"}]},
+ listening:{title:"Hobbys vergleichen", script:[{s:"A",l:"Was ist dein Hobby?"},{s:"B",l:"Ich höre gern Musik und tanze gern. Und du?"},{s:"A",l:"Ich schwimme gern."}],
+   blanks:[{prompt:"Was ist dein ___?",answer:"Hobby"},{prompt:"Ich ___ gern.",answer:"schwimme"}]},
+ speaking:["Beschreibe deine Hobbys.","Sag, was du am Wochenende gern machst.","Frag einen Partner nach seinem Lieblingshobby."],
+ quiz:[{q:"\"Hobby\" auf Deutsch?",opts:["das Hobby","der Sport","die Musik","das Spiel"],correct:0},{q:"\"To swim\" auf Deutsch?",opts:["tanzen","malen","schwimmen","spielen"],correct:2},{q:"'gern' bedeutet?",opts:["never","always","gladly / like to","maybe"],correct:2},{q:"\"To dance\" auf Deutsch?",opts:["schwimmen","tanzen","malen","spielen"],correct:1},{q:"\"Music\" auf Deutsch?",opts:["die Musik","der Sport","das Hobby","das Spiel"],correct:0}]},
+
+{day:28, title:"Comparative & superlative", focus:"Add -er to compare, am ...-sten for the superlative.",
+ rule:["Comparative: adjective + <span class='mono'>-er</span> (schnell → schneller), often + umlaut for short words (groß → größer, alt → älter).","Superlative: <span class='mono'>am</span> + adjective + <span class='mono'>-sten</span> (am schnellsten).","'als' = 'than': 'Er ist schneller als ich.'"],
+ examples:[{de:"Er ist schneller als ich.",en:"He is faster than me."},{de:"Mein Auto ist größer.",en:"My car is bigger."},{de:"Das ist am schnellsten.",en:"That's the fastest."},{de:"Sie ist älter als ihre Schwester.",en:"She is older than her sister."}],
+ grammarEx:[{prompt:"schnell → ___ (comparative)",answer:"schneller"},{prompt:"groß → ___ (comparative)",answer:"größer"},{prompt:"Er ist ___ (older) als ich.",answer:"älter"},{prompt:"Das ist am ___ (fastest).",answer:"schnellsten"}],
+ vocab:[{de:"schneller",en:"faster"},{de:"größer",en:"bigger"},{de:"älter",en:"older"},{de:"besser",en:"better"},{de:"am besten",en:"best (of all)"},{de:"als",en:"than"}],
+ vocabEx:[{prompt:"Translate: faster",answer:"schneller"},{prompt:"Translate: bigger",answer:"größer"},{prompt:"Translate: older",answer:"älter"},{prompt:"Translate: better",answer:"besser"}],
+ reading:{title:"Vergleiche", text:"Mein Bruder ist älter als ich, aber ich bin größer als er. Mein Auto ist schneller als sein Fahrrad. Für mich ist Deutsch besser zu lernen als Englisch, finde ich.",
+   questions:[{prompt:"Wer ist älter?",answer:"der Bruder"},{prompt:"Was ist schneller, das Auto oder das Fahrrad?",answer:"das Auto"}]},
+ listening:{title:"Wer ist älter?", script:[{s:"A",l:"Wer ist älter, du oder dein Bruder?"},{s:"B",l:"Mein Bruder ist älter als ich."},{s:"A",l:"Und wer ist größer?"},{s:"B",l:"Ich bin größer."}],
+   blanks:[{prompt:"Mein Bruder ist ___ als ich.",answer:"älter"},{prompt:"Ich bin ___.",answer:"größer"}]},
+ speaking:["Vergleiche dich mit einem Geschwister oder Freund (älter/jünger, größer/kleiner).","Vergleiche zwei Verkehrsmittel (schneller/langsamer).","Sag, was für dich 'am besten' ist (Essen, Hobby, etc.)."],
+ quiz:[{q:"Komparativ von 'klein'?",opts:["kleiner","kleinst","am kleinsten","kleinerer"],correct:0},{q:"Komparativ von 'gut' (unregelmäßig)?",opts:["guter","besser","gutter","am besten"],correct:1},{q:"'als' bedeutet?",opts:["and","than","but","or"],correct:1},{q:"\"Older\" auf Deutsch?",opts:["älter","jünger","größer","kleiner"],correct:0},{q:"\"Better\" auf Deutsch?",opts:["besser","gut","schlecht","schlechter"],correct:0}]},
+
+{day:29, title:"Future expressions", focus:"A1 most often expresses the future with present tense + a time word; 'werden' + infinitive is the formal option.",
+ rule:["Simplest future: Präsens + time word — <span class='mono'>Ich fahre morgen nach Berlin.</span>","Formal future: <span class='mono'>werden</span> + infinitive at the end — <span class='mono'>Ich werde morgen fahren.</span>","werden: ich werde, du wirst, er wird, wir werden, ihr werdet, sie werden."],
+ examples:[{de:"Ich fahre morgen nach Berlin.",en:"I'm going to Berlin tomorrow."},{de:"Nächste Woche lerne ich mehr Deutsch.",en:"Next week I'll learn more German."},{de:"Ich werde das Buch lesen.",en:"I will read the book."},{de:"Wir werden nächstes Jahr nach Deutschland gehen.",en:"We will go to Germany next year."}],
+ grammarEx:[{prompt:"Ich ___ (werden) morgen arbeiten.",answer:"werde"},{prompt:"Wir ___ (werden) nächstes Jahr reisen.",answer:"werden"},{prompt:"Nächste Woche ___ (fahren) ich nach Lahore.",answer:"fahre"},{prompt:"Er ___ (werden) bald Deutsch sprechen können.",answer:"wird"}],
+ vocab:[{de:"nächste Woche",en:"next week"},{de:"nächstes Jahr",en:"next year"},{de:"bald",en:"soon"},{de:"später",en:"later"},{de:"werden",en:"will / to become"},{de:"die Zukunft",en:"the future"}],
+ vocabEx:[{prompt:"Translate: next week",answer:"nächste Woche"},{prompt:"Translate: next year",answer:"nächstes Jahr"},{prompt:"Translate: soon",answer:"bald"},{prompt:"Translate: future",answer:"die Zukunft"}],
+ reading:{title:"Meine Pläne", text:"Nächste Woche fahre ich nach Lahore. Nächstes Jahr werde ich nach Deutschland gehen. Bald werde ich besser Deutsch sprechen können.",
+   questions:[{prompt:"Wohin fährt er nächste Woche?",answer:"nach Lahore"},{prompt:"Wohin geht er nächstes Jahr?",answer:"nach Deutschland"}]},
+ listening:{title:"Zukunftspläne", script:[{s:"A",l:"Was machst du nächste Woche?"},{s:"B",l:"Ich fahre nach Lahore."},{s:"A",l:"Und nächstes Jahr?"},{s:"B",l:"Ich werde nach Deutschland gehen."}],
+   blanks:[{prompt:"Was machst du ___ Woche?",answer:"nächste"},{prompt:"Ich ___ nach Deutschland gehen.",answer:"werde"}]},
+ speaking:["Sag deine Pläne für nächste Woche.","Sag deine Pläne für nächstes Jahr (Studium in Deutschland).","Beschreibe, was du 'bald' lernen möchtest."],
+ quiz:[{q:"'werden' + Infinitiv drückt aus?",opts:["Vergangenheit","Gegenwart","Zukunft","Befehl"],correct:2},{q:"Ich ___ morgen arbeiten.",opts:["werde","wirst","wird","werdet"],correct:0},{q:"'nächste Woche' bedeutet?",opts:["last week","this week","next week","every week"],correct:2},{q:"\"Soon\" auf Deutsch?",opts:["bald","später","nächste Woche","die Zukunft"],correct:0},{q:"\"Future\" auf Deutsch?",opts:["die Zukunft","die Woche","das Jahr","bald"],correct:0}]},
+
+{day:30, title:"At the restaurant", focus:"Polite ordering phrases built on the accusative case.",
+ rule:["'Ich hätte gern...' = polite 'I'd like...' — softer than 'Ich will'.","'Die Speisekarte, bitte.' / 'Die Rechnung, bitte.' / 'Zahlen, bitte.'","'Was empfehlen Sie?' = What do you recommend?"],
+ examples:[{de:"Ich hätte gern eine Suppe.",en:"I'd like a soup."},{de:"Die Rechnung, bitte.",en:"The bill, please."},{de:"Was empfehlen Sie?",en:"What do you recommend?"},{de:"Das schmeckt gut.",en:"That tastes good."}],
+ grammarEx:[{prompt:"Ich ___ (hätte) gern einen Kaffee.",answer:"hätte"},{prompt:"Die ___, bitte. (bill)",answer:"Rechnung"},{prompt:"Was ___ (empfehlen) Sie?",answer:"empfehlen"},{prompt:"Das ___ (schmecken) sehr gut.",answer:"schmeckt"}],
+ vocab:[{de:"die Speisekarte",en:"menu"},{de:"die Rechnung",en:"bill"},{de:"bestellen",en:"to order"},{de:"schmecken",en:"to taste"},{de:"das Restaurant",en:"restaurant"},{de:"der Kellner",en:"waiter"}],
+ vocabEx:[{prompt:"Translate: menu",answer:"die Speisekarte"},{prompt:"Translate: bill",answer:"die Rechnung"},{prompt:"Translate: to order",answer:"bestellen"},{prompt:"Translate: waiter",answer:"der Kellner"}],
+ reading:{title:"Im Restaurant", text:"Wir gehen ins Restaurant. Der Kellner bringt die Speisekarte. Ich bestelle eine Suppe und ein Brot. Das Essen schmeckt sehr gut. Am Ende zahlen wir die Rechnung.",
+   questions:[{prompt:"Was bringt der Kellner?",answer:"die Speisekarte"},{prompt:"Was bestellt er?",answer:"eine Suppe und ein Brot"}]},
+ listening:{title:"Bestellung", script:[{s:"A",l:"Was möchten Sie bestellen?"},{s:"B",l:"Ich hätte gern eine Suppe, bitte."},{s:"A",l:"Und zu trinken?"},{s:"B",l:"Ein Wasser, bitte."}],
+   blanks:[{prompt:"Was möchten Sie ___?",answer:"bestellen"},{prompt:"Ich hätte ___ eine Suppe.",answer:"gern"}]},
+ speaking:["Bestelle ein Essen und ein Getränk im Restaurant (Rollenspiel).","Sag, was dir am besten schmeckt.","Frag nach der Rechnung."],
+ quiz:[{q:"\"Menu\" auf Deutsch?",opts:["die Rechnung","die Speisekarte","das Restaurant","der Kellner"],correct:1},{q:"\"Bill\" auf Deutsch?",opts:["die Speisekarte","die Rechnung","bestellen","schmecken"],correct:1},{q:"'Ich hätte gern...' bedeutet?",opts:["I have","I had","I would like","I want"],correct:2},{q:"\"Waiter\" auf Deutsch?",opts:["der Kellner","das Restaurant","die Rechnung","bestellen"],correct:0},{q:"\"To order\" auf Deutsch?",opts:["schmecken","bestellen","zahlen","essen"],correct:1}]},
+
+{day:31, title:"Shopping & quantities", focus:"Quantity words sit directly before the noun, no extra case marking needed at A1.",
+ rule:["'ein Kilo Äpfel', 'ein Liter Milch', 'eine Packung Reis' — the noun after the quantity stays in its base form.","'Wie viel kostet...?' / 'Ich möchte ... kaufen.' / 'Das macht zusammen ... Euro.'"],
+ examples:[{de:"Ich möchte ein Kilo Äpfel kaufen.",en:"I'd like to buy a kilo of apples."},{de:"Wie viel kostet ein Liter Milch?",en:"How much does a liter of milk cost?"},{de:"Ich brauche eine Packung Reis.",en:"I need a packet of rice."},{de:"Das macht zusammen zehn Euro.",en:"That's ten euros altogether."}],
+ grammarEx:[{prompt:"Ich möchte ein ___ Äpfel. (kilo)",answer:"Kilo"},{prompt:"Wie viel kostet ein ___ Milch? (liter)",answer:"Liter"},{prompt:"Ich brauche eine ___ Reis. (packet)",answer:"Packung"},{prompt:"Das macht ___ zehn Euro. (together)",answer:"zusammen"}],
+ vocab:[{de:"das Kilo",en:"kilo"},{de:"der Liter",en:"liter"},{de:"das Stück",en:"piece"},{de:"die Packung",en:"packet"},{de:"der Markt",en:"market"},{de:"kaufen",en:"to buy"}],
+ vocabEx:[{prompt:"Translate: kilo",answer:"das Kilo"},{prompt:"Translate: liter",answer:"der Liter"},{prompt:"Translate: piece",answer:"das Stück"},{prompt:"Translate: to buy",answer:"kaufen"}],
+ reading:{title:"Auf dem Markt", text:"Auf dem Markt kaufe ich ein Kilo Äpfel und einen Liter Milch. Eine Packung Reis kostet zwei Euro. Das macht zusammen zwölf Euro.",
+   questions:[{prompt:"Was kauft er auf dem Markt?",answer:"Äpfel und Milch"},{prompt:"Wie viel kostet alles zusammen?",answer:"zwölf Euro"}]},
+ listening:{title:"Beim Einkaufen", script:[{s:"A",l:"Was möchten Sie kaufen?"},{s:"B",l:"Ich möchte ein Kilo Äpfel und eine Packung Reis."},{s:"A",l:"Das macht zusammen acht Euro."}],
+   blanks:[{prompt:"Was möchten Sie ___?",answer:"kaufen"},{prompt:"Das macht ___ acht Euro.",answer:"zusammen"}]},
+ speaking:["Spiele ein Einkaufsgespräch auf dem Markt.","Sag, was du diese Woche kaufen musst.","Beschreibe deinen Lieblingsmarkt oder Supermarkt."],
+ quiz:[{q:"\"Kilo\" auf Deutsch?",opts:["das Kilo","der Liter","das Stück","die Packung"],correct:0},{q:"\"To buy\" auf Deutsch?",opts:["kaufen","verkaufen","bestellen","zahlen"],correct:0},{q:"'zusammen' bedeutet?",opts:["separately","together","alone","never"],correct:1},{q:"\"Market\" auf Deutsch?",opts:["der Markt","das Restaurant","der Kellner","die Küche"],correct:0},{q:"\"Piece\" auf Deutsch?",opts:["das Stück","das Kilo","der Liter","die Packung"],correct:0}]},
+
+{day:32, title:"Directions, in depth", focus:"Giving directions uses the imperative plus a small set of fixed location phrases.",
+ rule:["Imperative for directions: 'Geh geradeaus!' 'Biege links/rechts ab!'","Key words: geradeaus (straight ahead), links (left), rechts (right), an der Ampel (at the traffic light), die Kreuzung (intersection), die Ecke (corner)."],
+ examples:[{de:"Geh geradeaus bis zur Kreuzung.",en:"Go straight ahead to the intersection."},{de:"Biege an der Ampel links ab.",en:"Turn left at the traffic light."},{de:"Die Bank ist rechts neben der Post.",en:"The bank is to the right of the post office."},{de:"Entschuldigung, wo ist der Bahnhof?",en:"Excuse me, where is the train station?"}],
+ grammarEx:[{prompt:"Geh ___. (straight ahead)",answer:"geradeaus"},{prompt:"Biege ___ ab. (left)",answer:"links"},{prompt:"Die Bank ist ___ neben der Post. (right)",answer:"rechts"},{prompt:"Wo ist ___? (the intersection)",answer:"die Kreuzung"}],
+ vocab:[{de:"geradeaus",en:"straight ahead"},{de:"links",en:"left"},{de:"rechts",en:"right"},{de:"die Ampel",en:"traffic light"},{de:"die Kreuzung",en:"intersection"},{de:"die Ecke",en:"corner"}],
+ vocabEx:[{prompt:"Translate: straight ahead",answer:"geradeaus"},{prompt:"Translate: left",answer:"links"},{prompt:"Translate: right",answer:"rechts"},{prompt:"Translate: intersection",answer:"die Kreuzung"}],
+ reading:{title:"Wegbeschreibung", text:"Entschuldigung, wo ist die Post? Gehen Sie geradeaus bis zur Ampel. Dann biegen Sie links ab. Die Post ist an der Ecke, rechts neben der Bank.",
+   questions:[{prompt:"Wo muss man links abbiegen?",answer:"an der Ampel"},{prompt:"Wo ist die Post?",answer:"an der Ecke, rechts neben der Bank"}]},
+ listening:{title:"Zum Bahnhof", script:[{s:"A",l:"Entschuldigung, wo ist der Bahnhof?"},{s:"B",l:"Gehen Sie geradeaus und dann rechts an der Kreuzung."}],
+   blanks:[{prompt:"Wo ist der ___?",answer:"Bahnhof"},{prompt:"Gehen Sie ___ und dann rechts.",answer:"geradeaus"}]},
+ speaking:["Beschreibe den Weg von deinem Haus zum nächsten Geschäft.","Frag nach dem Weg zum Bahnhof (Rollenspiel).","Gib einem Freund Wegbeschreibungen zu deiner Lieblingsstadt."],
+ quiz:[{q:"\"Straight ahead\" auf Deutsch?",opts:["links","rechts","geradeaus","die Ecke"],correct:2},{q:"\"Traffic light\" auf Deutsch?",opts:["die Ampel","die Kreuzung","die Ecke","die Post"],correct:0},{q:"\"Left\" auf Deutsch?",opts:["rechts","links","geradeaus","die Ecke"],correct:1},{q:"\"Intersection\" auf Deutsch?",opts:["die Kreuzung","die Ampel","die Ecke","die Post"],correct:0},{q:"\"Corner\" auf Deutsch?",opts:["die Ecke","die Kreuzung","die Ampel","geradeaus"],correct:0}]},
+
+{day:33, title:"Alphabet, spelling & phone calls", focus:"Spelling names aloud and basic telephone etiquette.",
+ rule:["'Wie schreibt man das?' / 'Können Sie das buchstabieren?' — asking how something is spelled.","Phone opener: 'Hallo, hier ist [Name].' — 'hier ist' literally 'here is', used for self-identification on the phone."],
+ examples:[{de:"Mein Name wird A-L-I geschrieben.",en:"My name is spelled A-L-I."},{de:"Können Sie das buchstabieren?",en:"Can you spell that?"},{de:"Hallo, hier ist Ali. Ist Frau Schmidt da?",en:"Hello, this is Ali. Is Mrs. Schmidt there?"},{de:"Ich rufe später noch einmal an.",en:"I'll call again later."}],
+ grammarEx:[{prompt:"Können Sie das ___? (spell)",answer:"buchstabieren"},{prompt:"Wie ___ man das? (writes)",answer:"schreibt"},{prompt:"Ich ___ später an. (call)",answer:"rufe"},{prompt:"Hallo, ___ ist Ali. (here)",answer:"hier"}],
+ vocab:[{de:"buchstabieren",en:"to spell"},{de:"anrufen",en:"to call"},{de:"der Anruf",en:"phone call"},{de:"das Telefon",en:"telephone"},{de:"hier",en:"here"},{de:"später",en:"later"}],
+ vocabEx:[{prompt:"Translate: to spell",answer:"buchstabieren"},{prompt:"Translate: to call",answer:"anrufen"},{prompt:"Translate: phone call",answer:"der Anruf"},{prompt:"Translate: later",answer:"später"}],
+ reading:{title:"Telefongespräch", text:"Hallo, hier ist Ali. Ich möchte mit Frau Schmidt sprechen. Können Sie meinen Namen buchstabieren? A-L-I. Ich rufe später noch einmal an.",
+   questions:[{prompt:"Wer ruft an?",answer:"Ali"},{prompt:"Was macht er später?",answer:"noch einmal anrufen"}]},
+ listening:{title:"Anruf", script:[{s:"A",l:"Hallo, hier ist Tom. Ist Sara da?"},{s:"B",l:"Nein, sie ist nicht da. Rufen Sie später an."}],
+   blanks:[{prompt:"Hallo, ___ ist Tom.",answer:"hier"},{prompt:"Rufen Sie ___ an.",answer:"später"}]},
+ speaking:["Buchstabiere deinen Namen auf Deutsch.","Übe ein Telefongespräch: Stell dich vor und frag nach jemandem.","Sag, wann du jemanden später anrufen wirst."],
+ quiz:[{q:"\"To spell\" auf Deutsch?",opts:["anrufen","buchstabieren","schreiben","sprechen"],correct:1},{q:"\"To call\" auf Deutsch?",opts:["anrufen","buchstabieren","hören","sprechen"],correct:0},{q:"'später' bedeutet?",opts:["now","later","never","today"],correct:1},{q:"\"Phone call\" auf Deutsch?",opts:["der Anruf","das Telefon","anrufen","hier"],correct:0},{q:"\"Here\" auf Deutsch?",opts:["hier","später","dort","da"],correct:0}]},
+
+{day:34, title:"Ordinal numbers & special dates", focus:"Ordinals turn cardinal numbers into 'first, second, third...' for dates and rankings.",
+ rule:["Most ordinals: number + <span class='mono'>-te</span> (vier → vierte). 1, 3, 7, 8 are irregular: erste, dritte, siebte, achte.","Used with 'der' for dates: 'der zehnte Mai'.","Celebration words: der Geburtstag, die Hochzeit, der Feiertag, feiern."],
+ examples:[{de:"Heute ist der erste Januar.",en:"Today is January 1st."},{de:"Mein Geburtstag ist der vierzehnte März.",en:"My birthday is March 14th."},{de:"Wir feiern seine Hochzeit.",en:"We're celebrating his wedding."},{de:"Welcher Feiertag ist das?",en:"Which holiday is that?"}],
+ grammarEx:[{prompt:"1. → ___",answer:"erste"},{prompt:"3. → ___",answer:"dritte"},{prompt:"7. → ___",answer:"siebte"},{prompt:"Heute ist der ___ (10th) Mai.",answer:"zehnte"}],
+ vocab:[{de:"erste",en:"first"},{de:"zweite",en:"second"},{de:"dritte",en:"third"},{de:"die Hochzeit",en:"wedding"},{de:"der Feiertag",en:"holiday"},{de:"feiern",en:"to celebrate"}],
+ vocabEx:[{prompt:"Translate: first",answer:"erste"},{prompt:"Translate: second",answer:"zweite"},{prompt:"Translate: wedding",answer:"die Hochzeit"},{prompt:"Translate: to celebrate",answer:"feiern"}],
+ reading:{title:"Ein besonderer Tag", text:"Heute ist der dritte Oktober, ein Feiertag in Deutschland. Wir feiern auch die Hochzeit meines Freundes am zehnten Oktober.",
+   questions:[{prompt:"Was ist heute?",answer:"der dritte Oktober, ein Feiertag"},{prompt:"Wann ist die Hochzeit?",answer:"am zehnten Oktober"}]},
+ listening:{title:"Welches Datum?", script:[{s:"A",l:"Welches Datum ist heute?"},{s:"B",l:"Heute ist der dritte Oktober."},{s:"A",l:"Ist das ein Feiertag?"},{s:"B",l:"Ja, genau."}],
+   blanks:[{prompt:"Welches ___ ist heute?",answer:"Datum"},{prompt:"Heute ist der ___ Oktober.",answer:"dritte"}]},
+ speaking:["Sag das heutige Datum mit der Ordinalzahl.","Sag dein Geburtstagsdatum mit Ordinalzahl.","Beschreibe einen Feiertag in deinem Land."],
+ quiz:[{q:"'erste' bedeutet?",opts:["first","third","seventh","tenth"],correct:0},{q:"Ordinalzahl von '7'?",opts:["siebente","siebte","siebzehn","sieben"],correct:1},{q:"\"Wedding\" auf Deutsch?",opts:["der Feiertag","die Hochzeit","der Geburtstag","feiern"],correct:1},{q:"\"To celebrate\" auf Deutsch?",opts:["feiern","buchstabieren","bestellen","kaufen"],correct:0},{q:"\"Holiday\" auf Deutsch?",opts:["der Feiertag","die Hochzeit","der Geburtstag","das Datum"],correct:0}]},
+
+{day:35, title:"Final review & mock exam", focus:"Every topic from Day 1 to Day 34, combined — the closest thing here to a real Goethe Start Deutsch 1 checkpoint.",
+ rule:["Verbs: Präsens, stem-changing, modals, imperative, Perfekt.","Cases: nominative, accusative, dative + all prepositions.","Everyday domains: numbers, time, dates, weather, clothing, health, hobbies, restaurant, shopping, directions, phone calls, comparisons, future plans."],
+ examples:[{de:"Ich habe letzte Woche ein Geschenk für meine Schwester gekauft.",en:"I bought a gift for my sister last week. (Perfekt + dative-ish context)"},{de:"Kannst du mir bitte den Weg zum Bahnhof zeigen?",en:"Can you show me the way to the station? (modal + dative pronoun)"},{de:"Im Sommer ist es bei uns sehr heiß.",en:"In summer it's very hot where we live."},{de:"Mein Bruder ist älter als ich, aber ich bin größer.",en:"My brother is older than me, but I'm taller."}],
+ grammarEx:[{prompt:"Ich ___ (haben) gestern ein Geschenk gekauft. (Perfekt helper)",answer:"habe"},{prompt:"Sie ___ (sein) im Sommer nach Berlin gefahren.",answer:"ist"},{prompt:"Mein Geburtstag ist ___ (on) vierzehnten März.",answer:"am"},{prompt:"Das kostet ___ (30) Euro.",answer:"dreißig"},{prompt:"Es ist ___ (2:30, informal)",answer:"halb drei"}],
+ vocab:[{de:"das Geschenk",en:"gift"},{de:"das Wochenende",en:"weekend"},{de:"das Wetter",en:"weather"},{de:"treffen",en:"to meet"},{de:"die Jacke",en:"jacket"},{de:"der Geburtstag",en:"birthday"}],
+ vocabEx:[{prompt:"Translate: gift",answer:"das Geschenk"},{prompt:"Translate: weekend",answer:"das Wochenende"},{prompt:"Translate: to meet",answer:"treffen"},{prompt:"Translate: birthday",answer:"der Geburtstag"}],
+ reading:{title:"Alis Woche", text:"Ich heiße Ali und bin 25 Jahre alt. Ich wohne mit meiner Familie in Sargodha. Jeden Tag stehe ich um sieben Uhr auf und fahre mit dem Bus zur Arbeit. Am Wochenende gehe ich gern einkaufen oder treffe Freunde. Letzte Woche habe ich ein Geschenk für meine Schwester gekauft, eine blaue Jacke, Größe achtunddreißig. Im Sommer ist das Wetter hier sehr heiß, aber ich mag es trotzdem. Mein Geburtstag ist am vierzehnten März, und ich freue mich schon darauf.",
+   questions:[{prompt:"Wie alt ist Ali?",answer:"25 Jahre"},{prompt:"Was hat er für seine Schwester gekauft?",answer:"eine blaue Jacke"},{prompt:"Wann ist sein Geburtstag?",answer:"am vierzehnten März"}]},
+ listening:{title:"Wochenendpläne", script:[{s:"A",l:"Was machst du am Wochenende?"},{s:"B",l:"Ich gehe einkaufen und treffe Freunde."},{s:"A",l:"Wie ist das Wetter diese Woche?"},{s:"B",l:"Es ist heiß, aber am Montag soll es regnen."}],
+   blanks:[{prompt:"Was machst du am ___?",answer:"Wochenende"},{prompt:"Es ist ___, aber am Montag soll es regnen.",answer:"heiß"},{prompt:"Ich treffe ___.",answer:"Freunde"}]},
+ speaking:["Stellen Sie sich vor: Name, Alter, Familie, Beruf, Stadt. (Goethe Sprechen Teil 1)","Stellen Sie drei Fragen zu einem Thema, z.B. Hobby oder Wohnort. (Teil 2)","Bitten Sie um etwas und reagieren Sie auf eine Antwort, z.B. einen Termin vereinbaren. (Teil 3)"],
+ quiz:[{q:"Ich ___ gestern Deutsch gelernt.",opts:["habe","bin","hat","ist"],correct:0},{q:"Sie ___ nach Berlin gefahren.",opts:["hat","ist","habe","bin"],correct:1},{q:"Es kostet ___ Euro. (15)",opts:["fünfzehn","fünfzig","fünf","fünfzehnzig"],correct:0},{q:"6:30 informell?",opts:["halb sechs","halb sieben","Viertel vor drei","drei Uhr"],correct:1},{q:"Im Sommer ist es oft ___.",opts:["kalt","heiß","nass","bewölkt"],correct:1},{q:"Geh ___ bis zur Ampel. (straight ahead)",opts:["links","rechts","geradeaus","zurück"],correct:2},{q:"\"Gift\" auf Deutsch?",opts:["das Geschenk","das Wochenende","die Jacke","der Geburtstag"],correct:0},{q:"\"To meet\" auf Deutsch?",opts:["treffen","kaufen","feiern","bestellen"],correct:0}]}
+];
+
+let current = 0;
+const completed = new Set();
+
+function buildSidebar(){
+  const list = document.getElementById('day-list');
+  list.innerHTML = '';
+  days.forEach((d,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'day-btn' + (i===current ? ' active' : '') + (completed.has(i) ? ' done' : '');
+    btn.innerHTML = `<span class="num">D${d.day}</span><span>${d.title}</span><span class="check">✓</span>`;
+    btn.addEventListener('click', ()=>{ current = i; render(); });
+    list.appendChild(btn);
+  });
+}
+
+function renderExerciseList(containerId, list, prefix){
+  const html = list.map((ex,i)=>`
+    <div class="ex-item">
+      <div class="prompt">${i+1}. ${ex.prompt}${ex.note ? ` <span class="hint">(${ex.note})</span>` : ''}</div>
+      <input type="text" id="${prefix}-ans-${i}" autocomplete="off" spellcheck="false" placeholder="type here" aria-label="Answer ${i+1}">
+      <button class="check-btn" data-prefix="${prefix}" data-i="${i}">Check</button>
+      <div class="feedback" id="${prefix}-fb-${i}" role="status"></div>
+    </div>
+  `).join('');
+  const el = document.getElementById(containerId);
+  el.innerHTML = html;
+  el.querySelectorAll('.check-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const i = btn.dataset.i;
+      const p = btn.dataset.prefix;
+      const input = document.getElementById(`${p}-ans-${i}`);
+      const fb = document.getElementById(`${p}-fb-${i}`);
+      const given = input.value.trim().toLowerCase();
+      const correct = list[i].answer.toLowerCase();
+      if(given === correct){ fb.textContent = '✓ Correct.'; fb.className = 'feedback correct'; }
+      else{ fb.textContent = given === '' ? `No answer — correct: "${list[i].answer}"` : `Not quite — correct: "${list[i].answer}"`; fb.className = 'feedback wrong'; }
+    });
+  });
+}
+
+function render(){
+  const d = days[current];
+  document.getElementById('day-eyebrow').textContent = `Day ${d.day} of ${days.length} · 2 hours`;
+  document.getElementById('day-title').textContent = d.title;
+  document.getElementById('day-focus').textContent = d.focus;
+
+  document.getElementById('day-rule').innerHTML = `<ul class="rule-list">${d.rule.map(r=>`<li>${r}</li>`).join('')}</ul>`;
+  document.getElementById('day-examples').innerHTML = d.examples.map(e=>`<div class="ex"><span class="de">${e.de}</span><span class="en">${e.en}</span></div>`).join('');
+  renderExerciseList('day-grammar-ex', d.grammarEx, 'g');
+
+  document.getElementById('day-vocab').innerHTML = d.vocab.map(v=>`<div class="vocab-card"><div class="de">${v.de}</div><div class="en">${v.en}</div></div>`).join('');
+  renderExerciseList('day-vocab-ex', d.vocabEx, 'v');
+
+  document.getElementById('day-reading').innerHTML = `<div class="ptitle">${d.reading.title}</div><div class="mono">${d.reading.text}</div>`;
+  renderExerciseList('day-reading-ex', d.reading.questions, 'r');
+
+  document.getElementById('day-listening').innerHTML = `<div class="ptitle">${d.listening.title}</div>` + d.listening.script.map(s=>`<div class="script-line"><span class="speaker">${s.s}:</span><span>${s.l}</span></div>`).join('');
+  renderExerciseList('day-listening-ex', d.listening.blanks, 'l');
+
+  document.getElementById('day-speaking').innerHTML = d.speaking.map(s=>`<li>${s}</li>`).join('');
+
+  const quizHtml = d.quiz.map((item,qi)=>{
+    const opts = item.opts.map((o,oi)=>`<label class="opt" data-qi="${qi}" data-oi="${oi}"><input type="radio" name="q${qi}" value="${oi}">${o}</label>`).join('');
+    return `<div class="quiz-item"><div class="q"><span class="num">${qi+1}</span>${item.q}</div><div class="opts">${opts}</div></div>`;
+  }).join('');
+  document.getElementById('day-quiz').innerHTML = quizHtml;
+
+  const result = document.getElementById('quiz-result');
+  result.classList.remove('show');
+  const submitBtn = document.getElementById('submit-quiz');
+  submitBtn.disabled = false;
+  submitBtn.onclick = ()=>{
+    let score = 0;
+    d.quiz.forEach((item, qi)=>{
+      const selected = document.querySelector(`input[name="q${qi}"]:checked`);
+      const selIndex = selected ? parseInt(selected.value) : -1;
+      if(selIndex === item.correct) score++;
+      document.querySelectorAll(`label[data-qi="${qi}"]`).forEach(lbl=>{
+        const oi = parseInt(lbl.dataset.oi);
+        lbl.classList.add('locked');
+        if(oi === item.correct) lbl.classList.add('right');
+        else if(oi === selIndex) lbl.classList.add('wrong-pick');
+        lbl.querySelector('input').disabled = true;
+      });
+    });
+    document.getElementById('quiz-score').textContent = `${score} / ${d.quiz.length}`;
+    document.getElementById('quiz-msg').textContent = score === d.quiz.length
+      ? 'Perfect score — move on to the next day.'
+      : score >= Math.ceil(d.quiz.length*0.6)
+      ? 'Solid. Revisit the missed item(s), then move on.'
+      : 'Worth re-reading the rule box and vocabulary above before continuing.';
+    result.classList.add('show');
+    submitBtn.disabled = true;
+    if(score >= Math.ceil(d.quiz.length*0.6)) completed.add(current);
+    buildSidebar();
+  };
+
+  document.getElementById('prev-btn').disabled = current === 0;
+  document.getElementById('next-btn').disabled = current === days.length-1;
+  buildSidebar();
+  window.scrollTo({top:0, behavior:'auto'});
+}
+
+document.getElementById('prev-btn').addEventListener('click', ()=>{ if(current>0){current--; render();} });
+document.getElementById('next-btn').addEventListener('click', ()=>{ if(current<days.length-1){current++; render();} });
+
+render();
+</script>
+
+</body>
+</html>
