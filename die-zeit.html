@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>German Practice: Telling Time (Uhrzeit)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A4A; --parchment:#F6F1E7; --gold:#C9A227; --brick:#A23B2E;
+    --sage:#4F7359; --line:#DDD3BE; --ink-soft:#3F4F6E; --card:#FFFDF8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--parchment); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55;}
+  h1,h2,h3{font-family:'Fraunces',serif; margin:0; color:var(--ink); letter-spacing:-0.01em;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  p{margin:0 0 12px;}
+  main{max-width:820px; margin:0 auto; padding:56px 28px 80px;}
+  @media (max-width:600px){main{padding:36px 18px 60px;}}
+
+  .eyebrow{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--brick); margin-bottom:14px;}
+  h1.title{font-size:clamp(28px,4vw,40px); font-weight:600; max-width:22ch;}
+  .sub{margin-top:14px; color:var(--ink-soft); font-size:16px; max-width:60ch;}
+  .note-box{font-size:13px; color:var(--ink-soft); background:rgba(201,162,39,0.1); border:1px solid rgba(201,162,39,0.3); border-radius:8px; padding:10px 14px; margin-top:16px;}
+
+  section{margin-top:48px; padding-top:6px; border-top:1px solid var(--line);}
+  .sec-head{display:flex; align-items:baseline; gap:10px; margin-bottom:16px;}
+  .sec-head h2{font-size:23px; font-weight:600;}
+  .sec-head .n{font-family:'JetBrains Mono',monospace; font-size:12px; color:#fff; background:var(--ink); padding:2px 8px; border-radius:20px;}
+
+  .rule-list{list-style:none; padding:0; margin:0 0 16px; display:flex; flex-direction:column; gap:9px;}
+  .rule-list li{display:flex; gap:10px; align-items:flex-start; font-size:15px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 14px;}
+  .rule-list li::before{content:"§"; color:var(--gold); font-weight:700; font-family:'JetBrains Mono',monospace;}
+
+  .examples{display:flex; flex-direction:column; gap:9px; margin-bottom:20px;}
+  .ex{display:flex; gap:14px; align-items:baseline; padding:10px 16px; background:var(--card); border:1px solid var(--line); border-radius:8px; font-family:'JetBrains Mono',monospace; font-size:14.5px; flex-wrap:wrap;}
+  .ex .de{flex:1; min-width:180px; font-weight:600;}
+  .ex .en{color:var(--ink-soft); font-family:'Inter',sans-serif; font-size:13px; font-style:italic;}
+
+  .clock-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-bottom:20px;}
+  .clock-card{background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 14px;}
+  .clock-card .d{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:14px; color:var(--brick);}
+  .clock-card .w{font-family:'JetBrains Mono',monospace; font-size:13.5px; margin-top:3px;}
+
+  .ex-item{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:12px;}
+  .ex-item .prompt{font-family:'JetBrains Mono',monospace; font-size:15px; margin-bottom:9px;}
+  .ex-item input[type=text]{font-family:'JetBrains Mono',monospace; font-size:14.5px; padding:7px 10px; width:220px; max-width:100%; border:1.5px solid var(--line); border-radius:6px; background:#fff; color:var(--ink);}
+  .ex-item input[type=text]:focus-visible{outline:3px solid rgba(201,162,39,.4); border-color:var(--gold);}
+  .feedback{margin-top:7px; font-size:13px; min-height:18px; font-weight:600;}
+  .feedback.correct{color:var(--sage);}
+  .feedback.wrong{color:var(--brick);}
+  .check-btn, .submit-btn{font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px; color:#fff; background:var(--ink); border:none; padding:8px 16px; border-radius:7px; cursor:pointer;}
+  .check-btn:hover, .submit-btn:hover{background:var(--ink-soft);}
+
+  .quiz-item{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px; margin-bottom:14px;}
+  .quiz-item .q{font-weight:600; margin-bottom:11px; font-size:15px;}
+  .quiz-item .q .num{color:var(--brick); font-family:'JetBrains Mono',monospace; margin-right:8px;}
+  .opts{display:flex; flex-direction:column; gap:7px;}
+  .opt{display:flex; align-items:center; gap:10px; padding:8px 12px; border:1.5px solid var(--line); border-radius:7px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:14px;}
+  .opt:hover{border-color:var(--gold);}
+  .opt input{accent-color:var(--ink);}
+  .opt.locked.right{border-color:var(--sage); background:rgba(79,115,89,0.08);}
+  .opt.locked.wrong-pick{border-color:var(--brick); background:rgba(162,59,46,0.08);}
+
+  #quiz-result{margin-top:18px; padding:18px 20px; border-radius:10px; background:var(--ink); color:#fff; display:none;}
+  #quiz-result.show{display:block;}
+  #quiz-result h3{color:#fff; font-size:19px; margin-bottom:5px;}
+  #quiz-result p{color:#E7E0D2; margin-bottom:0;}
+
+  footer{margin-top:56px; font-size:13px; color:var(--ink-soft); text-align:center;}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">A1 German · Uhrzeit</div>
+  <h1 class="title">Telling time: nach, vor, Viertel, halb, kurz</h1>
+  <p class="sub">Practice for asking and giving the time — both the plain digital style and the everyday spoken style with nach, vor, Viertel, halb, and kurz.</p>
+  <div class="note-box">Typing tip: write <span class="mono">ae, oe, ue, ss</span> instead of <span class="mono">ä, ö, ü, ß</span> — both spellings are accepted automatically.</div>
+
+  <!-- 1. ASKING THE TIME -->
+  <section id="s1">
+    <div class="sec-head"><span class="n">1</span><h2>Asking the Time</h2></div>
+    <ul class="rule-list">
+      <li><span class="mono">Wie spaet ist es?</span> and <span class="mono">Wie viel Uhr ist es?</span> both mean "What time is it?" — completely interchangeable.</li>
+      <li>Answer always starts with <span class="mono">Es ist...</span> — "It is..."</li>
+    </ul>
+    <div class="examples">
+      <div class="ex"><span class="de">Wie spaet ist es?</span><span class="en">What time is it?</span></div>
+      <div class="ex"><span class="de">Wie viel Uhr ist es?</span><span class="en">What time is it? (alternative)</span></div>
+      <div class="ex"><span class="de">Es ist drei Uhr.</span><span class="en">It's three o'clock.</span></div>
+    </div>
+    <div id="ex-asking"></div>
+  </section>
+
+  <!-- 2. PLAIN / DIGITAL TIME -->
+  <section id="s2">
+    <div class="sec-head"><span class="n">2</span><h2>Plain (Digital) Time</h2></div>
+    <ul class="rule-list">
+      <li>Formal/digital style: <span class="mono">Es ist [Stunde] Uhr [Minuten].</span> — used on official announcements, TV, timetables.</li>
+      <li>This style uses the 24-hour clock and never needs nach/vor/Viertel/halb — just say the numbers straight.</li>
+      <li>If the minutes are zero, you can drop them: <span class="mono">Es ist vierzehn Uhr.</span> (14:00)</li>
+    </ul>
+    <div class="examples">
+      <div class="ex"><span class="de">Es ist zwei Uhr dreissig.</span><span class="en">It's 2:30. (2 o'clock, 30 minutes)</span></div>
+      <div class="ex"><span class="de">Es ist vierzehn Uhr fuenfzehn.</span><span class="en">It's 14:15.</span></div>
+      <div class="ex"><span class="de">Es ist neun Uhr.</span><span class="en">It's 9:00.</span></div>
+      <div class="ex"><span class="de">Es ist einundzwanzig Uhr vierzig.</span><span class="en">It's 21:40.</span></div>
+    </div>
+    <div id="ex-digital"></div>
+  </section>
+
+  <!-- 3. NACH / VOR / VIERTEL / HALB -->
+  <section id="s3">
+    <div class="sec-head"><span class="n">3</span><h2>Everyday Spoken Time: nach, vor, Viertel, halb</h2></div>
+    <ul class="rule-list">
+      <li><span class="mono">nach</span> = "past/after" — minutes after the hour: <span class="mono">fuenf nach zwei</span> = 2:05.</li>
+      <li><span class="mono">vor</span> = "to/before" — minutes before the next hour: <span class="mono">fuenf vor drei</span> = 2:55 (5 minutes before 3).</li>
+      <li><span class="mono">Viertel nach</span> = quarter past: <span class="mono">Viertel nach zwei</span> = 2:15.</li>
+      <li><span class="mono">Viertel vor</span> = quarter to: <span class="mono">Viertel vor drei</span> = 2:45.</li>
+      <li><span class="mono">halb</span> is the trap: it points to the coming hour, not the current one — <span class="mono">halb drei</span> = 2:30 (halfway TO three), not "half past two."</li>
+    </ul>
+    <div class="clock-grid">
+      <div class="clock-card"><div class="d">2:05</div><div class="w">fuenf nach zwei</div></div>
+      <div class="clock-card"><div class="d">2:10</div><div class="w">zehn nach zwei</div></div>
+      <div class="clock-card"><div class="d">2:15</div><div class="w">Viertel nach zwei</div></div>
+      <div class="clock-card"><div class="d">2:20</div><div class="w">zehn vor halb drei</div></div>
+      <div class="clock-card"><div class="d">2:25</div><div class="w">fuenf vor halb drei</div></div>
+      <div class="clock-card"><div class="d">2:30</div><div class="w">halb drei</div></div>
+      <div class="clock-card"><div class="d">2:35</div><div class="w">fuenf nach halb drei</div></div>
+      <div class="clock-card"><div class="d">2:40</div><div class="w">zehn nach halb drei</div></div>
+      <div class="clock-card"><div class="d">2:45</div><div class="w">Viertel vor drei</div></div>
+      <div class="clock-card"><div class="d">2:50</div><div class="w">zehn vor drei</div></div>
+      <div class="clock-card"><div class="d">2:55</div><div class="w">fuenf vor drei</div></div>
+      <div class="clock-card"><div class="d">3:00</div><div class="w">drei Uhr</div></div>
+    </div>
+    <div id="ex-nachvor"></div>
+  </section>
+
+  <!-- 4. KURZ -->
+  <section id="s4">
+    <div class="sec-head"><span class="n">4</span><h2>kurz nach / kurz vor</h2></div>
+    <ul class="rule-list">
+      <li><span class="mono">kurz nach</span> = "just after" — a couple of minutes past the hour, not exact.</li>
+      <li><span class="mono">kurz vor</span> = "just before" — a couple of minutes before the hour.</li>
+      <li>Used when you don't need or know the exact minute — similar to English "just gone two" or "coming up on three."</li>
+    </ul>
+    <div class="examples">
+      <div class="ex"><span class="de">Es ist kurz nach zwei.</span><span class="en">It's just after two.</span></div>
+      <div class="ex"><span class="de">Es ist kurz vor drei.</span><span class="en">It's just before three.</span></div>
+      <div class="ex"><span class="de">Der Bus kommt kurz nach acht.</span><span class="en">The bus comes just after eight.</span></div>
+    </div>
+    <div id="ex-kurz"></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz-section">
+    <div class="sec-head"><span class="n">Q</span><h2>Short Quiz</h2></div>
+    <p class="sub" style="margin-bottom:20px;">Ten questions mixing digital time, nach/vor, Viertel, halb, and kurz.</p>
+    <div id="day-quiz"></div>
+    <button class="submit-btn" id="submit-quiz">Submit quiz</button>
+    <div id="quiz-result"><h3 id="quiz-score"></h3><p id="quiz-msg"></p></div>
+  </section>
+
+  <footer>German Practice · Uhrzeit — asking and telling time</footer>
+</main>
+
+<script>
+function normalize(s){
+  return s.trim().toLowerCase()
+    .replace(/[.!?]/g,'')
+    .replace(/ß/g,'ss')
+    .replace(/ä/g,'ae')
+    .replace(/ö/g,'oe')
+    .replace(/ü/g,'ue');
+}
+
+function renderExerciseList(containerId, list, prefix){
+  const html = list.map((ex,i)=>`
+    <div class="ex-item">
+      <div class="prompt">${i+1}. ${ex.prompt}</div>
+      <input type="text" id="${prefix}-ans-${i}" autocomplete="off" spellcheck="false" placeholder="type here" aria-label="Answer ${i+1}">
+      <button class="check-btn" data-prefix="${prefix}" data-i="${i}">Check</button>
+      <div class="feedback" id="${prefix}-fb-${i}" role="status"></div>
+    </div>
+  `).join('');
+  const el = document.getElementById(containerId);
+  el.innerHTML = html;
+  el.querySelectorAll('.check-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const i = btn.dataset.i;
+      const p = btn.dataset.prefix;
+      const input = document.getElementById(`${p}-ans-${i}`);
+      const fb = document.getElementById(`${p}-fb-${i}`);
+      const given = normalize(input.value);
+      const correct = normalize(list[i].answer);
+      if(given === correct){ fb.textContent = '✓ Correct.'; fb.className = 'feedback correct'; }
+      else{ fb.textContent = given === '' ? `No answer — correct: "${list[i].answer}"` : `Not quite — correct: "${list[i].answer}"`; fb.className = 'feedback wrong'; }
+    });
+  });
+}
+
+renderExerciseList('ex-asking', [
+  {prompt:"Ask what time it is (using 'spaet'):", answer:"Wie spaet ist es"},
+  {prompt:"Ask what time it is (alternative, using 'Uhr'):", answer:"Wie viel Uhr ist es"},
+  {prompt:"Answer: It is five o'clock.", answer:"Es ist fuenf Uhr"},
+  {prompt:"Answer: It is nine o'clock.", answer:"Es ist neun Uhr"}
+], 'ask');
+
+renderExerciseList('ex-digital', [
+  {prompt:"Write 5:00 in the plain/digital style:", answer:"Es ist fuenf Uhr"},
+  {prompt:"Write 2:30 in the plain/digital style:", answer:"Es ist zwei Uhr dreissig"},
+  {prompt:"Write 14:15 in the plain/digital style:", answer:"Es ist vierzehn Uhr fuenfzehn"},
+  {prompt:"Write 9:45 in the plain/digital style:", answer:"Es ist neun Uhr fuenfundvierzig"},
+  {prompt:"Write 21:05 in the plain/digital style:", answer:"Es ist einundzwanzig Uhr fuenf"},
+  {prompt:"Write 18:20 in the plain/digital style:", answer:"Es ist achtzehn Uhr zwanzig"}
+], 'digit');
+
+renderExerciseList('ex-nachvor', [
+  {prompt:"Say 4:15 the spoken way:", answer:"Viertel nach vier"},
+  {prompt:"Say 4:45 the spoken way:", answer:"Viertel vor fuenf"},
+  {prompt:"Say 4:30 the spoken way:", answer:"halb fuenf"},
+  {prompt:"Say 4:05 the spoken way:", answer:"fuenf nach vier"},
+  {prompt:"Say 4:55 the spoken way:", answer:"fuenf vor fuenf"},
+  {prompt:"Say 4:10 the spoken way:", answer:"zehn nach vier"},
+  {prompt:"Say 4:50 the spoken way:", answer:"zehn vor fuenf"},
+  {prompt:"What time is 'Viertel nach sechs'? (write as digital, e.g. 6:15)", answer:"6:15"},
+  {prompt:"What time is 'halb acht'? (write as digital)", answer:"7:30"},
+  {prompt:"What time is 'Viertel vor neun'? (write as digital)", answer:"8:45"}
+], 'nv');
+
+renderExerciseList('ex-kurz', [
+  {prompt:"Say: It's just after seven.", answer:"Es ist kurz nach sieben"},
+  {prompt:"Say: It's just before ten.", answer:"Es ist kurz vor zehn"},
+  {prompt:"Say: The train comes just after six.", answer:"Der Zug kommt kurz nach sechs"},
+  {prompt:"Say: I'm coming just before eight.", answer:"Ich komme kurz vor acht"}
+], 'kurz');
+
+const quiz = [
+  {q:"'Wie spaet ist es?' means:", opts:["What day is it?","What time is it?","Where is it?","How far is it?"], correct:1},
+  {q:"What is 3:15 in spoken German?", opts:["halb drei","Viertel nach drei","Viertel vor drei","drei Uhr fuenfzehn"], correct:1},
+  {q:"What is 3:45 in spoken German?", opts:["Viertel nach drei","Viertel vor vier","halb vier","drei Uhr fuenfundvierzig"], correct:1},
+  {q:"'halb drei' means:", opts:["2:30","3:30","3:15","2:15"], correct:0},
+  {q:"'fuenf vor sechs' means:", opts:["5:05","5:55","6:05","5:50"], correct:1},
+  {q:"'zehn nach neun' means:", opts:["9:10","9:50","10:10","8:50"], correct:0},
+  {q:"'kurz vor zehn' means approximately:", opts:["exactly 10:00","a few minutes before 10","a few minutes after 10","10:30"], correct:1},
+  {q:"'kurz nach acht' means approximately:", opts:["a few minutes before 8","exactly 8:00","a few minutes after 8","8:30"], correct:2},
+  {q:"In the plain/digital style, 14:00 is said as:", opts:["zwei Uhr","vierzehn Uhr","vierzehn nach zwei","zwoelf Uhr"], correct:1},
+  {q:"'vor' in time expressions means:", opts:["after / past","before / to","around","exactly"], correct:1}
+];
+
+const quizList = document.getElementById('day-quiz');
+quiz.forEach((item, qi)=>{
+  const div = document.createElement('div');
+  div.className = 'quiz-item';
+  const opts = item.opts.map((o,oi)=>`
+    <label class="opt" data-qi="${qi}" data-oi="${oi}">
+      <input type="radio" name="q${qi}" value="${oi}">${o}
+    </label>`).join('');
+  div.innerHTML = `<div class="q"><span class="num">${qi+1}</span>${item.q}</div><div class="opts">${opts}</div>`;
+  quizList.appendChild(div);
+});
+
+document.getElementById('submit-quiz').addEventListener('click', ()=>{
+  let score = 0;
+  quiz.forEach((item, qi)=>{
+    const selected = document.querySelector(`input[name="q${qi}"]:checked`);
+    const selIndex = selected ? parseInt(selected.value) : -1;
+    if(selIndex === item.correct) score++;
+    document.querySelectorAll(`label[data-qi="${qi}"]`).forEach(lbl=>{
+      const oi = parseInt(lbl.dataset.oi);
+      lbl.classList.add('locked');
+      if(oi === item.correct) lbl.classList.add('right');
+      else if(oi === selIndex) lbl.classList.add('wrong-pick');
+      lbl.querySelector('input').disabled = true;
+    });
+  });
+  const result = document.getElementById('quiz-result');
+  document.getElementById('quiz-score').textContent = `${score} / ${quiz.length}`;
+  document.getElementById('quiz-msg').textContent = score === quiz.length
+    ? 'Perfect score — Uhrzeit is solid.'
+    : score >= 7
+    ? 'Solid grasp. Review the missed item(s) above.'
+    : 'Worth another pass through the nach/vor/halb section above.';
+  result.classList.add('show');
+  document.getElementById('submit-quiz').disabled = true;
+  result.scrollIntoView({behavior:'smooth', block:'center'});
+});
+</script>
+</body>
+</html>
