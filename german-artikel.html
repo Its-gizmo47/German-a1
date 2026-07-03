@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artikel, Plural & Wortschatz — Deutsch Übungen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A4A;
+    --parchment:#F6F1E7;
+    --gold:#C9A227;
+    --brick:#A23B2E;
+    --sage:#4F7359;
+    --line:#DDD3BE;
+    --card:#FFFDF8;
+    --ink-soft:#3F4F6E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--parchment);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    padding-bottom:80px;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:48px 24px;}
+  .eyebrow{
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--brick);
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-size:40px;
+    font-weight:700;
+    margin:0 0 8px 0;
+    line-height:1.15;
+  }
+  .subtitle{
+    color:var(--ink-soft);
+    font-size:16px;
+    margin-bottom:28px;
+  }
+  .note-box{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:4px solid var(--gold);
+    padding:16px 20px;
+    border-radius:6px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    margin-bottom:40px;
+  }
+  .note-box strong{color:var(--ink);}
+  .note-box code{
+    font-family:'JetBrains Mono',monospace;
+    background:var(--parchment);
+    padding:1px 6px;
+    border-radius:4px;
+    font-size:13px;
+  }
+  section.chapter{margin-bottom:56px;}
+  .chapter-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:18px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:12px;
+  }
+  .badge{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    color:#fff;
+    background:var(--brick);
+    border-radius:6px;
+    padding:4px 12px;
+    font-size:15px;
+    flex-shrink:0;
+  }
+  .chapter-head h2{
+    font-family:'Fraunces',serif;
+    font-size:24px;
+    margin:0;
+    font-weight:600;
+  }
+  ul.rules{
+    list-style:none;
+    padding:0;
+    margin:0 0 22px 0;
+  }
+  ul.rules li{
+    position:relative;
+    padding-left:22px;
+    margin-bottom:9px;
+    font-size:15px;
+  }
+  ul.rules li::before{
+    content:"§";
+    color:var(--gold);
+    font-weight:700;
+    position:absolute;
+    left:0;
+  }
+  .examples{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:18px 22px;
+    margin-bottom:24px;
+  }
+  .ex-row{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    padding:8px 0;
+    border-bottom:1px dashed var(--line);
+    flex-wrap:wrap;
+  }
+  .ex-row:last-child{border-bottom:none;}
+  .de{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    color:var(--ink);
+    flex:1 1 45%;
+  }
+  .en{
+    font-family:'Inter',sans-serif;
+    font-style:italic;
+    color:#7a7263;
+    flex:1 1 45%;
+    text-align:right;
+  }
+  .exercise-block{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:20px 22px;
+    margin-bottom:16px;
+  }
+  .exercise-block h3{
+    font-family:'Fraunces',serif;
+    font-size:16px;
+    margin:0 0 14px 0;
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  .item{
+    margin-bottom:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--line);
+  }
+  .item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .prompt{
+    font-family:'JetBrains Mono',monospace;
+    font-size:15px;
+    margin-bottom:8px;
+  }
+  .prompt .blank{
+    display:inline-block;
+    border-bottom:2px solid var(--gold);
+    min-width:70px;
+  }
+  .item input[type=text]{
+    font-family:'JetBrains Mono',monospace;
+    font-size:14px;
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:5px;
+    width:220px;
+    background:#fff;
+    color:var(--ink);
+  }
+  .item input[type=text]:focus{outline:2px solid var(--gold);border-color:var(--gold);}
+  .check-btn{
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    font-weight:600;
+    background:var(--ink);
+    color:#fff;
+    border:none;
+    padding:8px 16px;
+    border-radius:5px;
+    cursor:pointer;
+    margin-left:8px;
+  }
+  .check-btn:hover{background:var(--ink-soft);}
+  .feedback{
+    display:block;
+    margin-top:8px;
+    font-size:13.5px;
+    font-weight:600;
+    min-height:18px;
+  }
+  .feedback.correct{color:var(--sage);}
+  .feedback.wrong{color:var(--brick);}
+  .quiz-item{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:18px 22px;
+    margin-bottom:14px;
+  }
+  .quiz-q{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:12px;
+  }
+  .quiz-num{color:var(--brick);font-family:'JetBrains Mono',monospace;}
+  .options{display:flex;flex-direction:column;gap:8px;}
+  .option{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 12px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14.5px;
+    background:#fff;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .option:hover{border-color:var(--gold);}
+  .option.selected{border-color:var(--ink);background:#F1ECDD;}
+  .option.correct-answer{border-color:var(--sage);background:#E8F0E9;color:var(--sage);font-weight:700;}
+  .option.wrong-answer{border-color:var(--brick);background:#F5E6E3;color:var(--brick);font-weight:700;}
+  .option input{accent-color:var(--ink);}
+  .quiz-submit-wrap{text-align:center;margin-top:24px;}
+  .submit-btn{
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    font-weight:600;
+    background:var(--brick);
+    color:#fff;
+    border:none;
+    padding:13px 32px;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  .submit-btn:hover{background:#8c3226;}
+  .submit-btn:disabled{background:#c9b8ab;cursor:not-allowed;}
+  .score-box{
+    text-align:center;
+    margin-top:24px;
+    padding:22px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    display:none;
+  }
+  .score-box.show{display:block;}
+  .score-num{
+    font-family:'Fraunces',serif;
+    font-size:36px;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .score-msg{color:var(--ink-soft);margin-top:6px;font-size:15px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Deutsch Übungen</div>
+  <h1>Artikel, Pluralformen & Wortschatz</h1>
+  <div class="subtitle">der / die / das · Nomen im Plural · Pronomen · Familie · Reisen · Wohnung · Essen und Trinken · Trennbare Verben</div>
+
+  <div class="note-box">
+    <strong>Rechtschreibhinweis:</strong> Wenn du keine Umlaut-Tasten hast, kannst du <code>ae</code>, <code>oe</code>, <code>ue</code> und <code>ss</code> statt <code>ä</code>, <code>ö</code>, <code>ü</code>, <code>ß</code> schreiben — beide Schreibweisen werden als richtig akzeptiert.
+    <br><strong>Großschreibung:</strong> Alle Nomen (Substantive) werden großgeschrieben. Achte bei den Übungen genau darauf — <code>Buch</code> ist richtig, <code>buch</code> ist falsch.
+  </div>
+
+  <!-- ============ §1 ARTIKEL ============ -->
+  <section class="chapter" id="s1">
+    <div class="chapter-head">
+      <span class="badge">§1</span>
+      <h2>Der, Die, Das — Artikel und Genus</h2>
+    </div>
+    <ul class="rules">
+      <li>Jedes deutsche Nomen hat ein Genus: <strong>der</strong> (maskulin), <strong>die</strong> (feminin) oder <strong>das</strong> (neutral).</li>
+      <li>Das Genus ist meistens nicht logisch — man lernt es am besten mit dem Nomen zusammen.</li>
+      <li>Einige Muster helfen trotzdem: Wörter auf <strong>-e</strong> sind oft feminin (die Blume, die Lampe).</li>
+      <li>Wörter auf <strong>-chen</strong> und <strong>-lein</strong> sind immer neutral (das Mädchen, das Brötchen).</li>
+      <li>Wochentage, Monate und Jahreszeiten sind fast immer maskulin (der Montag, der Januar, der Sommer).</li>
+      <li>Wörter auf <strong>-ung, -heit, -keit, -schaft, -tion</strong> sind fast immer feminin (die Wohnung, die Freiheit).</li>
+      <li>Der Plural benutzt immer <strong>die</strong>, egal welches Genus das Nomen im Singular hat.</li>
+    </ul>
+    <div class="examples">
+      <div class="ex-row"><span class="de">der Mann</span><span class="en">the man</span></div>
+      <div class="ex-row"><span class="de">die Frau</span><span class="en">the woman</span></div>
+      <div class="ex-row"><span class="de">das Kind</span><span class="en">the child</span></div>
+      <div class="ex-row"><span class="de">der Tisch</span><span class="en">the table</span></div>
+      <div class="ex-row"><span class="de">die Blume</span><span class="en">the flower</span></div>
+      <div class="ex-row"><span class="de">das Buch</span><span class="en">the book</span></div>
+      <div class="ex-row"><span class="de">der Montag</span><span class="en">Monday</span></div>
+      <div class="ex-row"><span class="de">die Wohnung</span><span class="en">the apartment</span></div>
+    </div>
+    <div class="exercise-block">
+      <h3>Übung — Schreibe den richtigen Artikel (der / die / das)</h3>
+      <div id="ex1"></div>
+    </div>
+  </section>
+
+  <!-- ============ §2 PLURAL ============ -->
+  <section class="chapter" id="s2">
+    <div class="chapter-head">
+      <span class="badge">§2</span>
+      <h2>Nomen im Plural</h2>
+    </div>
+    <ul class="rules">
+      <li>Es gibt keine feste Regel für den Plural — jedes Nomen hat sein eigenes Muster, das man mitlernen sollte.</li>
+      <li>Häufiges Muster <strong>-e</strong>: der Tisch → die Tische.</li>
+      <li>Häufiges Muster <strong>-er</strong> (oft mit Umlaut): das Kind → die Kinder, das Buch → die Bücher.</li>
+      <li>Häufiges Muster <strong>-(e)n</strong>: die Frau → die Frauen, die Blume → die Blumen.</li>
+      <li>Häufiges Muster <strong>-s</strong> (meist bei Fremdwörtern): das Auto → die Autos, das Foto → die Fotos.</li>
+      <li>Manche Wörter ändern sich gar nicht: der Lehrer → die Lehrer.</li>
+      <li>Manche Wörter bekommen nur einen Umlaut: der Apfel → die Äpfel, die Mutter → die Muetter.</li>
+    </ul>
+    <div class="examples">
+      <div class="ex-row"><span class="de">der Tisch → die Tische</span><span class="en">table → tables</span></div>
+      <div class="ex-row"><span class="de">das Kind → die Kinder</span><span class="en">child → children</span></div>
+      <div class="ex-row"><span class="de">die Frau → die Frauen</span><span class="en">woman → women</span></div>
+      <div class="ex-row"><span class="de">das Auto → die Autos</span><span class="en">car → cars</span></div>
+      <div class="ex-row"><span class="de">der Lehrer → die Lehrer</span><span class="en">teacher → teachers</span></div>
+      <div class="ex-row"><span class="de">der Apfel → die Äpfel</span><span class="en">apple → apples</span></div>
+    </div>
+    <div class="exercise-block">
+      <h3>Übung — Schreibe den Plural</h3>
+      <div id="ex2"></div>
+    </div>
+  </section>
+
+  <!-- ============ §3 PRONOMEN ============ -->
+  <section class="chapter" id="s3">
+    <div class="chapter-head">
+      <span class="badge">§3</span>
+      <h2>Pronomen</h2>
+    </div>
+    <ul class="rules">
+      <li>Personalpronomen: <strong>ich, du, er/sie/es, wir, ihr, sie, Sie</strong> (Sie = formelles "you").</li>
+      <li>Possessivpronomen stimmen mit dem Nomen überein: <strong>mein, dein, sein, ihr, unser, euer, ihr/Ihr</strong>.</li>
+      <li>Bei femininen und Plural-Nomen bekommt das Possessivpronomen ein <strong>-e</strong>: meine Schwester, meine Eltern.</li>
+      <li>Bei maskulinen und neutralen Nomen im Nominativ bleibt es ohne Endung: mein Bruder, mein Kind.</li>
+    </ul>
+    <div class="examples">
+      <div class="ex-row"><span class="de">Das ist mein Bruder.</span><span class="en">That is my brother.</span></div>
+      <div class="ex-row"><span class="de">Das ist meine Schwester.</span><span class="en">That is my sister.</span></div>
+      <div class="ex-row"><span class="de">Das ist unser Haus.</span><span class="en">That is our house.</span></div>
+      <div class="ex-row"><span class="de">Wo ist dein Koffer?</span><span class="en">Where is your suitcase?</span></div>
+      <div class="ex-row"><span class="de">Ihre Eltern wohnen in Berlin.</span><span class="en">Her/their parents live in Berlin.</span></div>
+    </div>
+    <div class="exercise-block">
+      <h3>Übung — Ergänze das richtige Possessivpronomen</h3>
+      <div id="ex3"></div>
+    </div>
+  </section>
+
+  <!-- ============ §4 FAMILIE ============ -->
+  <section class="chapter" id="s4">
+    <div class="chapter-head">
+      <span class="badge">§4</span>
+      <h2>Familie</h2>
+    </div>
+    <div class="examples">
+      <div class="ex-row"><span class="de">der Vater</span><span class="en">father</span></div>
+      <div class="ex-row"><span class="de">die Mutter</span><span class="en">mother</span></div>
+      <div class="ex-row"><span class="de">die Eltern</span><span class="en">parents</span></div>
+      <div class="ex-row"><span class="de">der Bruder</span><span class="en">brother</span></div>
+      <div class="ex-row"><span class="de">die Schwester</span><span class="en">sister</span></div>
+      <div class="ex-row"><span class="de">die Geschwister</span><span class="en">siblings</span></div>
+      <div class="ex-row"><span class="de">der Sohn</span><span class="en">son</span></div>
+      <div class="ex-row"><span class="de">die Tochter</span><span class="en">daughter</span></div>
+      <div class="ex-row"><span class="de">der Großvater</span><span class="en">grandfather</span></div>
+      <div class="ex-row"><span class="de">die Großmutter</span><span class="en">grandmother</span></div>
+      <div class="ex-row"><span class="de">der Onkel</span><span class="en">uncle</span></div>
+      <div class="ex-row"><span class="de">die Tante</span><span class="en">aunt</span></div>
+      <div class="ex-row"><span class="de">der Ehemann</span><span class="en">husband</span></div>
+      <div class="ex-row"><span class="de">die Ehefrau</span><span class="en">wife</span></div>
+    </div>
+    <div class="exercise-block">
+      <h3>Übung — Wortschatz Familie (mit Artikel)</h3>
+      <div id="ex4"></div>
+    </div>
+  </section>
+
+  <!-- ============ §5 REISEN ============ -->
+  <section class="chapter" id="s5">
+    <div class="chapter-head">
+      <span class="badge">§5</span>
+      <h2>Reisen</h2>
+    </div>
+    <div class="examples">
+      <div class="ex-row"><span class="de">die Reise</span><span class="en">the trip</span></div>
+      <div class="ex-row"><span class="de">der Urlaub</span><span class="en">the vacation</span></div>
+      <div class="ex-row"><span class="de">das Flugzeug</span><span class="en">the airplane</span></div>
+      <div class="ex-row"><span class="de">der Zug</span><span class="en">the train</span></div>
+      <div class="ex-row"><span class="de">der Bahnhof</span><span class="en">the train station</span></div>
+      <div class="ex-row"><span class="de">der Flughafen</span><span class="en">the airport</span></div>
+      <div class="ex-row"><span class="de">die Fahrkarte</span><span class="en">the ticket</span></div>
+      <div class="ex-row"><span class="de">das Gepäck</span><span class="en">the luggage</span></div>
+      <div class="ex-row"><span class="de">der Koffer</span><span class="en">the suitcase</span></div>
+      <div class="ex-row"><span class="de">die Ankunft</span><span class="en">the arrival</span></div>
+      <div class="ex-row"><span class="de">die Abfahrt</span><span class="en">the departure</span></div>
+      <div class="ex-row"><span class="de">buchen</span><span class="en">to book</span></div>
+      <div class="ex-row"><span class="de">packen</span><span class="en">to pack</span></div>
+    </div>
+    <div class="exercise-block">
+      <h3>Übung — Wortschatz Reisen (mit Artikel)</h3>
+      <div id="ex5"></div>
+    </div>
+  </section>
+
+  <!-- ============ §6 WOHNUNG ============ -->
+  <section class="chapter" id="s6">
+    <div class="chapter-head">
+      <span class="badge">§6</span>
+      <h2>Wohnung</h2>
+    </div>
+    <div class="examples">
+      <div class="ex-row"><span class="de">die Wohnung</span><span class="en">the apartment</span></div>
+      <div class="ex-row"><span class="de">das Haus</span><span class="en">the house</span></div>
+      <div class="ex-row"><span class="de">das Zimmer</span><span class="en">the room</span></div>
+      <div class="ex-row"><span class="de">das Wohnzimmer</span><span class="en">the living room</span></div>
+      <div class="ex-row"><span class="de">das Schlafzimmer</span><span class="en">the bedroom</span></div>
+      <div class="ex-row"><span class="de">die Küche</span><span class="en">the kitchen</span></div>
+      <div class="ex-row"><span class="de">das Badezimmer</span><span class="en">the bathroom</span></div>
+      <div class="ex-row"><span class="de">der Balkon</span><span class="en">the balcony</span></div>
+      <div class="ex-row"><span class="de">die Miete</span><span class="en">the rent</span></div>
+      <div class="ex-row"><span class="de">mieten</span><span class="en">to rent</span></div>
+      <div class="ex-row"><span class="de">der Vermieter</span><span class="en">the landlord</span></div>
+      <div class="ex-row"><span class="de">das Fenster</span><span class="en">the window</span></div>
+      <div class="ex-row"><span class="de">die Tür</span><span class="en">the door</span></div>
+    </div>
+    <div class="exercise-block">
+      <h3>Übung — Wortschatz Wohnung (mit Artikel)</h3>
+      <div id="ex6"></div>
+    </div>
+  </section>
+
+  <!-- ============ §7 ESSEN UND TRINKEN ============ -->
+  <section class="chapter" id="s7">
+    <div class="chapter-head">
+      <span class="badge">§7</span>
+      <h2>Essen und Trinken</h2>
+    </div>
+    <div class="examples">
+      <div class="ex-row"><span class="de">das Essen</span><span class="en">the food / meal</span></div>
+      <div class="ex-row"><span class="de">das Frühstück</span><span class="en">breakfast</span></div>
+      <div class="ex-row"><span class="de">das Mittagessen</span><span class="en">lunch</span></div>
+      <div class="ex-row"><span class="de">das Abendessen</span><span class="en">dinner</span></div>
+      <div class="ex-row"><span class="de">das Brot</span><span class="en">the bread</span></div>
+      <div class="ex-row"><span class="de">der Käse</span><span class="en">the cheese</span></div>
+      <div class="ex-row"><span class="de">das Wasser</span><span class="en">the water</span></div>
+      <div class="ex-row"><span class="de">der Kaffee</span><span class="en">the coffee</span></div>
+      <div class="ex-row"><span class="de">der Wein</span><span class="en">the wine</span></div>
+      <div class="ex-row"><span class="de">bestellen</span><span class="en">to order</span></div>
+      <div class="ex-row"><span class="de">die Rechnung</span><span class="en">the bill</span></div>
+      <div class="ex-row"><span class="de">der Hunger</span><span class="en">hunger</span></div>
+      <div class="ex-row"><span class="de">der Durst</span><span class="en">thirst</span></div>
+    </div>
+    <div class="exercise-block">
+      <h3>Übung — Wortschatz Essen und Trinken (mit Artikel)</h3>
+      <div id="ex7"></div>
+    </div>
+  </section>
+
+  <!-- ============ §8 TRENNBARE VERBEN ============ -->
+  <section class="chapter" id="s8">
+    <div class="chapter-head">
+      <span class="badge">§8</span>
+      <h2>Trennbare Verben (Separable Verbs)</h2>
+    </div>
+    <ul class="rules">
+      <li>Trennbare Verben bestehen aus einer Vorsilbe (Präfix) und einem Grundverb, z.B. <strong>ab-fahren, an-kommen, auf-stehen</strong>.</li>
+      <li>Im Präsens und Präteritum im Hauptsatz trennt sich das Präfix vom Verb und steht am <strong>Satzende</strong>.</li>
+      <li>Beispiel: abfahren → Der Zug <strong>fährt</strong> um acht Uhr <strong>ab</strong>.</li>
+      <li>Typische trennbare Präfixe: ab-, an-, auf-, aus-, ein-, mit-, vor-, zu-.</li>
+      <li>Im Perfekt steht "ge" zwischen Präfix und Partizip: abgefahren, angekommen, aufgestanden.</li>
+    </ul>
+    <div class="examples">
+      <div class="ex-row"><span class="de">abfahren</span><span class="en">to depart</span></div>
+      <div class="ex-row"><span class="de">ankommen</span><span class="en">to arrive</span></div>
+      <div class="ex-row"><span class="de">aufstehen</span><span class="en">to get up</span></div>
+      <div class="ex-row"><span class="de">einkaufen</span><span class="en">to shop</span></div>
+      <div class="ex-row"><span class="de">anrufen</span><span class="en">to call (phone)</span></div>
+      <div class="ex-row"><span class="de">mitkommen</span><span class="en">to come along</span></div>
+      <div class="ex-row"><span class="de">aussehen</span><span class="en">to look like</span></div>
+      <div class="ex-row"><span class="de">fernsehen</span><span class="en">to watch TV</span></div>
+      <div class="ex-row"><span class="de">Der Zug fährt um acht Uhr ab.</span><span class="en">The train departs at eight o'clock.</span></div>
+      <div class="ex-row"><span class="de">Ich stehe um sieben Uhr auf.</span><span class="en">I get up at seven o'clock.</span></div>
+    </div>
+    <div class="exercise-block">
+      <h3>Übung — Trenne das Verb und vervollständige den Satz</h3>
+      <div id="ex8"></div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="chapter" id="quiz">
+    <div class="chapter-head">
+      <span class="badge" style="background:var(--gold);">Quiz</span>
+      <h2>Abschlusstest</h2>
+    </div>
+    <div id="quizContainer"></div>
+    <div class="quiz-submit-wrap">
+      <button class="submit-btn" id="submitQuiz">Quiz abschicken</button>
+    </div>
+    <div class="score-box" id="scoreBox">
+      <div class="score-num" id="scoreNum"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+// ---------- Spelling normalizer: ä/ö/ü/ß interchangeable with ae/oe/ue/ss ----------
+function normalize(str){
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/ä/g,'ae')
+    .replace(/ö/g,'oe')
+    .replace(/ü/g,'ue')
+    .replace(/ß/g,'ss');
+}
+
+// ---------- Generic fill-in-the-blank exercise renderer ----------
+function renderExercise(containerId, items){
+  const container = document.getElementById(containerId);
+  items.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    const inputId = containerId + '_input_' + idx;
+    const fbId = containerId + '_fb_' + idx;
+    div.innerHTML = `
+      <div class="prompt">${item.prompt}</div>
+      <input type="text" id="${inputId}" autocomplete="off" spellcheck="false">
+      <button class="check-btn" data-idx="${idx}">Check</button>
+      <span class="feedback" id="${fbId}"></span>
+    `;
+    container.appendChild(div);
+    const btn = div.querySelector('.check-btn');
+    const input = div.querySelector('input');
+    const fb = div.querySelector('.feedback');
+    function check(){
+      const userVal = input.value;
+      const correctAnswers = Array.isArray(item.answer) ? item.answer : [item.answer];
+      const isCorrect = correctAnswers.some(a => normalize(a) === normalize(userVal));
+      if(isCorrect){
+        fb.textContent = 'Richtig!';
+        fb.className = 'feedback correct';
+      } else {
+        fb.textContent = 'Nicht ganz — richtige Antwort: ' + correctAnswers[0];
+        fb.className = 'feedback wrong';
+      }
+    }
+    btn.addEventListener('click', check);
+    input.addEventListener('keydown', e => { if(e.key === 'Enter') check(); });
+  });
+}
+
+// ---------- §1 Artikel ----------
+renderExercise('ex1', [
+  { prompt: '<span class="blank">___</span> Hund ist braun.', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Katze schläft.', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Kind spielt im Garten.', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Tisch ist neu.', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Wohnung ist klein.', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Buch ist interessant.', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Freundschaft ist wichtig.', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Sonntag ist ein Feiertag.', answer: 'der' }
+]);
+
+// ---------- §2 Plural ----------
+renderExercise('ex2', [
+  { prompt: 'der Tisch → die <span class="blank">___</span>', answer: 'Tische' },
+  { prompt: 'das Kind → die <span class="blank">___</span>', answer: 'Kinder' },
+  { prompt: 'die Frau → die <span class="blank">___</span>', answer: 'Frauen' },
+  { prompt: 'das Auto → die <span class="blank">___</span>', answer: 'Autos' },
+  { prompt: 'der Lehrer → die <span class="blank">___</span>', answer: 'Lehrer' },
+  { prompt: 'der Apfel → die <span class="blank">___</span>', answer: ['Äpfel','Aepfel'] },
+  { prompt: 'das Buch → die <span class="blank">___</span>', answer: ['Bücher','Buecher'] }
+]);
+
+// ---------- §3 Pronomen ----------
+renderExercise('ex3', [
+  { prompt: 'Das ist <span class="blank">___</span> Bruder. (my)', answer: 'mein' },
+  { prompt: 'Das ist <span class="blank">___</span> Schwester. (my, feminine)', answer: 'meine' },
+  { prompt: 'Wo ist <span class="blank">___</span> Koffer? (your, informal singular)', answer: 'dein' },
+  { prompt: '<span class="blank">___</span> Haus ist groß. (our)', answer: 'unser' },
+  { prompt: '<span class="blank">___</span> Eltern wohnen in Berlin. (her)', answer: 'ihre' },
+  { prompt: 'Kinder, ist das <span class="blank">___</span> Zimmer? (your, plural informal)', answer: 'euer' }
+]);
+
+// ---------- §4 Familie ----------
+renderExercise('ex4', [
+  { prompt: 'father → <span class="blank">___</span> Vater', answer: 'der' },
+  { prompt: 'mother → <span class="blank">___</span> Mutter', answer: 'die' },
+  { prompt: 'siblings → <span class="blank">___</span> Geschwister', answer: 'die' },
+  { prompt: 'son → <span class="blank">___</span> Sohn', answer: 'der' },
+  { prompt: 'daughter → <span class="blank">___</span> Tochter', answer: 'die' },
+  { prompt: 'grandmother → <span class="blank">___</span> Großmutter', answer: ['die'] }
+]);
+
+// ---------- §5 Reisen ----------
+renderExercise('ex5', [
+  { prompt: 'the trip → <span class="blank">___</span> Reise', answer: 'die' },
+  { prompt: 'the train → <span class="blank">___</span> Zug', answer: 'der' },
+  { prompt: 'the airport → <span class="blank">___</span> Flughafen', answer: 'der' },
+  { prompt: 'the suitcase → <span class="blank">___</span> Koffer', answer: 'der' },
+  { prompt: 'the luggage → <span class="blank">___</span> Gepäck', answer: 'das' },
+  { prompt: 'to book (a trip) → <span class="blank">___</span>', answer: 'buchen' }
+]);
+
+// ---------- §6 Wohnung ----------
+renderExercise('ex6', [
+  { prompt: 'the apartment → <span class="blank">___</span> Wohnung', answer: 'die' },
+  { prompt: 'the kitchen → <span class="blank">___</span> Küche', answer: 'die' },
+  { prompt: 'the bedroom → <span class="blank">___</span> Schlafzimmer', answer: 'das' },
+  { prompt: 'the rent → <span class="blank">___</span> Miete', answer: 'die' },
+  { prompt: 'the window → <span class="blank">___</span> Fenster', answer: 'das' },
+  { prompt: 'to rent → <span class="blank">___</span>', answer: 'mieten' }
+]);
+
+// ---------- §7 Essen und Trinken ----------
+renderExercise('ex7', [
+  { prompt: 'the bread → <span class="blank">___</span> Brot', answer: 'das' },
+  { prompt: 'the cheese → <span class="blank">___</span> Käse', answer: 'der' },
+  { prompt: 'the wine → <span class="blank">___</span> Wein', answer: 'der' },
+  { prompt: 'the bill → <span class="blank">___</span> Rechnung', answer: 'die' },
+  { prompt: 'breakfast → <span class="blank">___</span> Frühstück', answer: 'das' },
+  { prompt: 'to order → <span class="blank">___</span>', answer: 'bestellen' }
+]);
+
+// ---------- §8 Trennbare Verben ----------
+renderExercise('ex8', [
+  { prompt: 'Der Zug ___ um acht Uhr ___. (abfahren)', answer: 'fährt ab' },
+  { prompt: 'Ich ___ um sieben Uhr ___. (aufstehen)', answer: 'stehe auf' },
+  { prompt: 'Wir ___ heute ___. (einkaufen)', answer: 'kaufen ein' },
+  { prompt: 'Der Bus ___ um neun Uhr ___. (ankommen)', answer: 'kommt an' },
+  { prompt: 'Ich ___ dich morgen ___. (anrufen)', answer: 'rufe an' },
+  { prompt: '___ du morgen ___? (mitkommen)', answer: 'Kommst mit' }
+]);
+
+// ---------- QUIZ ----------
+const quizData = [
+  { q: 'Welcher Artikel ist richtig? ___ Hund', options: ['der','die','das','den'], correct: 0 },
+  { q: 'Welcher Artikel ist richtig? ___ Katze', options: ['der','die','das','dem'], correct: 1 },
+  { q: 'Welcher Artikel ist richtig? ___ Kind', options: ['der','die','das','den'], correct: 2 },
+  { q: 'Was ist der Plural von "das Buch"?', options: ['die Buche','die Bücher','die Buchs','die Buch'], correct: 1 },
+  { q: 'Was ist der Plural von "die Frau"?', options: ['die Fraus','die Frauen','die Fraue','die Frauer'], correct: 1 },
+  { q: 'Was ist der Plural von "das Auto"?', options: ['die Autoen','die Auto','die Autos','die Autoer'], correct: 2 },
+  { q: 'Wähle das richtige Possessivpronomen: Das ist ___ Bruder. (my)', options: ['mein','meine','meiner','meins'], correct: 0 },
+  { q: 'Wähle das richtige Possessivpronomen: Das ist ___ Schwester. (my)', options: ['mein','meine','meins','meinem'], correct: 1 },
+  { q: 'Was bedeutet "die Geschwister"?', options: ['grandparents','siblings','parents','cousins'], correct: 1 },
+  { q: 'Was bedeutet "der Vermieter"?', options: ['the tenant','the landlord','the guest','the neighbor'], correct: 1 },
+  { q: 'Was bedeutet "die Rechnung"?', options: ['the menu','the receipt/bill','the reservation','the recipe'], correct: 1 },
+  { q: 'Vervollständige: Der Zug fährt um acht Uhr ___.', options: ['ab','an','auf','aus'], correct: 0 }
+];
+
+const quizContainer = document.getElementById('quizContainer');
+let userAnswers = new Array(quizData.length).fill(null);
+
+quizData.forEach((item, qIdx) => {
+  const div = document.createElement('div');
+  div.className = 'quiz-item';
+  let optionsHtml = '';
+  item.options.forEach((opt, oIdx) => {
+    optionsHtml += `
+      <label class="option" data-q="${qIdx}" data-o="${oIdx}">
+        <input type="radio" name="q${qIdx}" value="${oIdx}">
+        ${opt}
+      </label>`;
+  });
+  div.innerHTML = `
+    <div class="quiz-q"><span class="quiz-num">${qIdx+1}.</span> ${item.q}</div>
+    <div class="options">${optionsHtml}</div>
+  `;
+  quizContainer.appendChild(div);
+});
+
+quizContainer.addEventListener('click', (e) => {
+  const label = e.target.closest('.option');
+  if(!label) return;
+  const qIdx = parseInt(label.dataset.q);
+  const oIdx = parseInt(label.dataset.o);
+  userAnswers[qIdx] = oIdx;
+  const allOptionsForQ = quizContainer.querySelectorAll(`.option[data-q="${qIdx}"]`);
+  allOptionsForQ.forEach(o => o.classList.remove('selected'));
+  label.classList.add('selected');
+});
+
+document.getElementById('submitQuiz').addEventListener('click', () => {
+  let score = 0;
+  quizData.forEach((item, qIdx) => {
+    const allOptionsForQ = quizContainer.querySelectorAll(`.option[data-q="${qIdx}"]`);
+    allOptionsForQ.forEach(opt => {
+      const oIdx = parseInt(opt.dataset.o);
+      opt.style.pointerEvents = 'none';
+      if(oIdx === item.correct){
+        opt.classList.add('correct-answer');
+      } else if(oIdx === userAnswers[qIdx] && oIdx !== item.correct){
+        opt.classList.add('wrong-answer');
+      }
+    });
+    if(userAnswers[qIdx] === item.correct) score++;
+  });
+
+  document.getElementById('submitQuiz').disabled = true;
+  const scoreBox = document.getElementById('scoreBox');
+  const scoreNum = document.getElementById('scoreNum');
+  const scoreMsg = document.getElementById('scoreMsg');
+  scoreNum.textContent = score + ' / ' + quizData.length;
+  let msg = '';
+  const pct = score / quizData.length;
+  if(pct === 1) msg = 'Perfekt! Du beherrschst dieses Kapitel.';
+  else if(pct >= 0.75) msg = 'Sehr gut! Nur ein paar Kleinigkeiten zum Wiederholen.';
+  else if(pct >= 0.5) msg = 'Guter Ansatz — wiederhole die schwächeren Abschnitte.';
+  else msg = 'Übe die Regeln und den Wortschatz noch einmal, dann klappt es besser.';
+  scoreMsg.textContent = msg;
+  scoreBox.classList.add('show');
+  scoreBox.scrollIntoView({behavior:'smooth', block:'center'});
+});
+</script>
+</body>
+</html>
