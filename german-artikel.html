@@ -161,6 +161,13 @@
   .prompt{
     font-family:'JetBrains Mono',monospace;
     font-size:15px;
+    margin-bottom:4px;
+  }
+  .translation{
+    font-family:'Inter',sans-serif;
+    font-style:italic;
+    color:#7a7263;
+    font-size:13px;
     margin-bottom:8px;
   }
   .prompt .blank{
@@ -542,6 +549,7 @@ function renderExercise(containerId, items){
     const fbId = containerId + '_fb_' + idx;
     div.innerHTML = `
       <div class="prompt">${item.prompt}</div>
+      <div class="translation">${item.en ? item.en : ''}</div>
       <input type="text" id="${inputId}" autocomplete="off" spellcheck="false">
       <button class="check-btn" data-idx="${idx}">Check</button>
       <span class="feedback" id="${fbId}"></span>
@@ -569,101 +577,150 @@ function renderExercise(containerId, items){
 
 // ---------- §1 Artikel ----------
 renderExercise('ex1', [
-  { prompt: '<span class="blank">___</span> Hund ist braun.', answer: 'der' },
-  { prompt: '<span class="blank">___</span> Katze schläft.', answer: 'die' },
-  { prompt: '<span class="blank">___</span> Kind spielt im Garten.', answer: 'das' },
-  { prompt: '<span class="blank">___</span> Tisch ist neu.', answer: 'der' },
-  { prompt: '<span class="blank">___</span> Wohnung ist klein.', answer: 'die' },
-  { prompt: '<span class="blank">___</span> Buch ist interessant.', answer: 'das' },
-  { prompt: '<span class="blank">___</span> Freundschaft ist wichtig.', answer: 'die' },
-  { prompt: '<span class="blank">___</span> Sonntag ist ein Feiertag.', answer: 'der' }
+  { prompt: '<span class="blank">___</span> Hund ist braun.', en: 'The dog is brown.', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Katze schläft.', en: 'The cat is sleeping.', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Kind spielt im Garten.', en: 'The child is playing in the garden.', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Tisch ist neu.', en: 'The table is new.', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Wohnung ist klein.', en: 'The apartment is small.', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Buch ist interessant.', en: 'The book is interesting.', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Freundschaft ist wichtig.', en: 'Friendship is important.', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Sonntag ist ein Feiertag.', en: 'Sunday is a holiday.', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Mädchen liest ein Buch.', en: 'The girl is reading a book.', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Zeitung liegt auf dem Tisch.', en: 'The newspaper is on the table.', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Lehrer erklärt die Grammatik.', en: 'The teacher explains the grammar.', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Fenster ist offen.', en: 'The window is open.', answer: 'das' }
 ]);
 
 // ---------- §2 Plural ----------
 renderExercise('ex2', [
-  { prompt: 'der Tisch → die <span class="blank">___</span>', answer: 'Tische' },
-  { prompt: 'das Kind → die <span class="blank">___</span>', answer: 'Kinder' },
-  { prompt: 'die Frau → die <span class="blank">___</span>', answer: 'Frauen' },
-  { prompt: 'das Auto → die <span class="blank">___</span>', answer: 'Autos' },
-  { prompt: 'der Lehrer → die <span class="blank">___</span>', answer: 'Lehrer' },
-  { prompt: 'der Apfel → die <span class="blank">___</span>', answer: ['Äpfel','Aepfel'] },
-  { prompt: 'das Buch → die <span class="blank">___</span>', answer: ['Bücher','Buecher'] }
+  { prompt: 'der Tisch → die <span class="blank">___</span>', en: 'table → tables', answer: 'Tische' },
+  { prompt: 'das Kind → die <span class="blank">___</span>', en: 'child → children', answer: 'Kinder' },
+  { prompt: 'die Frau → die <span class="blank">___</span>', en: 'woman → women', answer: 'Frauen' },
+  { prompt: 'das Auto → die <span class="blank">___</span>', en: 'car → cars', answer: 'Autos' },
+  { prompt: 'der Lehrer → die <span class="blank">___</span>', en: 'teacher → teachers', answer: 'Lehrer' },
+  { prompt: 'der Apfel → die <span class="blank">___</span>', en: 'apple → apples', answer: ['Äpfel','Aepfel'] },
+  { prompt: 'das Buch → die <span class="blank">___</span>', en: 'book → books', answer: ['Bücher','Buecher'] },
+  { prompt: 'die Blume → die <span class="blank">___</span>', en: 'flower → flowers', answer: 'Blumen' },
+  { prompt: 'das Zimmer → die <span class="blank">___</span>', en: 'room → rooms', answer: 'Zimmer' },
+  { prompt: 'die Mutter → die <span class="blank">___</span>', en: 'mother → mothers', answer: ['Mütter','Muetter'] },
+  { prompt: 'das Foto → die <span class="blank">___</span>', en: 'photo → photos', answer: 'Fotos' },
+  { prompt: 'der Koffer → die <span class="blank">___</span>', en: 'suitcase → suitcases', answer: 'Koffer' }
 ]);
 
 // ---------- §3 Pronomen ----------
 renderExercise('ex3', [
-  { prompt: 'Das ist <span class="blank">___</span> Bruder. (my)', answer: 'mein' },
-  { prompt: 'Das ist <span class="blank">___</span> Schwester. (my, feminine)', answer: 'meine' },
-  { prompt: 'Wo ist <span class="blank">___</span> Koffer? (your, informal singular)', answer: 'dein' },
-  { prompt: '<span class="blank">___</span> Haus ist groß. (our)', answer: 'unser' },
-  { prompt: '<span class="blank">___</span> Eltern wohnen in Berlin. (her)', answer: 'ihre' },
-  { prompt: 'Kinder, ist das <span class="blank">___</span> Zimmer? (your, plural informal)', answer: 'euer' }
+  { prompt: 'Das ist <span class="blank">___</span> Bruder.', en: 'That is my brother.', answer: 'mein' },
+  { prompt: 'Das ist <span class="blank">___</span> Schwester.', en: 'That is my sister.', answer: 'meine' },
+  { prompt: 'Wo ist <span class="blank">___</span> Koffer?', en: 'Where is your suitcase? (informal singular)', answer: 'dein' },
+  { prompt: '<span class="blank">___</span> Haus ist groß.', en: 'Our house is big.', answer: 'unser' },
+  { prompt: '<span class="blank">___</span> Eltern wohnen in Berlin.', en: 'Her parents live in Berlin.', answer: 'ihre' },
+  { prompt: 'Kinder, ist das <span class="blank">___</span> Zimmer?', en: 'Children, is that your room? (informal plural)', answer: 'euer' },
+  { prompt: 'Wie heißt <span class="blank">___</span> Tochter?', en: 'What is your daughter\'s name? (formal)', answer: 'Ihre' },
+  { prompt: '<span class="blank">___</span> Bruder wohnt in München. (his)', en: 'His brother lives in Munich.', answer: 'sein' },
+  { prompt: 'Wir besuchen <span class="blank">___</span> Großeltern. (our)', en: 'We are visiting our grandparents.', answer: 'unsere' },
+  { prompt: '<span class="blank">___</span> Kinder spielen im Park. (their)', en: 'Their children are playing in the park.', answer: 'ihre' }
 ]);
 
 // ---------- §4 Familie ----------
 renderExercise('ex4', [
-  { prompt: 'father → <span class="blank">___</span> Vater', answer: 'der' },
-  { prompt: 'mother → <span class="blank">___</span> Mutter', answer: 'die' },
-  { prompt: 'siblings → <span class="blank">___</span> Geschwister', answer: 'die' },
-  { prompt: 'son → <span class="blank">___</span> Sohn', answer: 'der' },
-  { prompt: 'daughter → <span class="blank">___</span> Tochter', answer: 'die' },
-  { prompt: 'grandmother → <span class="blank">___</span> Großmutter', answer: ['die'] }
+  { prompt: '<span class="blank">___</span> Vater', en: 'father', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Mutter', en: 'mother', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Geschwister', en: 'siblings', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Sohn', en: 'son', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Tochter', en: 'daughter', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Großmutter', en: 'grandmother', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Großvater', en: 'grandfather', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Onkel', en: 'uncle', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Tante', en: 'aunt', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Cousine', en: 'female cousin', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Ehemann', en: 'husband', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Eltern', en: 'parents', answer: 'die' }
 ]);
 
 // ---------- §5 Reisen ----------
 renderExercise('ex5', [
-  { prompt: 'the trip → <span class="blank">___</span> Reise', answer: 'die' },
-  { prompt: 'the train → <span class="blank">___</span> Zug', answer: 'der' },
-  { prompt: 'the airport → <span class="blank">___</span> Flughafen', answer: 'der' },
-  { prompt: 'the suitcase → <span class="blank">___</span> Koffer', answer: 'der' },
-  { prompt: 'the luggage → <span class="blank">___</span> Gepäck', answer: 'das' },
-  { prompt: 'to book (a trip) → <span class="blank">___</span>', answer: 'buchen' }
+  { prompt: '<span class="blank">___</span> Reise', en: 'the trip', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Zug', en: 'the train', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Flughafen', en: 'the airport', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Koffer', en: 'the suitcase', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Gepäck', en: 'the luggage', answer: 'das' },
+  { prompt: 'to book (a trip) → <span class="blank">___</span>', en: 'buchen', answer: 'buchen' },
+  { prompt: '<span class="blank">___</span> Bahnhof', en: 'the train station', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Fahrkarte', en: 'the ticket', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Ankunft', en: 'the arrival', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Abfahrt', en: 'the departure', answer: 'die' },
+  { prompt: 'to pack → <span class="blank">___</span>', en: 'packen', answer: 'packen' },
+  { prompt: '<span class="blank">___</span> Urlaub', en: 'the vacation', answer: 'der' }
 ]);
 
 // ---------- §6 Wohnung ----------
 renderExercise('ex6', [
-  { prompt: 'the apartment → <span class="blank">___</span> Wohnung', answer: 'die' },
-  { prompt: 'the kitchen → <span class="blank">___</span> Küche', answer: 'die' },
-  { prompt: 'the bedroom → <span class="blank">___</span> Schlafzimmer', answer: 'das' },
-  { prompt: 'the rent → <span class="blank">___</span> Miete', answer: 'die' },
-  { prompt: 'the window → <span class="blank">___</span> Fenster', answer: 'das' },
-  { prompt: 'to rent → <span class="blank">___</span>', answer: 'mieten' }
+  { prompt: '<span class="blank">___</span> Wohnung', en: 'the apartment', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Küche', en: 'the kitchen', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Schlafzimmer', en: 'the bedroom', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Miete', en: 'the rent', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Fenster', en: 'the window', answer: 'das' },
+  { prompt: 'to rent → <span class="blank">___</span>', en: 'mieten', answer: 'mieten' },
+  { prompt: '<span class="blank">___</span> Haus', en: 'the house', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Wohnzimmer', en: 'the living room', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Badezimmer', en: 'the bathroom', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Balkon', en: 'the balcony', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Tür', en: 'the door', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Vermieter', en: 'the landlord', answer: 'der' }
 ]);
 
 // ---------- §7 Essen und Trinken ----------
 renderExercise('ex7', [
-  { prompt: 'the bread → <span class="blank">___</span> Brot', answer: 'das' },
-  { prompt: 'the cheese → <span class="blank">___</span> Käse', answer: 'der' },
-  { prompt: 'the wine → <span class="blank">___</span> Wein', answer: 'der' },
-  { prompt: 'the bill → <span class="blank">___</span> Rechnung', answer: 'die' },
-  { prompt: 'breakfast → <span class="blank">___</span> Frühstück', answer: 'das' },
-  { prompt: 'to order → <span class="blank">___</span>', answer: 'bestellen' }
+  { prompt: '<span class="blank">___</span> Brot', en: 'the bread', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Käse', en: 'the cheese', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Wein', en: 'the wine', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Rechnung', en: 'the bill', answer: 'die' },
+  { prompt: '<span class="blank">___</span> Frühstück', en: 'breakfast', answer: 'das' },
+  { prompt: 'to order → <span class="blank">___</span>', en: 'bestellen', answer: 'bestellen' },
+  { prompt: '<span class="blank">___</span> Wasser', en: 'the water', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Kaffee', en: 'the coffee', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Mittagessen', en: 'lunch', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Abendessen', en: 'dinner', answer: 'das' },
+  { prompt: '<span class="blank">___</span> Hunger', en: 'hunger', answer: 'der' },
+  { prompt: '<span class="blank">___</span> Durst', en: 'thirst', answer: 'der' }
 ]);
 
 // ---------- §8 Trennbare Verben ----------
 renderExercise('ex8', [
-  { prompt: 'Der Zug ___ um acht Uhr ___. (abfahren)', answer: 'fährt ab' },
-  { prompt: 'Ich ___ um sieben Uhr ___. (aufstehen)', answer: 'stehe auf' },
-  { prompt: 'Wir ___ heute ___. (einkaufen)', answer: 'kaufen ein' },
-  { prompt: 'Der Bus ___ um neun Uhr ___. (ankommen)', answer: 'kommt an' },
-  { prompt: 'Ich ___ dich morgen ___. (anrufen)', answer: 'rufe an' },
-  { prompt: '___ du morgen ___? (mitkommen)', answer: 'Kommst mit' }
+  { prompt: 'Der Zug ___ um acht Uhr ___. (abfahren)', en: 'The train departs at eight o\'clock.', answer: 'fährt ab' },
+  { prompt: 'Ich ___ um sieben Uhr ___. (aufstehen)', en: 'I get up at seven o\'clock.', answer: 'stehe auf' },
+  { prompt: 'Wir ___ heute ___. (einkaufen)', en: 'We are shopping today.', answer: 'kaufen ein' },
+  { prompt: 'Der Bus ___ um neun Uhr ___. (ankommen)', en: 'The bus arrives at nine o\'clock.', answer: 'kommt an' },
+  { prompt: 'Ich ___ dich morgen ___. (anrufen)', en: 'I will call you tomorrow.', answer: 'rufe an' },
+  { prompt: '___ du morgen ___? (mitkommen)', en: 'Are you coming along tomorrow?', answer: 'Kommst mit' },
+  { prompt: 'Er ___ müde ___. (aussehen)', en: 'He looks tired.', answer: 'sieht aus' },
+  { prompt: 'Wir ___ jeden Abend ___. (fernsehen)', en: 'We watch TV every evening.', answer: 'sehen fern' },
+  { prompt: 'Der Flug ___ um zehn Uhr ___. (abfahren, use for flights too)', en: 'The flight departs at ten o\'clock.', answer: 'fährt ab' },
+  { prompt: 'Wann ___ der Zug in Berlin ___? (ankommen)', en: 'When does the train arrive in Berlin?', answer: 'kommt an' }
 ]);
 
 // ---------- QUIZ ----------
 const quizData = [
-  { q: 'Welcher Artikel ist richtig? ___ Hund', options: ['der','die','das','den'], correct: 0 },
-  { q: 'Welcher Artikel ist richtig? ___ Katze', options: ['der','die','das','dem'], correct: 1 },
-  { q: 'Welcher Artikel ist richtig? ___ Kind', options: ['der','die','das','den'], correct: 2 },
-  { q: 'Was ist der Plural von "das Buch"?', options: ['die Buche','die Bücher','die Buchs','die Buch'], correct: 1 },
-  { q: 'Was ist der Plural von "die Frau"?', options: ['die Fraus','die Frauen','die Fraue','die Frauer'], correct: 1 },
-  { q: 'Was ist der Plural von "das Auto"?', options: ['die Autoen','die Auto','die Autos','die Autoer'], correct: 2 },
+  { q: 'Welcher Artikel ist richtig? ___ Hund (dog)', options: ['der','die','das','den'], correct: 0 },
+  { q: 'Welcher Artikel ist richtig? ___ Katze (cat)', options: ['der','die','das','dem'], correct: 1 },
+  { q: 'Welcher Artikel ist richtig? ___ Kind (child)', options: ['der','die','das','den'], correct: 2 },
+  { q: 'Welcher Artikel ist richtig? ___ Wohnung (apartment)', options: ['der','die','das','dem'], correct: 1 },
+  { q: 'Welcher Artikel ist richtig? ___ Mädchen (girl)', options: ['der','die','das','den'], correct: 2 },
+  { q: 'Was ist der Plural von "das Buch"? (book → books)', options: ['die Buche','die Bücher','die Buchs','die Buch'], correct: 1 },
+  { q: 'Was ist der Plural von "die Frau"? (woman → women)', options: ['die Fraus','die Frauen','die Fraue','die Frauer'], correct: 1 },
+  { q: 'Was ist der Plural von "das Auto"? (car → cars)', options: ['die Autoen','die Auto','die Autos','die Autoer'], correct: 2 },
+  { q: 'Was ist der Plural von "der Apfel"? (apple → apples)', options: ['die Apfeln','die Äpfel','die Apfels','die Apfel'], correct: 1 },
   { q: 'Wähle das richtige Possessivpronomen: Das ist ___ Bruder. (my)', options: ['mein','meine','meiner','meins'], correct: 0 },
   { q: 'Wähle das richtige Possessivpronomen: Das ist ___ Schwester. (my)', options: ['mein','meine','meins','meinem'], correct: 1 },
+  { q: 'Wähle das richtige Possessivpronomen: ___ Haus ist groß. (our)', options: ['unser','unsere','uns','unserem'], correct: 0 },
   { q: 'Was bedeutet "die Geschwister"?', options: ['grandparents','siblings','parents','cousins'], correct: 1 },
   { q: 'Was bedeutet "der Vermieter"?', options: ['the tenant','the landlord','the guest','the neighbor'], correct: 1 },
   { q: 'Was bedeutet "die Rechnung"?', options: ['the menu','the receipt/bill','the reservation','the recipe'], correct: 1 },
-  { q: 'Vervollständige: Der Zug fährt um acht Uhr ___.', options: ['ab','an','auf','aus'], correct: 0 }
+  { q: 'Was bedeutet "das Gepäck"?', options: ['the ticket','the passport','the luggage','the seat'], correct: 2 },
+  { q: 'Was bedeutet "die Ankunft"?', options: ['the departure','the arrival','the delay','the platform'], correct: 1 },
+  { q: 'Was bedeutet "der Durst"?', options: ['hunger','thirst','tiredness','appetite'], correct: 1 },
+  { q: 'Vervollständige: Der Zug fährt um acht Uhr ___. (abfahren)', options: ['ab','an','auf','aus'], correct: 0 },
+  { q: 'Vervollständige: Ich stehe um sieben Uhr ___. (aufstehen)', options: ['ab','an','auf','aus'], correct: 2 }
 ];
 
 const quizContainer = document.getElementById('quizContainer');
